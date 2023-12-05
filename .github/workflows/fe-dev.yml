@@ -5,15 +5,10 @@ on:
     branches:
       - develop
       - main
-    paths: 'frontend/**'
   pull_request:
     branches:
       - develop
       - main
-    paths: 'frontend/**'
-defaults:
-  run:
-    working-directory: frontend
 
 permissions:
   pull-requests: write
