@@ -1,0 +1,25 @@
+.main {
+	width: 100%;
+	padding: 30px 20px;
+}
+
+.quiz-form {
+	display: flex;
+	flex-direction: column;
+	gap: 48px;
+}
+
+.explain {
+	max-width: var(--max-device-width);
+	height: 240px;
+	font-size: 1.6rem;
+	line-height: 2rem;
+	resize: none;
+}
+
+.button-container {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 16px;
+}
