@@ -54,7 +54,7 @@ module.exports = {
 						position: 'after',
 					},
 					{
-						pattern: '\\./(.*)\\.style$',
+						pattern: '\\./(.*)\\.scss$',
 						group: 'internal',
 						position: 'after',
 					},
