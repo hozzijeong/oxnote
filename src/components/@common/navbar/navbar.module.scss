@@ -1,0 +1,23 @@
+.wrapper {
+	display: flex;
+	position: fixed;
+	z-index: var(--sticky);
+	bottom: 0;
+	align-items: center;
+	justify-content: space-around;
+	width: 100%;
+	height: var(--button-height);
+	border-top: 1px solid var(--black-80);
+}
+
+.link {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	align-items: center;
+}
+
+.nav-icon {
+	width: 24px;
+	height: 24px;
+}
