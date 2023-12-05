@@ -6,6 +6,8 @@
 	align-items: center;
 	justify-content: space-around;
 	width: 100%;
+	min-width: var(--min-device-width);
+	max-width: var(--max-device-width);
 	height: var(--button-height);
 	border-top: 1px solid var(--black-80);
 }
