@@ -9,13 +9,13 @@ const Navbar = () => {
 	return (
 		<nav className={styles.wrapper}>
 			<div>
-				<Link className={styles.link} to={URL_PATH.QUIZ_FORM}>
+				<Link className={styles.link} to={URL_PATH.HOME}>
 					<img src={Quiz} alt='문제 풀기' width={24} height={24} />
 					문제 풀기
 				</Link>
 			</div>
 			<div>
-				<Link className={styles.link} to={URL_PATH.REGISTER}>
+				<Link className={styles.link} to={URL_PATH.QUIZ_FORM}>
 					<img src={Plus} alt='문제 등록하기' width={24} height={24} />
 					문제 등록하기
 				</Link>
