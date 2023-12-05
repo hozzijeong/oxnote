@@ -1,4 +1,4 @@
-import { Navbar } from '@components/index';
+import { Navbar } from '@components/@common';
 import { NAVBAR_PAGE } from '@constants/path';
 import { useMemo } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
