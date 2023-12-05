@@ -17,3 +17,17 @@ body {
 body::-webkit-scrollbar {
 	display: none;
 }
+
+:root {
+	--black-100: #000;
+	--black-80: #333;
+	--white-100: #fff;
+	--gray-100: #808080;
+	--gray-80: #d9d9d9;
+	--correct: #1bcc66;
+	--accent: #eb4d3d;
+	--sky: #63c5da;
+	--button-height: 60px;
+	--min-device-width: 320px;
+	--max-device-width: 720px;
+}
