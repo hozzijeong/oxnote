@@ -1,0 +1,8 @@
+.container {
+	position: relative;
+	width: 100%;
+	min-width: var(--min-device-width);
+	max-width: var(--max-device-width);
+	height: 100%;
+	margin: 0 auto;
+}
