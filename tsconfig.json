@@ -26,6 +26,7 @@
 		"paths": {
 			"@apis/*": ["src/apis/*"],
 			"@models/*": ["src/models/*"],
+			"@class/*": ["src/class/*"],
 			"@pages/*": ["src/pages/*"],
 			"@components/*": ["src/components/*"],
 			"@hooks/*": ["src/hooks/*"],

@@ -49,6 +49,11 @@ module.exports = {
 						position: 'after',
 					},
 					{
+						pattern: '@class/*',
+						group: 'internal',
+						position: 'after',
+					},
+					{
 						pattern: '@components/*',
 						group: 'internal',
 						position: 'after',

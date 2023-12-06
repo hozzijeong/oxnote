@@ -29,6 +29,7 @@ export default defineConfig({
 			{ find: '@constants', replacement: resolve(__dirname, '/src/constants') },
 			{ find: '@style', replacement: resolve(__dirname, '/src/style') },
 			{ find: '@contexts', replacement: resolve(__dirname, '/src/contexts') },
+			{ find: '@class', replacement: resolve(__dirname, '/src/class') },
 		],
 	},
 });
