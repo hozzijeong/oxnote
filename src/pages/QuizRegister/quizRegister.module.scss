@@ -9,7 +9,16 @@
 	gap: 48px;
 }
 
+.category {
+	min-width: var(--min-device-width);
+	max-width: var(--max-device-width);
+	height: var(--button-height);
+	font-size: 1.6rem;
+	line-height: 2rem;
+}
+
 .explain {
+	min-width: var(--min-device-width);
 	max-width: var(--max-device-width);
 	height: 240px;
 	font-size: 1.6rem;

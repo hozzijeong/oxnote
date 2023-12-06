@@ -2,54 +2,42 @@ import { Input, InputLabel } from '@components/@common';
 import styles from './quizRegister.module.scss';
 import Button from '@components/@common/button';
 import Radio from '@components/@common/radio';
-import { useNavigate } from 'react-router-dom';
-import { URL_PATH } from '@constants/path';
-import { useState } from 'react';
-import { Quiz } from '@models/quiz';
-import { INITIAL_QUIZ } from '@constants/quiz';
+import useGetCategory from '@hooks/fireStore/useGetCategory';
+import useQuizForm from '@hooks/useQuizForm';
 
 const QuizRegister = () => {
-	const navigate = useNavigate();
+	const { data: category } = useGetCategory();
 
-	const cancelHandler: React.MouseEventHandler<HTMLButtonElement> = () => {
-		const result = confirm(
-			'여기서 취소하면 작성한 내용이 사라집니다. 취소하시겠습니까?'
-		);
-
-		if (result) {
-			navigate(URL_PATH.HOME);
-		}
-	};
-
-	const [quizState, setQuizState] = useState<Quiz>(INITIAL_QUIZ);
-
-	const inputHandler = <T extends HTMLInputElement | HTMLTextAreaElement>(
-		event: React.ChangeEvent<T>
-	) => {
-		if (!(event instanceof HTMLInputElement || HTMLTextAreaElement)) return;
-
-		const { name, value, type } = event.target;
-
-		setQuizState((prev) => ({
-			...prev,
-			[name]: type === 'radio' ? Boolean(Number(value)) : value,
-		}));
-	};
-
-	const submitHandler: React.FormEventHandler<HTMLFormElement> = (event) => {
-		event.preventDefault();
-	};
+	const { submitHandler, changeHandler, cancelHandler, quizState } =
+		useQuizForm();
 
 	return (
 		<main className={styles.main} onSubmit={submitHandler}>
 			<form className={styles['quiz-form']}>
+				<InputLabel title='카테고리' htmlFor='category'>
+					<select
+						className={styles.category}
+						onChange={changeHandler}
+						name='category'
+						value={quizState.category}
+						required
+					>
+						<option hidden disabled value=''>
+							분류를 선택해주세용
+						</option>
+						{category.map((value) => (
+							<option key={value}>{value}</option>
+						))}
+					</select>
+				</InputLabel>
+
 				<InputLabel title='문제' htmlFor='quiz'>
 					<Input
 						id='quiz'
 						mode='text'
 						name='quiz'
 						value={quizState.quiz}
-						onChange={inputHandler}
+						onChange={changeHandler}
 						required
 					/>
 				</InputLabel>
@@ -61,7 +49,7 @@ const QuizRegister = () => {
 							{ title: 'X', value: 0 },
 						]}
 						name='answer'
-						changeHandler={inputHandler}
+						changeHandler={changeHandler}
 						required
 					/>
 				</InputLabel>
@@ -70,7 +58,7 @@ const QuizRegister = () => {
 					<textarea
 						className={styles.explain}
 						value={quizState.explain}
-						onChange={inputHandler}
+						onChange={changeHandler}
 						name='explain'
 						required
 					/>
@@ -83,7 +71,7 @@ const QuizRegister = () => {
 							{ title: '등록안함', value: 0 },
 						]}
 						name='favorite'
-						changeHandler={inputHandler}
+						changeHandler={changeHandler}
 						required
 					/>
 				</InputLabel>
