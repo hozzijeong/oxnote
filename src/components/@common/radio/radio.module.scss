@@ -1,0 +1,20 @@
+.wrapper {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: space-around;
+}
+
+.label-container {
+	display: flex;
+	align-items: center;
+
+	input {
+		margin: 4px;
+	}
+
+	label {
+		font-size: 1.6rem;
+		line-height: 2rem;
+	}
+}
