@@ -16,6 +16,7 @@ const QuizRegister = () => {
 			<form className={styles['quiz-form']}>
 				<InputLabel title='카테고리' htmlFor='category'>
 					<select
+						className={styles.category}
 						onChange={changeHandler}
 						name='category'
 						value={quizState.category}
