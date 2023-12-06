@@ -1,0 +1,20 @@
+.add-category-container {
+	display: flex;
+	max-width: var(--max-device-width);
+	height: var(--button-height);
+	font-size: 1.6rem;
+	line-height: 2rem;
+	gap: 8px;
+}
+
+.add-input {
+	width: 75%;
+}
+
+.add-button {
+	width: 24%;
+	padding: 8px;
+	border-radius: 8px;
+	background-color: var(--correct);
+	color: var(--white-100);
+}
