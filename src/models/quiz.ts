@@ -3,7 +3,7 @@ export interface Quiz {
 	explain: string;
 	answer: boolean;
 	favorite: boolean;
-	category: string;
+	category: Category;
 }
 
 export interface QuizInfo extends Quiz {
@@ -11,4 +11,9 @@ export interface QuizInfo extends Quiz {
 	recentCorrect: boolean;
 	correctCount: number;
 	wrongCount: number;
+}
+
+export interface Category {
+	name: string;
+	id: number;
 }

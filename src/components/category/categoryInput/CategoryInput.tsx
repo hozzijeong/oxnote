@@ -1,13 +1,15 @@
 import useCategoryInput from '@hooks/useCategoryInput';
 import styles from './categoryInput.module.scss';
+import type { Category } from '@models/quiz';
 
 interface CategoryInputProps {
-	category: string[];
+	category: Category[];
 }
 
 const CategoryInput = ({ category }: CategoryInputProps) => {
 	const { categoryInput, inputChangeHandler, addCategoryHandler } =
 		useCategoryInput(category);
+
 	return (
 		<div className={styles['add-category-container']}>
 			<input

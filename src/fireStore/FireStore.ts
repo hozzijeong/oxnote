@@ -30,21 +30,25 @@ class FireStore {
 	}
 
 	// 카테고리들을 반환하는 메서드
-	async getCategories(collectionId = 'yerim') {
-		const categories: string[] = [];
+	async getDocInfos(collectionId = 'yerim') {
+		const infos: DocumentData[] = [];
 
 		const categorySnapShot = await getDocs(collection(this.db, collectionId));
 		categorySnapShot.forEach((doc) => {
 			const data = doc.data();
-			categories.push(data.category);
+			infos.push(data);
 		});
 
-		return categories;
+		return infos;
 	}
 
 	// 카테고리를 등록하는 메서드
 	async addCategory(collectionId = 'yerim', category: string) {
-		await setDoc(doc(this.db, collectionId, category), { category });
+		const date = Date.now();
+		await setDoc(doc(this.db, collectionId, category), {
+			name: category,
+			id: date,
+		});
 	}
 }
 

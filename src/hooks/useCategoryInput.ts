@@ -1,8 +1,9 @@
 import FireStore from '@fireStore/FireStore';
+import { Category } from '@models/quiz';
 import { useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 
-const useCategoryInput = (categories: string[]) => {
+const useCategoryInput = (categories: Category[]) => {
 	const queryClient = useQueryClient();
 	const [categoryInput, setCategoryInput] = useState('');
 
@@ -17,8 +18,9 @@ const useCategoryInput = (categories: string[]) => {
 	) => {
 		event.preventDefault();
 
-		if (categories.includes(categoryInput)) {
+		if (categories.find((val) => val.name === categoryInput)) {
 			alert('이미 존재하는 카테고리입니다. 다시 입력해주세요');
+			return;
 		}
 
 		const result = confirm(

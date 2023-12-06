@@ -12,10 +12,11 @@ const Category = () => {
 
 	const categories = useMemo(
 		() =>
-			category.map((name) => (
+			category.map(({ id, name }) => (
 				<Link
+					key={id}
 					className={styles['category-folder']}
-					to={generatePath(URL_PATH.CATEGORY_DETAIL, { id: name })}
+					to={generatePath(URL_PATH.CATEGORY_DETAIL, { id: String(id) })}
 				>
 					<img src={Folder} width={72} height={72} alt={`${name} 폴더`} />
 					{name}

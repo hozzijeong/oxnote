@@ -19,14 +19,14 @@ const QuizRegister = () => {
 						className={styles.category}
 						onChange={changeHandler}
 						name='category'
-						value={quizState.category}
+						value={quizState.category.name}
 						required
 					>
 						<option hidden disabled value=''>
 							분류를 선택해주세용
 						</option>
-						{category.map((value) => (
-							<option key={value}>{value}</option>
+						{category.map(({ id, name }) => (
+							<option key={id}>{name}</option>
 						))}
 					</select>
 				</InputLabel>
