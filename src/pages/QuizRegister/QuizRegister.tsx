@@ -43,66 +43,50 @@ const QuizRegister = () => {
 	return (
 		<main className={styles.main} onSubmit={submitHandler}>
 			<form className={styles['quiz-form']}>
-				<InputLabel
-					title='문제'
-					element={
-						<Input
-							id='quiz'
-							mode='text'
-							name='quiz'
-							value={quizState.quiz}
-							onChange={inputHandler}
-							required
-						/>
-					}
-					htmlFor='quiz'
-				/>
+				<InputLabel title='문제' htmlFor='quiz'>
+					<Input
+						id='quiz'
+						mode='text'
+						name='quiz'
+						value={quizState.quiz}
+						onChange={inputHandler}
+						required
+					/>
+				</InputLabel>
 
-				<InputLabel
-					title='답'
-					htmlFor='answer'
-					element={
-						<Radio
-							options={[
-								{ title: 'O', value: 1 },
-								{ title: 'X', value: 0 },
-							]}
-							name='answer'
-							changeHandler={inputHandler}
-							required
-						/>
-					}
-				/>
+				<InputLabel title='답' htmlFor='answer'>
+					<Radio
+						options={[
+							{ title: 'O', value: 1 },
+							{ title: 'X', value: 0 },
+						]}
+						name='answer'
+						changeHandler={inputHandler}
+						required
+					/>
+				</InputLabel>
 
-				<InputLabel
-					title='해설'
-					element={
-						<textarea
-							className={styles.explain}
-							value={quizState.explain}
-							onChange={inputHandler}
-							name='explain'
-							required
-						/>
-					}
-					htmlFor='explain'
-				/>
+				<InputLabel title='해설' htmlFor='explain'>
+					<textarea
+						className={styles.explain}
+						value={quizState.explain}
+						onChange={inputHandler}
+						name='explain'
+						required
+					/>
+				</InputLabel>
 
-				<InputLabel
-					title='즐겨찾기 등록'
-					htmlFor='favorite'
-					element={
-						<Radio
-							options={[
-								{ title: '등록하기', value: 1 },
-								{ title: '등록안함', value: 0 },
-							]}
-							name='favorite'
-							changeHandler={inputHandler}
-							required
-						/>
-					}
-				/>
+				<InputLabel title='즐겨찾기 등록' htmlFor='favorite'>
+					<Radio
+						options={[
+							{ title: '등록하기', value: 1 },
+							{ title: '등록안함', value: 0 },
+						]}
+						name='favorite'
+						changeHandler={inputHandler}
+						required
+					/>
+				</InputLabel>
 
 				<div className={styles['button-container']}>
 					<Button type='button' size='small' onClick={cancelHandler}>
