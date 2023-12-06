@@ -20,7 +20,7 @@ class FireStore {
 	}
 
 	// 문서 구조는 예림 -> 카테고리 -> quiz(컬렉션), field에 카테고리 추가 하는 방식으로 진행하겠음.
-	async addData(collectionId: string, path: string, data: DocumentData) {
+	async addData(collectionId = 'yerim', path: string, data: DocumentData) {
 		try {
 			await addDoc(collection(this.db, collectionId, path, 'quiz'), data);
 		} catch (e) {
@@ -29,7 +29,7 @@ class FireStore {
 	}
 
 	// 카테고리들을 반환하는 메서드
-	async getCategories(collectionId: string) {
+	async getCategories(collectionId = 'yerim') {
 		const categories: string[] = [];
 
 		const categorySnapShot = await getDocs(collection(this.db, collectionId));
@@ -42,7 +42,7 @@ class FireStore {
 	}
 
 	// 카테고리를 등록하는 메서드
-	async addCategory(collectionId: string, category: string) {
+	async addCategory(collectionId = 'yerim', category: string) {
 		await setDoc(doc(this.db, collectionId, category), { category });
 	}
 }

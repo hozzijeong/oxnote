@@ -2,59 +2,23 @@ import { Input, InputLabel } from '@components/@common';
 import styles from './quizRegister.module.scss';
 import Button from '@components/@common/button';
 import Radio from '@components/@common/radio';
-import { useNavigate } from 'react-router-dom';
-import { URL_PATH } from '@constants/path';
-import { useId, useState } from 'react';
-import { Quiz } from '@models/quiz';
-import { INITIAL_QUIZ } from '@constants/quiz';
-import FireStore from 'src/fireStore/FireStore';
+import useGetCategory from '@hooks/fireStore/useGetCategory';
+import useQuizForm from '@hooks/useQuizForm';
 
 const QuizRegister = () => {
-	const navigate = useNavigate();
-	const id = useId();
-	const [quizState, setQuizState] = useState<Quiz>(INITIAL_QUIZ);
+	const { data: category } = useGetCategory();
 
-	const cancelHandler: React.MouseEventHandler<HTMLButtonElement> = () => {
-		const result = confirm(
-			'여기서 취소하면 작성한 내용이 사라집니다. 취소하시겠습니까?'
-		);
-
-		if (result) {
-			navigate(URL_PATH.HOME);
-		}
-	};
-
-	const inputHandler = <T extends HTMLInputElement | HTMLTextAreaElement>(
-		event: React.ChangeEvent<T>
-	) => {
-		if (!(event instanceof HTMLInputElement || HTMLTextAreaElement)) return;
-
-		const { name, value, type } = event.target;
-
-		setQuizState((prev) => ({
-			...prev,
-			[name]: type === 'radio' ? Boolean(Number(value)) : value,
-		}));
-	};
-
-	const submitHandler: React.FormEventHandler<HTMLFormElement> = (event) => {
-		event.preventDefault();
-
-		FireStore.addData('yerim', '형사법', {
-			...quizState,
-			id,
-			recentCorrect: false, // 최근 문제 시도
-			correctCount: 0, // 맞힌 문제
-			wrongCount: 0, // 틀린 문제
-		});
-	};
+	const { submitHandler, changeHandler, cancelHandler, quizState } =
+		useQuizForm();
 
 	return (
 		<main className={styles.main} onSubmit={submitHandler}>
 			<form className={styles['quiz-form']}>
 				<InputLabel title='카테고리' htmlFor='category'>
-					<select>
-						<option>가나다</option>
+					<select onChange={changeHandler} name='category' required>
+						{category.map((value) => (
+							<option key={value}>{value}</option>
+						))}
 					</select>
 				</InputLabel>
 
@@ -64,7 +28,7 @@ const QuizRegister = () => {
 						mode='text'
 						name='quiz'
 						value={quizState.quiz}
-						onChange={inputHandler}
+						onChange={changeHandler}
 						required
 					/>
 				</InputLabel>
@@ -76,7 +40,7 @@ const QuizRegister = () => {
 							{ title: 'X', value: 0 },
 						]}
 						name='answer'
-						changeHandler={inputHandler}
+						changeHandler={changeHandler}
 						required
 					/>
 				</InputLabel>
@@ -85,7 +49,7 @@ const QuizRegister = () => {
 					<textarea
 						className={styles.explain}
 						value={quizState.explain}
-						onChange={inputHandler}
+						onChange={changeHandler}
 						name='explain'
 						required
 					/>
@@ -98,7 +62,7 @@ const QuizRegister = () => {
 							{ title: '등록안함', value: 0 },
 						]}
 						name='favorite'
-						changeHandler={inputHandler}
+						changeHandler={changeHandler}
 						required
 					/>
 				</InputLabel>
