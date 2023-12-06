@@ -4,13 +4,14 @@ import Button from '@components/@common/button';
 import Radio from '@components/@common/radio';
 import { useNavigate } from 'react-router-dom';
 import { URL_PATH } from '@constants/path';
-import { useState } from 'react';
+import { useId, useState } from 'react';
 import { Quiz } from '@models/quiz';
 import { INITIAL_QUIZ } from '@constants/quiz';
+import FireStore from '@class/FireStore';
 
 const QuizRegister = () => {
 	const navigate = useNavigate();
-
+	const id = useId();
 	const cancelHandler: React.MouseEventHandler<HTMLButtonElement> = () => {
 		const result = confirm(
 			'여기서 취소하면 작성한 내용이 사라집니다. 취소하시겠습니까?'
@@ -38,6 +39,14 @@ const QuizRegister = () => {
 
 	const submitHandler: React.FormEventHandler<HTMLFormElement> = (event) => {
 		event.preventDefault();
+
+		FireStore.addData('yerim', '형사법', {
+			...quizState,
+			id,
+			recentCorrect: false, // 최근 문제 시도
+			correctCount: 0, // 맞힌 문제
+			wrongCount: 0, // 틀린 문제
+		});
 	};
 
 	return (
