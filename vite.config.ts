@@ -25,6 +25,7 @@ export default defineConfig({
 			},
 			{ find: '@hooks', replacement: resolve(__dirname, '/src/hooks') },
 			{ find: '@utils', replacement: resolve(__dirname, '/src/utils') },
+			{ find: '@fireStore', replacement: resolve(__dirname, '/src/fireStore') },
 			{ find: '@assets', replacement: resolve(__dirname, '/src/assets') },
 			{ find: '@constants', replacement: resolve(__dirname, '/src/constants') },
 			{ find: '@style', replacement: resolve(__dirname, '/src/style') },

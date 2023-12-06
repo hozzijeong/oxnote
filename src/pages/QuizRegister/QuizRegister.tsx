@@ -7,11 +7,13 @@ import { URL_PATH } from '@constants/path';
 import { useId, useState } from 'react';
 import { Quiz } from '@models/quiz';
 import { INITIAL_QUIZ } from '@constants/quiz';
-import FireStore from '@class/FireStore';
+import FireStore from 'src/fireStore/FireStore';
 
 const QuizRegister = () => {
 	const navigate = useNavigate();
 	const id = useId();
+	const [quizState, setQuizState] = useState<Quiz>(INITIAL_QUIZ);
+
 	const cancelHandler: React.MouseEventHandler<HTMLButtonElement> = () => {
 		const result = confirm(
 			'여기서 취소하면 작성한 내용이 사라집니다. 취소하시겠습니까?'
@@ -21,8 +23,6 @@ const QuizRegister = () => {
 			navigate(URL_PATH.HOME);
 		}
 	};
-
-	const [quizState, setQuizState] = useState<Quiz>(INITIAL_QUIZ);
 
 	const inputHandler = <T extends HTMLInputElement | HTMLTextAreaElement>(
 		event: React.ChangeEvent<T>
@@ -52,6 +52,12 @@ const QuizRegister = () => {
 	return (
 		<main className={styles.main} onSubmit={submitHandler}>
 			<form className={styles['quiz-form']}>
+				<InputLabel title='카테고리' htmlFor='category'>
+					<select>
+						<option>가나다</option>
+					</select>
+				</InputLabel>
+
 				<InputLabel title='문제' htmlFor='quiz'>
 					<Input
 						id='quiz'

@@ -30,6 +30,7 @@
 			"@pages/*": ["src/pages/*"],
 			"@components/*": ["src/components/*"],
 			"@hooks/*": ["src/hooks/*"],
+			"@fireStore/*": ["src/fireStore/*"],
 			"@utils/*": ["src/utils/*"],
 			"@assets/*": ["src/assets/*"],
 			"@constants/*": ["src/constants/*"],

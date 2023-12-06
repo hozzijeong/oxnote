@@ -10,7 +10,7 @@ import {
 	addDoc,
 	setDoc,
 } from 'firebase/firestore';
-import app from 'src/Firebase';
+import app from './Firebase';
 
 class FireStore {
 	db: Firestore;
@@ -30,10 +30,10 @@ class FireStore {
 
 	// 카테고리들을 반환하는 메서드
 	async getCategories(collectionId: string) {
-		const querySnapshot = await getDocs(collection(this.db, collectionId));
 		const categories: string[] = [];
 
-		querySnapshot.forEach((doc) => {
+		const categorySnapShot = await getDocs(collection(this.db, collectionId));
+		categorySnapShot.forEach((doc) => {
 			const data = doc.data();
 			categories.push(data.category);
 		});

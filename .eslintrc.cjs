@@ -79,6 +79,11 @@ module.exports = {
 						position: 'after',
 					},
 					{
+						pattern: '@fireStore/*',
+						group: 'internal',
+						position: 'after',
+					},
+					{
 						pattern: '@utils/*',
 						group: 'internal',
 						position: 'after',
