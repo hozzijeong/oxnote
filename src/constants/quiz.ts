@@ -5,4 +5,5 @@ export const INITIAL_QUIZ: Quiz = {
 	answer: false,
 	explain: '',
 	favorite: false,
+	category: '',
 };
