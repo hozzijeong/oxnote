@@ -19,10 +19,11 @@ class FireStore {
 		this.db = getFirestore(app);
 	}
 
-	// 문서 구조는 예림 -> 카테고리 -> quiz(컬렉션), field에 카테고리 추가 하는 방식으로 진행하겠음.
-	async addData(collectionId = 'yerim', path: string, data: DocumentData) {
+	// 문서 구조는 예림 -> 카테고리 -> quyerimiz(컬렉션), field에 카테고리 추가 하는 방식으로 진행하겠음.
+	async addData(collectionId = '', category: string, data: DocumentData) {
+		console.log(category, collectionId);
 		try {
-			await addDoc(collection(this.db, collectionId, path, 'quiz'), data);
+			await addDoc(collection(this.db, collectionId, category, 'quiz'), data);
 		} catch (e) {
 			console.error('Error adding document: ', e);
 		}

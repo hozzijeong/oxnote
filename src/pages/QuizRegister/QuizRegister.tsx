@@ -15,7 +15,15 @@ const QuizRegister = () => {
 		<main className={styles.main} onSubmit={submitHandler}>
 			<form className={styles['quiz-form']}>
 				<InputLabel title='카테고리' htmlFor='category'>
-					<select onChange={changeHandler} name='category' required>
+					<select
+						onChange={changeHandler}
+						name='category'
+						value={quizState.category}
+						required
+					>
+						<option hidden disabled value=''>
+							분류를 선택해주세용
+						</option>
 						{category.map((value) => (
 							<option key={value}>{value}</option>
 						))}
