@@ -1,9 +1,11 @@
+@use './../../../style/mixin' as mix;
+
 .add-category-container {
 	display: flex;
 	max-width: var(--max-device-width);
 	height: var(--button-height);
-	font-size: 1.6rem;
-	line-height: 2rem;
+	@include mix.fontMedium;
+
 	gap: 8px;
 }
 

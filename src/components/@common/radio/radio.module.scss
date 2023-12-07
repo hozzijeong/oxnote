@@ -1,3 +1,5 @@
+@use './../../../style/mixin' as mix;
+
 .wrapper {
 	display: flex;
 	flex-wrap: wrap;
@@ -14,7 +16,6 @@
 	}
 
 	label {
-		font-size: 1.6rem;
-		line-height: 2rem;
+		@include mix.fontMedium;
 	}
 }
