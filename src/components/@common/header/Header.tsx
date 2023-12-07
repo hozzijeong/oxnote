@@ -14,14 +14,19 @@ const Header = ({ title, backUrl, menuCallback }: HeaderProps) => {
 	return (
 		<header className={styles.wrapper}>
 			{backUrl && (
-				<Link to={backUrl}>
-					<img src={Back} width={16} height={16} alt='뒤로 가기' />
+				<Link className={styles['back-arrow']} to={URL_PATH[backUrl]}>
+					<img src={Back} width={20} height={20} alt='뒤로 가기' />
 				</Link>
 			)}
 			{title}
 			{menuCallback && (
-				<button type='button' onClick={menuCallback} aria-label='메뉴'>
-					<img src={Menu} width={16} height={16} alt='메뉴 클릭' />
+				<button
+					className={styles.menu}
+					type='button'
+					onClick={menuCallback}
+					aria-label='메뉴'
+				>
+					<img src={Menu} width={20} height={20} alt='메뉴 클릭' />
 				</button>
 			)}
 		</header>
