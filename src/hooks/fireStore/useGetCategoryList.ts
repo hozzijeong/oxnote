@@ -15,7 +15,8 @@ const useGetCategoryList = (collectionId = 'yerim', category: Category) =>
 		select: (data) => {
 			const result: QuizListItem[] = [];
 			data.forEach((value) => {
-				const { quiz, favorite, id, correctCount, wrongCount } = value.data();
+				const id = value.id;
+				const { quiz, favorite, correctCount, wrongCount } = value.data();
 				const tryCount = correctCount + wrongCount;
 
 				const wrongPercent =
