@@ -5,7 +5,10 @@ export const INITIAL_QUIZ: Quiz = {
 	answer: false,
 	explain: '',
 	favorite: false,
-	category: '',
+	category: {
+		name: '',
+		id: -1,
+	},
 };
 
 export const INITIAL_QUIZ_RECORD: QuizInfo = {
