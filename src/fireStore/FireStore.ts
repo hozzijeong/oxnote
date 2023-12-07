@@ -9,8 +9,7 @@ import {
 	collection,
 	addDoc,
 	setDoc,
-	query,
-	where,
+	getDoc,
 } from 'firebase/firestore';
 import app from './Firebase';
 
@@ -53,31 +52,44 @@ class FireStore {
 		});
 	}
 
-	// 카테고리 id를 반환하는 메서드. 사용하는 이유는 특정 페이지에서 카테고리 값을 알기 위함임.(뭔가 urlpath에 값을 같이 넘겨도 될 것 같은 느낌이 들긴 함)
-	async getCategoryDetail(collectionId = 'yerim', categoryId: number) {
-		const collectionRef = collection(this.db, collectionId);
-
-		const categoryQuery = query(collectionRef, where('id', '==', categoryId));
-		const categorySnapShot = await getDocs(categoryQuery);
-
-		let category = '';
-
-		if (categorySnapShot.size !== 1)
-			throw new Error('카테고리를 불러오는데 문제가 생겼습니다.');
-
-		categorySnapShot.forEach((value) => {
-			category = value.id;
-		});
-
-		return category;
-	}
-
+	// 퀴즈 리스트 전체를 받는 메서드
 	async getCategoryQuizList(collectionId = 'yerim', category: string) {
 		const collectionRef = collection(this.db, collectionId, category, 'quiz');
 
-		const categoryList = await getDocs(collectionRef);
+		const quizList = await getDocs(collectionRef);
 
-		return categoryList;
+		return quizList;
+	}
+
+	// 단일 퀴즈 데이터를 받는 메서드
+	async getQuizDoc(collectionId = 'yerim', category: string, quizId: string) {
+		const docRef = doc(this.db, collectionId, category, 'quiz', quizId);
+
+		const curDoc = await getDoc(docRef);
+
+		if (!curDoc.exists()) throw new Error('존재하지 않는 문제입니다.');
+
+		return curDoc;
+	}
+
+	// 단일 퀴즈 데이터를 업데이트 하는 메서드
+	async updateQuizData(
+		collectionId = 'yerim',
+		category: string,
+		quizId: string,
+		updateData: DocumentData
+	) {
+		const docRef = doc(this.db, collectionId, category, 'quiz', quizId);
+
+		const quizDoc = await getDoc(docRef);
+
+		if (!quizDoc.exists()) throw new Error('존재하지 않는 문제입니다.');
+
+		const quizData = quizDoc.data();
+
+		const updatedData = { ...quizData, ...updateData };
+
+		setDoc(docRef, updatedData, { merge: true });
 	}
 }
 

@@ -26,7 +26,7 @@ const CategoryDetail = () => {
 			<main>
 				<ul className={styles['quiz-list']}>
 					{quizList.map((item) => (
-						<QuizItem key={item.id} item={item} />
+						<QuizItem key={item.id} item={item} category={category.name} />
 					))}
 				</ul>
 			</main>
