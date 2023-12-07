@@ -7,7 +7,6 @@ export const INITIAL_QUIZ: Quiz = {
 	favorite: false,
 	category: {
 		name: '',
-		id: -1,
 	},
 };
 
