@@ -1,0 +1,22 @@
+@use './../../../style/mixin' as mix;
+
+.item {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	height: 40px;
+	padding: 0 20px;
+	border-bottom: 1px solid #000;
+
+	@include mix.fontMedium;
+
+	&:hover {
+		opacity: 0.9;
+		cursor: pointer;
+	}
+}
+
+.info-container {
+	display: flex;
+	align-items: center;
+}

@@ -1,5 +1,5 @@
 import { Header } from '@components/@common';
-import CategoryItem from '@components/category/catgeoryItem/CategoryItem';
+import QuizItem from '@components/quiz/quizItem/QuizItem';
 import useGetCategoryList from '@hooks/fireStore/useGetCategoryList';
 import useGetCurrentCategoryFromQuery from '@hooks/useGetCurrentCategoryFromQuery';
 import { Fragment } from 'react';
@@ -26,7 +26,7 @@ const CategoryDetail = () => {
 			<main>
 				<ul className={styles['quiz-list']}>
 					{quizList.map((item) => (
-						<CategoryItem key={item.id} item={item} />
+						<QuizItem key={item.id} item={item} />
 					))}
 				</ul>
 			</main>
