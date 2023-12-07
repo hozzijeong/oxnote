@@ -1,11 +1,12 @@
 import useGetCategory from '@hooks/fireStore/useGetCategory';
 import styles from './category.module.scss';
-import { useMemo } from 'react';
+import { Fragment, useMemo } from 'react';
 import CategoryInput from '@components/category/categoryInput/CategoryInput';
 import { Link, generatePath } from 'react-router-dom';
 import { URL_PATH } from '@constants/path';
 
 import Folder from '@assets/folder.svg';
+import { Header } from '@components/@common';
 
 const Category = () => {
 	const { data: category } = useGetCategory();
@@ -26,10 +27,13 @@ const Category = () => {
 	);
 
 	return (
-		<main className={styles.main}>
-			<CategoryInput category={category} />
-			<section className={styles['category-container']}>{categories}</section>
-		</main>
+		<Fragment>
+			<Header title='모아보기' />
+			<main className={styles.main}>
+				<CategoryInput category={category} />
+				<section className={styles['category-container']}>{categories}</section>
+			</main>
+		</Fragment>
 	);
 };
 
