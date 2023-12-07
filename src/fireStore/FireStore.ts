@@ -72,9 +72,7 @@ class FireStore {
 		return category;
 	}
 
-	async getCategoryQuizList(collectionId = 'yerim', categoryId: number) {
-		const category = await this.getCategoryDetail(collectionId, categoryId);
-
+	async getCategoryQuizList(collectionId = 'yerim', category: string) {
 		const collectionRef = collection(this.db, collectionId, category, 'quiz');
 
 		const categoryList = await getDocs(collectionRef);
