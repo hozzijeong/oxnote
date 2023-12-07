@@ -1,3 +1,5 @@
+@use './../../style/mixin' as mix;
+
 .main {
 	width: 100%;
 	padding: 30px 20px;
@@ -10,19 +12,14 @@
 }
 
 .category {
-	min-width: var(--min-device-width);
-	max-width: var(--max-device-width);
 	height: var(--button-height);
-	font-size: 1.6rem;
-	line-height: 2rem;
+	@include mix.fontMedium;
 }
 
 .explain {
-	min-width: var(--min-device-width);
-	max-width: var(--max-device-width);
 	height: 240px;
-	font-size: 1.6rem;
-	line-height: 2rem;
+	@include mix.fontMedium;
+
 	resize: none;
 }
 

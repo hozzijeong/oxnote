@@ -9,6 +9,7 @@ import {
 	collection,
 	addDoc,
 	setDoc,
+	getDoc,
 } from 'firebase/firestore';
 import app from './Firebase';
 
@@ -30,21 +31,65 @@ class FireStore {
 	}
 
 	// 카테고리들을 반환하는 메서드
-	async getCategories(collectionId = 'yerim') {
-		const categories: string[] = [];
+	async getDocInfos(collectionId = 'yerim') {
+		const infos: DocumentData[] = [];
 
 		const categorySnapShot = await getDocs(collection(this.db, collectionId));
 		categorySnapShot.forEach((doc) => {
 			const data = doc.data();
-			categories.push(data.category);
+			infos.push(data);
 		});
 
-		return categories;
+		return infos;
 	}
 
 	// 카테고리를 등록하는 메서드
 	async addCategory(collectionId = 'yerim', category: string) {
-		await setDoc(doc(this.db, collectionId, category), { category });
+		const date = Date.now();
+		await setDoc(doc(this.db, collectionId, category), {
+			name: category,
+			id: date,
+		});
+	}
+
+	// 퀴즈 리스트 전체를 받는 메서드
+	async getCategoryQuizList(collectionId = 'yerim', category: string) {
+		const collectionRef = collection(this.db, collectionId, category, 'quiz');
+
+		const quizList = await getDocs(collectionRef);
+
+		return quizList;
+	}
+
+	// 단일 퀴즈 데이터를 받는 메서드
+	async getQuizDoc(collectionId = 'yerim', category: string, quizId: string) {
+		const docRef = doc(this.db, collectionId, category, 'quiz', quizId);
+
+		const curDoc = await getDoc(docRef);
+
+		if (!curDoc.exists()) throw new Error('존재하지 않는 문제입니다.');
+
+		return curDoc;
+	}
+
+	// 단일 퀴즈 데이터를 업데이트 하는 메서드
+	async updateQuizData(
+		collectionId = 'yerim',
+		category: string,
+		quizId: string,
+		updateData: DocumentData
+	) {
+		const docRef = doc(this.db, collectionId, category, 'quiz', quizId);
+
+		const quizDoc = await getDoc(docRef);
+
+		if (!quizDoc.exists()) throw new Error('존재하지 않는 문제입니다.');
+
+		const quizData = quizDoc.data();
+
+		const updatedData = { ...quizData, ...updateData };
+
+		setDoc(docRef, updatedData, { merge: true });
 	}
 }
 

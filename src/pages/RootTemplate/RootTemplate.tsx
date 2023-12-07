@@ -1,6 +1,6 @@
 import { Navbar } from '@components/@common';
 import { NAVBAR_PAGE } from '@constants/path';
-import { useMemo } from 'react';
+import { Suspense, useMemo } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 import styles from './rootTemplate.module.scss';
 
@@ -14,7 +14,9 @@ const RootTemplate = () => {
 
 	return (
 		<div className={styles.container}>
-			<Outlet />
+			<Suspense fallback={<div>로딩중...</div>}>
+				<Outlet />
+			</Suspense>
 			{navbar}
 		</div>
 	);

@@ -1,9 +1,11 @@
+@use './../../../style/mixin' as mix;
+
 .base {
 	height: var(--button-height);
 	border-radius: 8px;
-	font-size: 1.6rem;
+	@include mix.fontMedium;
+
 	font-weight: 600;
-	line-height: 2rem;
 
 	&:hover {
 		opacity: 0.9;

@@ -1,0 +1,21 @@
+@use './../../../style/mixin' as mix;
+
+.wrapper {
+	display: flex;
+	position: relative;
+	align-items: center;
+	justify-content: center;
+	height: 60px;
+	border-bottom: 1px solid #000;
+	@include mix.fontLarge;
+}
+
+.back-arrow {
+	position: absolute;
+	left: 20px;
+}
+
+.menu {
+	position: absolute;
+	right: 20px;
+}
