@@ -9,6 +9,8 @@ import {
 	collection,
 	addDoc,
 	setDoc,
+	query,
+	where,
 } from 'firebase/firestore';
 import app from './Firebase';
 
@@ -49,6 +51,35 @@ class FireStore {
 			name: category,
 			id: date,
 		});
+	}
+
+	// 카테고리 id를 반환하는 메서드. 사용하는 이유는 특정 페이지에서 카테고리 값을 알기 위함임.(뭔가 urlpath에 값을 같이 넘겨도 될 것 같은 느낌이 들긴 함)
+	async getCategoryDetail(collectionId = 'yerim', categoryId: number) {
+		const collectionRef = collection(this.db, collectionId);
+
+		const categoryQuery = query(collectionRef, where('id', '==', categoryId));
+		const categorySnapShot = await getDocs(categoryQuery);
+
+		let category = '';
+
+		if (categorySnapShot.size !== 1)
+			throw new Error('카테고리를 불러오는데 문제가 생겼습니다.');
+
+		categorySnapShot.forEach((value) => {
+			category = value.id;
+		});
+
+		return category;
+	}
+
+	async getCategoryQuizList(collectionId = 'yerim', categoryId: number) {
+		const category = await this.getCategoryDetail(collectionId, categoryId);
+
+		const collectionRef = collection(this.db, collectionId, category, 'quiz');
+
+		const categoryList = await getDocs(collectionRef);
+
+		return categoryList;
 	}
 }
 
