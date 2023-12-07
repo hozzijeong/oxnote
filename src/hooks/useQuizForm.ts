@@ -1,13 +1,13 @@
 import FireStore from '@fireStore/FireStore';
 import { URL_PATH } from '@constants/path';
 import { Quiz } from '@models/quiz';
-import { useId, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { INITIAL_QUIZ } from '@constants/quiz';
 
 const useQuizForm = (initialData = INITIAL_QUIZ) => {
 	const navigate = useNavigate();
-	const id = useId();
+
 	const [quizState, setQuizState] = useState<Quiz>(initialData);
 
 	const cancelHandler: React.MouseEventHandler<HTMLButtonElement> = () => {
@@ -40,9 +40,8 @@ const useQuizForm = (initialData = INITIAL_QUIZ) => {
 
 		const { category } = quizState;
 
-		FireStore.addData('yerim', category, {
+		FireStore.addData('yerim', category.name, {
 			...quizState,
-			id,
 			recentCorrect: false, // 최근 문제 시도
 			correctCount: 0, // 맞힌 문제
 			wrongCount: 0, // 틀린 문제

@@ -1,0 +1,7 @@
+@use './../../style/variables' as var;
+
+.quiz-list {
+	li:nth-child(even) {
+		background-color: #{var.$gray-80} + 33;
+	}
+}

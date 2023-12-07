@@ -1,0 +1,35 @@
+@use './variables' as v;
+
+@mixin small {
+	@media (max-width: #{v.$min-device-width}) {
+		@content;
+	}
+}
+
+@mixin min {
+	@media (min-width: #{v.$min-device-width}) and (max-width: #{v.$mid-device-width - 1px}) {
+		@content;
+	}
+}
+
+@mixin mid {
+	@media (min-width: #{v.$mid-device-width}) and (max-width: #{v.$max-device-width - 1px}) {
+		@content;
+	}
+}
+
+@mixin max {
+	@media (min-width: #{v.$max-device-width}) {
+		@content;
+	}
+}
+
+@mixin fontMedium {
+	font-size: v.$font-medium;
+	line-height: 2rem;
+}
+
+@mixin fontLarge {
+	font-size: v.$font-large;
+	line-height: 2.4;
+}

@@ -1,6 +1,6 @@
 import { URL_PATH } from '@constants/path';
 import { createBrowserRouter } from 'react-router-dom';
-import { QuizRegister, RootTemplate } from './pages';
+import { Category, QuizRegister, RootTemplate, CategoryDetail } from './pages';
 
 const router = createBrowserRouter([
 	{
@@ -11,6 +11,14 @@ const router = createBrowserRouter([
 			{
 				path: URL_PATH.QUIZ_FORM,
 				element: <QuizRegister />,
+			},
+			{
+				path: URL_PATH.CATEGORY,
+				element: <Category />,
+			},
+			{
+				path: URL_PATH.CATEGORY_DETAIL,
+				element: <CategoryDetail />,
 			},
 		],
 	},
