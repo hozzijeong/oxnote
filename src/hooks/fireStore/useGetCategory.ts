@@ -5,7 +5,7 @@ import type { DocumentData } from 'firebase/firestore';
 
 const useGetCategory = (collectionId = 'yerim') =>
 	useSuspenseQuery<DocumentData[], Error, Category[]>({
-		queryKey: ['category'],
+		queryKey: [collectionId],
 		queryFn: () => FireStore.getDocInfos(collectionId),
 		select: (data) => data.map(({ name, id }) => ({ name, id })),
 	});

@@ -9,7 +9,7 @@ const useGetCategoryList = (collectionId = 'yerim', category: Category) =>
 		Error,
 		QuizListItem[]
 	>({
-		queryKey: ['categoryList', category.id],
+		queryKey: [collectionId, category.name],
 		queryFn: async () =>
 			await FireStore.getCategoryQuizList(collectionId, category.name),
 		select: (data) => {
