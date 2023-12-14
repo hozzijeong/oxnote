@@ -4,7 +4,7 @@ export interface Quiz {
 	explain: string;
 	answer: boolean;
 	favorite: boolean;
-	category: Pick<Category, 'name'>; // 여기의 카테고리는 좀 애매한 느낌임
+	category: Category['name']; // 여기의 카테고리는 좀 애매한 느낌임
 }
 
 export interface QuizInfo extends Quiz {

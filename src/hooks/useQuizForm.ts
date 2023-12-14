@@ -40,7 +40,7 @@ const useQuizForm = (initialData = INITIAL_QUIZ) => {
 
 		const { category } = quizState;
 
-		FireStore.addData('yerim', category.name, {
+		FireStore.addData('yerim', category, {
 			...quizState,
 			recentCorrect: false, // 최근 문제 시도
 			correctCount: 0, // 맞힌 문제

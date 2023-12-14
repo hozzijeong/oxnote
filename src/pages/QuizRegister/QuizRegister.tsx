@@ -19,7 +19,7 @@ const QuizRegister = () => {
 						className={styles.category}
 						onChange={changeHandler}
 						name='category'
-						value={quizState.category.name}
+						value={quizState.category}
 						required
 					>
 						<option hidden disabled value=''>
