@@ -19,7 +19,10 @@ const QuizItem = ({ item, category }: QuizItemProps) => {
 
 	return (
 		<li className={styles.item} key={item.id}>
-			<Link to={generatePath(URL_PATH.QUIZ, { id: item.id })}>
+			<Link
+				className={styles['quiz-title']}
+				to={generatePath(URL_PATH.QUIZ, { id: item.id })}
+			>
 				<p>{item.quiz}</p>
 			</Link>
 			<div className={styles['info-container']}>
