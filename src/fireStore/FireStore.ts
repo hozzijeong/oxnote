@@ -22,7 +22,6 @@ class FireStore {
 
 	// 문서 구조는 예림 -> 카테고리 -> quyerimiz(컬렉션), field에 카테고리 추가 하는 방식으로 진행하겠음.
 	async addData(collectionId = '', category: string, data: DocumentData) {
-		console.log(category, collectionId);
 		try {
 			await addDoc(collection(this.db, collectionId, category, 'quiz'), data);
 		} catch (e) {
