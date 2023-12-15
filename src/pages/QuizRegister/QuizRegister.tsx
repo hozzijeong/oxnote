@@ -2,7 +2,7 @@ import { Input, InputLabel } from '@components/@common';
 import styles from './quizRegister.module.scss';
 import Button from '@components/@common/button';
 import Radio from '@components/@common/radio';
-import useGetCategory from '@hooks/fireStore/useGetCategory';
+import useGetCategory from '@hooks/fireStore/useGetCategoryList';
 import useQuizForm from '@hooks/useQuizForm';
 
 const QuizRegister = () => {

@@ -1,4 +1,4 @@
-import useGetCategory from '@hooks/fireStore/useGetCategory';
+import useGetCategory from '@hooks/fireStore/useGetCategoryList';
 import styles from './category.module.scss';
 import { Fragment, useMemo } from 'react';
 import CategoryInput from '@components/category/categoryInput/CategoryInput';

@@ -1,39 +1,24 @@
 import FireStore from '@fireStore/FireStore';
-import type { Category, QuizListItem } from '@models/quiz';
+import type { Category } from '@models/quiz';
 import { useSuspenseQuery } from '@tanstack/react-query';
-import type { DocumentData, QuerySnapshot } from 'firebase/firestore';
+import { invariantOf } from '@utils/invariantOf';
+import type { DocumentData } from 'firebase/firestore';
 
-const useGetCategoryList = (collectionId = 'yerim', category: Category) =>
-	useSuspenseQuery<
-		QuerySnapshot<DocumentData, DocumentData>,
-		Error,
-		QuizListItem[]
-	>({
-		queryKey: [collectionId, category.name],
-		queryFn: async () =>
-			await FireStore.getCategoryQuizList(collectionId, category.name),
+const useGetCategory = (collectionId = 'yerim') =>
+	useSuspenseQuery<DocumentData, Error, Category[]>({
+		queryKey: [collectionId],
+		queryFn: () => FireStore.getDocInfos(collectionId),
 		select: (data) => {
-			const result: QuizListItem[] = [];
-			data.forEach((value) => {
-				const id = value.id;
-				const { quiz, favorite, correctCount, wrongCount } = value.data();
-				const tryCount = correctCount + wrongCount;
+			// TODO: 이게 솔직히 맞는지 모르겠음.
+			const convertedArray = Object.entries(invariantOf(data)) as [
+				number,
+				string
+			][];
 
-				const wrongPercent =
-					tryCount === 0 ? '0' : ((wrongCount / tryCount) * 100).toFixed(2);
+			const convertedData = convertedArray.map(([id, name]) => ({ id, name }));
 
-				result.push({
-					quiz,
-					favorite,
-					id,
-					correctCount,
-					wrongCount,
-					wrongPercent: `${wrongPercent}%`,
-				});
-			});
-
-			return result;
+			return convertedData;
 		},
 	});
 
-export default useGetCategoryList;
+export default useGetCategory;

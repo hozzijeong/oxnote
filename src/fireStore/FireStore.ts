@@ -14,10 +14,17 @@ import {
 import app from './Firebase';
 
 class FireStore {
-	db: Firestore;
+	private db: Firestore;
 
 	constructor(app: FirebaseApp) {
 		this.db = getFirestore(app);
+
+		this.addData = this.addData.bind(this);
+		this.getDocInfos = this.getDocInfos.bind(this);
+		this.addCategory = this.addCategory.bind(this);
+		this.getCategoryQuizList = this.getCategoryQuizList.bind(this);
+		this.getQuizDoc = this.getQuizDoc.bind(this);
+		this.updateQuizData = this.updateQuizData.bind(this);
 	}
 
 	// 문서 구조는 예림 -> 카테고리 -> quyerimiz(컬렉션), field에 카테고리 추가 하는 방식으로 진행하겠음.
@@ -31,23 +38,22 @@ class FireStore {
 
 	// 카테고리들을 반환하는 메서드
 	async getDocInfos(collectionId = 'yerim') {
-		const infos: DocumentData[] = [];
+		const categorySnapShot = await getDoc(
+			doc(this.db, collectionId, 'Category')
+		);
 
-		const categorySnapShot = await getDocs(collection(this.db, collectionId));
-		categorySnapShot.forEach((doc) => {
-			const data = doc.data();
-			infos.push(data);
-		});
-
-		return infos;
+		return categorySnapShot.data();
 	}
 
 	// 카테고리를 등록하는 메서드
 	async addCategory(collectionId = 'yerim', category: string) {
 		const date = Date.now();
-		await setDoc(doc(this.db, collectionId, category), {
-			name: category,
-			id: date,
+
+		const categorySnapShot = await this.getDocInfos();
+
+		await setDoc(doc(this.db, collectionId, 'Category'), {
+			...categorySnapShot,
+			[date]: category,
 		});
 	}
 
