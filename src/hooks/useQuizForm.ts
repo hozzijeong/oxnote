@@ -5,6 +5,17 @@ import { useNavigate } from 'react-router-dom';
 import { INITIAL_QUIZ } from '@constants/quiz';
 import useAddQuiz from './fireStore/useAddQuiz';
 
+const converter = (type: string, value: string) => {
+	switch (type) {
+		case 'radio':
+			return Boolean(Number(value));
+		case 'select-one':
+			return Number(value);
+		default:
+			return value;
+	}
+};
+
 const useQuizForm = (initialData = INITIAL_QUIZ) => {
 	const navigate = useNavigate();
 
@@ -38,24 +49,19 @@ const useQuizForm = (initialData = INITIAL_QUIZ) => {
 	>(
 		event: React.ChangeEvent<T>
 	) => {
-		if (!(event instanceof HTMLInputElement || HTMLTextAreaElement)) return;
-
 		const { name, value, type } = event.target;
 
 		setQuizState((prev) => ({
 			...prev,
-			[name]: type === 'radio' ? Boolean(Number(value)) : value,
+			[name]: converter(type, value),
 		}));
 	};
 
 	const submitHandler: React.FormEventHandler<HTMLFormElement> = (event) => {
 		event.preventDefault();
 
-		const { category } = quizState;
-
 		addQuiz({
 			collectionId: 'yerim',
-			category,
 			data: {
 				...quizState,
 				recentCorrect: false, // 최근 문제 시도

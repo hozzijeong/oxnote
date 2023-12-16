@@ -4,7 +4,7 @@ export interface Quiz {
 	explain: string;
 	answer: boolean;
 	favorite: boolean;
-	category: Category['name']; // 여기의 카테고리는 좀 애매한 느낌임
+	category: Category['id']; // 여기의 카테고리는 좀 애매한 느낌임
 }
 
 export interface QuizInfo extends Quiz {
@@ -14,10 +14,10 @@ export interface QuizInfo extends Quiz {
 	wrongCount: number;
 }
 
-export interface Category {
-	name: string;
+export type Category = {
 	id: number;
-}
+	name: string;
+};
 
 export interface QuizListItem
 	extends Omit<

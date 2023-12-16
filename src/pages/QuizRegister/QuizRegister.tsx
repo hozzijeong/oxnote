@@ -4,13 +4,14 @@ import Button from '@components/@common/button';
 import Radio from '@components/@common/radio';
 import useGetCategory from '@hooks/fireStore/useGetCategoryList';
 import useQuizForm from '@hooks/useQuizForm';
+import { INITIAL_QUIZ } from '@constants/quiz';
 
 const QuizRegister = () => {
 	const { data: category } = useGetCategory();
 
 	const { submitHandler, changeHandler, cancelHandler, quizState } =
 		useQuizForm();
-
+	console.log(quizState.category);
 	return (
 		<main className={styles.main} onSubmit={submitHandler}>
 			<form className={styles['quiz-form']}>
@@ -22,11 +23,13 @@ const QuizRegister = () => {
 						value={quizState.category}
 						required
 					>
-						<option hidden disabled value=''>
+						<option hidden disabled value={INITIAL_QUIZ.category}>
 							분류를 선택해주세용
 						</option>
 						{category.map(({ id, name }) => (
-							<option key={id}>{name}</option>
+							<option key={id} value={id}>
+								{name}
+							</option>
 						))}
 					</select>
 				</InputLabel>
