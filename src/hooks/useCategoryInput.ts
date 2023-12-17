@@ -8,6 +8,9 @@ const useCategoryInput = (categories: Category[]) => {
 	const [categoryInput, setCategoryInput] = useState('');
 	const { mutate: addCategory } = useAddDocument({
 		path: 'Category',
+		successCallback() {
+			queryClient.invalidateQueries({ queryKey: ['getCategory'] });
+		},
 	});
 
 	const inputChangeHandler: React.ChangeEventHandler<HTMLInputElement> = (
@@ -36,7 +39,6 @@ const useCategoryInput = (categories: Category[]) => {
 				data: categoryInput,
 			});
 
-			queryClient.invalidateQueries({ queryKey: ['category'] });
 			setCategoryInput('');
 		}
 	};

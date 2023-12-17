@@ -1,4 +1,3 @@
-import useGetCategory from '@hooks/fireStore/useGetCategoryList';
 import styles from './category.module.scss';
 import { Fragment, useMemo } from 'react';
 import CategoryInput from '@components/category/categoryInput/CategoryInput';
@@ -7,6 +6,7 @@ import { URL_PATH } from '@constants/path';
 
 import Folder from '@assets/folder.svg';
 import { Header } from '@components/@common';
+import useGetCategory from '@hooks/useGetCategory';
 
 const Category = () => {
 	const { data: category } = useGetCategory();
