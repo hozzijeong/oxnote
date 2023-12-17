@@ -18,45 +18,39 @@ class FireStore {
 	constructor(app: FirebaseApp) {
 		this.db = getFirestore(app);
 
-		this.addData = this.addData.bind(this);
-		this.getDocInfos = this.getDocInfos.bind(this);
-		this.addCategory = this.addCategory.bind(this);
+		this.addDocumentData = this.addDocumentData.bind(this);
+		this.getDocumentInfos = this.getDocumentInfos.bind(this);
 		this.getCategoryQuizList = this.getCategoryQuizList.bind(this);
 		this.getQuizDoc = this.getQuizDoc.bind(this);
 		this.updateQuizData = this.updateQuizData.bind(this);
 	}
 
-	// 문서 구조는 예림 -> 카테고리 -> quyerimiz(컬렉션), field에 카테고리 추가 하는 방식으로 진행하겠음.
-	async addData(collectionId = 'yerim', data: DocumentData) {
+	// document에 데이터를 추가하는 메서드
+	async addDocumentData(
+		collectionId = 'yerim',
+		path: string,
+		data: DocumentData | string
+	) {
 		try {
 			const date = Date.now();
-			const quizSnapShot = await this.getDocInfos(collectionId, 'Quiz');
+			const quizSnapShot = await this.getDocumentInfos(collectionId, path);
 
-			const quizDocument = doc(this.db, collectionId, 'Quiz');
+			const quizDocument = doc(this.db, collectionId, path);
 
-			await setDoc(quizDocument, { ...quizSnapShot, [date]: { ...data } });
+			await setDoc(quizDocument, {
+				...quizSnapShot,
+				[date]: typeof data === 'string' ? data : { ...data },
+			});
 		} catch (e) {
 			console.error('Error adding document: ', e);
 		}
 	}
 
-	// 카테고리들을 반환하는 메서드
-	async getDocInfos(collectionId = 'yerim', docId: string) {
+	// document의 정보를 얻는 메서드
+	async getDocumentInfos(collectionId = 'yerim', docId: string) {
 		const categorySnapShot = await getDoc(doc(this.db, collectionId, docId));
 
 		return categorySnapShot.data();
-	}
-
-	// 카테고리를 등록하는 메서드
-	async addCategory(collectionId = 'yerim', category: string) {
-		const date = Date.now();
-
-		const categorySnapShot = await this.getDocInfos(collectionId, 'Category');
-
-		await setDoc(doc(this.db, collectionId, 'Category'), {
-			...categorySnapShot,
-			[date]: category,
-		});
 	}
 
 	// 퀴즈 리스트 전체를 받는 메서드

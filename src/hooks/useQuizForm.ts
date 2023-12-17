@@ -3,7 +3,7 @@ import { Quiz } from '@models/quiz';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { INITIAL_QUIZ } from '@constants/quiz';
-import useAddQuiz from './fireStore/useAddQuiz';
+import useAddDocument from './fireStore/useAddDocument';
 
 const converter = (type: string, value: string) => {
 	switch (type) {
@@ -20,7 +20,8 @@ const useQuizForm = (initialData = INITIAL_QUIZ) => {
 	const navigate = useNavigate();
 
 	const [quizState, setQuizState] = useState<Quiz>(initialData);
-	const { mutate: addQuiz } = useAddQuiz({
+	const { mutate: addQuiz } = useAddDocument({
+		path: 'Quiz',
 		successCallback: () => {
 			const answer = confirm(
 				'문제 등록에 성공했습니다 홈으로 이동하시겠습니까?'
