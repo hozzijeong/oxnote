@@ -21,14 +21,12 @@ const useQuizForm = (initialData = INITIAL_QUIZ) => {
 
 	const [quizState, setQuizState] = useState<Quiz>(initialData);
 	const { mutate: addQuiz } = useAddDocument({
-		path: 'Quiz',
+		path: 'Quiz/data',
 		successCallback: () => {
 			const answer = confirm(
 				'문제 등록에 성공했습니다 홈으로 이동하시겠습니까?'
 			);
-
 			if (answer) navigate(URL_PATH.HOME);
-
 			setQuizState(initialData);
 		},
 	});

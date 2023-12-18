@@ -32,7 +32,6 @@ class FireStore {
 		this.addDocumentData = this.addDocumentData.bind(this);
 		this.getDocumentInfos = this.getDocumentInfos.bind(this);
 		this.getQuerySnapShot = this.getQuerySnapShot.bind(this);
-		this.getQuizDoc = this.getQuizDoc.bind(this);
 		this.updateDocumentData = this.updateDocumentData.bind(this);
 	}
 
@@ -44,7 +43,7 @@ class FireStore {
 		data,
 	}: AddDocumentParams) {
 		try {
-			if (lastId.length === 0) {
+			if (lastId.length !== 0) {
 				await setDoc(doc(this.db, collectionId, path, lastId), data);
 			} else {
 				await addDoc(collection(this.db, collectionId, path), data);
@@ -71,17 +70,6 @@ class FireStore {
 		const querySnapShot = query(docRef, ...queryConstraints);
 
 		return querySnapShot;
-	}
-
-	// 단일 퀴즈 데이터를 받는 메서드
-	async getQuizDoc(collectionId = 'yerim', category: string, quizId: string) {
-		const docRef = doc(this.db, collectionId, category, 'quiz', quizId);
-
-		const curDoc = await getDoc(docRef);
-
-		if (!curDoc.exists()) throw new Error('존재하지 않는 문제입니다.');
-
-		return curDoc;
 	}
 
 	// Document를 업데이트 하는 메서드

@@ -11,7 +11,7 @@ const QuizRegister = () => {
 
 	const { submitHandler, changeHandler, cancelHandler, quizState } =
 		useQuizForm();
-	console.log(quizState.category);
+
 	return (
 		<main className={styles.main} onSubmit={submitHandler}>
 			<form className={styles['quiz-form']}>
