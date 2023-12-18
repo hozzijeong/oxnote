@@ -55,14 +55,14 @@ class FireStore {
 	}
 
 	// document의 정보를 얻는 메서드
-	async getDocumentInfos(collectionId = 'yerim', path: string) {
+	async getDocumentInfos(collectionId: string, path: string) {
 		const categorySnapShot = await getDoc(doc(this.db, collectionId, path));
 
 		return categorySnapShot.data();
 	}
 
 	async getQuerySnapShot(
-		collectionId = 'yerim',
+		collectionId: string,
 		path: string,
 		queryConstraints: QueryConstraint[]
 	) {
@@ -77,7 +77,7 @@ class FireStore {
 
 	// Document를 업데이트 하는 메서드
 	async updateDocumentData(
-		collectionId = 'yerim',
+		collectionId: string,
 		path: string,
 		updateData: DocumentData
 	) {

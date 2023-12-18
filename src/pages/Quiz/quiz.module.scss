@@ -1,0 +1,57 @@
+@use '../../style/variables.scss' as v;
+@use '../../style/mixin.scss' as mix;
+
+.main {
+	position: relative;
+	height: 100%;
+}
+
+.quiz-container {
+	display: flex;
+	justify-content: space-between;
+	padding: 20px;
+
+	p {
+		@include mix.fontLarge;
+	}
+}
+
+.answer-container {
+	display: flex;
+	flex-direction: column;
+	padding: 20px;
+	gap: 16px;
+
+	button {
+		@include mix.fontLarge;
+
+		width: 160px;
+		color: #{v.$sky};
+		text-align: left;
+	}
+
+	p {
+		@include mix.fontMedium;
+	}
+}
+
+.button-container {
+	display: flex;
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+}
+
+.button {
+	width: 100%;
+	height: #{v.$button-height};
+	color: #{v.$white-100};
+}
+
+.false-bg {
+	background-color: #{v.$accent};
+}
+
+.true-bg {
+	background-color: #{v.$correct};
+}
