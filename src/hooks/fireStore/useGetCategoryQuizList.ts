@@ -3,7 +3,7 @@ import type { Category, QuizListItem } from '@models/quiz';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { DocumentData, QuerySnapshot, where } from 'firebase/firestore';
 
-const useGetCategoryList = (collectionId = 'yerim', category: Category) =>
+const useGetCategoryQuizList = (collectionId: string, category: Category) =>
 	useSuspenseQuery<
 		QuerySnapshot<DocumentData, DocumentData>,
 		Error,
@@ -49,4 +49,4 @@ const useGetCategoryList = (collectionId = 'yerim', category: Category) =>
 		},
 	});
 
-export default useGetCategoryList;
+export default useGetCategoryQuizList;

@@ -1,6 +1,6 @@
 import { Header } from '@components/@common';
 import QuizItem from '@components/quiz/quizItem/QuizItem';
-import useGetCategoryList from '@hooks/fireStore/useGetCategoryQuizList';
+import useGetCategoryQuizList from '@hooks/fireStore/useGetCategoryQuizList';
 import useGetCurrentCategoryFromQuery from '@hooks/useGetCurrentCategoryFromQuery';
 import { Fragment } from 'react';
 import { useParams } from 'react-router-dom';
@@ -18,7 +18,7 @@ const CategoryDetail = () => {
 		throw new Error('잘못된 접근입니다');
 	}
 
-	const { data: quizList } = useGetCategoryList('yerim', category);
+	const { data: quizList } = useGetCategoryQuizList('yerim', category);
 
 	return (
 		<Fragment>
@@ -26,7 +26,12 @@ const CategoryDetail = () => {
 			<main>
 				<ul className={styles['quiz-list']}>
 					{quizList.map((item) => (
-						<QuizItem key={item.id} item={item} category={category.name} />
+						<QuizItem
+							key={item.id}
+							item={item}
+							collectionId='yerim'
+							categoryId={category.id}
+						/>
 					))}
 				</ul>
 			</main>

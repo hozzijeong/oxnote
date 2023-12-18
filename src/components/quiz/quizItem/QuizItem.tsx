@@ -4,18 +4,34 @@ import { Link, generatePath } from 'react-router-dom';
 import { URL_PATH } from '@constants/path';
 import StarFill from '@assets/star_fill.svg';
 import StarEmpty from '@assets/star_empty.svg';
-import useQuizUpdate from '@hooks/fireStore/useQuizUpdate';
+import useUpdateDocument from '@hooks/fireStore/useUpdateDocument';
+import { useQueryClient } from '@tanstack/react-query';
 
 interface QuizItemProps {
 	item: QuizListItem;
-	category: string;
+	collectionId: string;
+	categoryId: number;
 }
-// TODO: 즐겨찾기 등록/해제 기능 구현
-const QuizItem = ({ item, category }: QuizItemProps) => {
-	const updateQuiz = useQuizUpdate('yerim', category, item.id);
+
+const QuizItem = ({ item, collectionId, categoryId }: QuizItemProps) => {
+	const queryClient = useQueryClient();
+
+	const { mutate: updateQuiz } = useUpdateDocument({
+		path: `Quiz/data/${item.id}`,
+		// 여기서 데이터 업데이트 구현하기
+		successCallback: () => {
+			queryClient.invalidateQueries({ queryKey: [collectionId, categoryId] });
+		},
+	});
 
 	const favoriteClickHandler = () =>
-		updateQuiz.mutate({ favorite: !item.favorite });
+		updateQuiz({
+			collectionId,
+			data: {
+				...item,
+				favorite: !item.favorite,
+			},
+		});
 
 	return (
 		<li className={styles.item} key={item.id}>
