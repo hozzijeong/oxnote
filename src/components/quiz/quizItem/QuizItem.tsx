@@ -26,7 +26,9 @@ const QuizItem = ({ item, category }: QuizItemProps) => {
 				<p>{item.quiz}</p>
 			</Link>
 			<div className={styles['info-container']}>
-				<span>{item.wrongPercent}</span>
+				{item.correctRate && (
+					<span>{`${(item.correctRate * 100).toFixed(2)}%`}</span>
+				)}
 				<button type='button' onClick={favoriteClickHandler}>
 					<img
 						src={item.favorite ? StarFill : StarEmpty}

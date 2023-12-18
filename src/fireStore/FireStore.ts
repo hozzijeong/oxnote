@@ -11,6 +11,7 @@ import {
 	query,
 	addDoc,
 	QueryConstraint,
+	getDocs,
 } from 'firebase/firestore';
 import app from './Firebase';
 
@@ -67,9 +68,11 @@ class FireStore {
 	) {
 		const docRef = collection(this.db, collectionId, path);
 
-		const querySnapShot = query(docRef, ...queryConstraints);
+		const currentQuery = query(docRef, ...queryConstraints);
 
-		return querySnapShot;
+		const querySnapshot = await getDocs(currentQuery);
+
+		return querySnapshot;
 	}
 
 	// Document를 업데이트 하는 메서드

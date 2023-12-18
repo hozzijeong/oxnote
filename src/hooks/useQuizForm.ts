@@ -63,8 +63,7 @@ const useQuizForm = (initialData = INITIAL_QUIZ) => {
 			collectionId: 'yerim',
 			data: {
 				...quizState,
-				recentCorrect: false, // 최근 문제 시도
-				correctCount: 0, // 맞힌 문제
+				tryCount: 0, // 시도 횟수
 				wrongCount: 0, // 틀린 문제
 			},
 		});

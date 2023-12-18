@@ -1,6 +1,6 @@
 import { Header } from '@components/@common';
 import QuizItem from '@components/quiz/quizItem/QuizItem';
-import useGetCategoryList from '@hooks/fireStore/useGetCategoryList';
+import useGetCategoryList from '@hooks/fireStore/useGetCategoryQuizList';
 import useGetCurrentCategoryFromQuery from '@hooks/useGetCurrentCategoryFromQuery';
 import { Fragment } from 'react';
 import { useParams } from 'react-router-dom';
