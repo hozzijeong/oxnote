@@ -11,7 +11,6 @@ export const INITIAL_QUIZ: Quiz = {
 export const INITIAL_QUIZ_RECORD: QuizInfo = {
 	...INITIAL_QUIZ,
 	id: '',
-	recentCorrect: false,
-	correctCount: 0,
 	wrongCount: 0,
+	tryCount: 0,
 };
