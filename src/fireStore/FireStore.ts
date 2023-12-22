@@ -12,6 +12,7 @@ import {
 	addDoc,
 	QueryConstraint,
 	getDocs,
+	deleteDoc,
 } from 'firebase/firestore';
 import app from './Firebase';
 
@@ -88,6 +89,12 @@ class FireStore {
 		const updatedData = { ...currentData, ...updateData };
 
 		setDoc(docRef, updatedData, { merge: true });
+	}
+
+	async deleteDocument(collectionId: string, path: string) {
+		const document = doc(this.db, collectionId, path);
+
+		await deleteDoc(document);
 	}
 }
 

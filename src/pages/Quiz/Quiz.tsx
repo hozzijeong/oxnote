@@ -3,13 +3,13 @@ import type { QuizInfo } from '@models/quiz';
 import { useParams } from 'react-router-dom';
 import StarFill from '@assets/star_fill.svg';
 import StarEmpty from '@assets/star_empty.svg';
-import { useState } from 'react';
 import { Header } from '@components/@common';
 import useGetCurrentCategoryFromQuery from '@hooks/useGetCurrentCategoryFromQuery';
 import styles from './quiz.module.scss';
 import useUpdateDocument from '@hooks/fireStore/useUpdateDocument';
 import { useQueryClient } from '@tanstack/react-query';
 import QuizNavbar from '@components/quiz/quizNavbar';
+import useToggle from '@hooks/useToggle';
 
 const Quiz = () => {
 	const param = useParams();
@@ -33,9 +33,8 @@ const Quiz = () => {
 		},
 	});
 
-	const [explainOpen, setExplainOpen] = useState(false);
-
-	const explainClickHandler = () => setExplainOpen((eo) => !eo);
+	const { isOn: explainOn, toggleHandler: explainHandler } = useToggle();
+	const { isOn: menuOn, toggleHandler: menuHandler } = useToggle();
 
 	const answerClickHandler: React.MouseEventHandler<HTMLDivElement> = (
 		event
@@ -76,7 +75,14 @@ const Quiz = () => {
 				title={'문제 풀기'}
 				backUrl={'CATEGORY_DETAIL'}
 				pathId={category?.id ?? ''}
+				menuCallback={menuHandler}
 			/>
+			{menuOn && (
+				<div className={styles['menu-container']}>
+					<button>수정하기</button>
+					<button>삭제하기</button>
+				</div>
+			)}
 			<QuizNavbar currentId={id} />
 			<section className={styles['quiz-container']}>
 				<p>{quiz.quiz}</p>
@@ -89,10 +95,10 @@ const Quiz = () => {
 			</section>
 
 			<section className={styles['answer-container']}>
-				<button type='button' onClick={explainClickHandler}>{`해설 ${
-					explainOpen ? '닫기' : '보기'
+				<button type='button' onClick={explainHandler}>{`해설 ${
+					explainOn ? '닫기' : '보기'
 				}`}</button>
-				{explainOpen && <p>{quiz.explain}</p>}
+				{explainOn && <p>{quiz.explain}</p>}
 			</section>
 
 			<div
