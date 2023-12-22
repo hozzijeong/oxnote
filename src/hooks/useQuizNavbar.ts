@@ -2,27 +2,20 @@ import { URL_PATH } from '@constants/path';
 import { QuizInfo } from '@models/quiz';
 import {
 	useCallback,
-	useContext,
 	useEffect,
 	useLayoutEffect,
 	useRef,
 	useState,
 } from 'react';
 import { generatePath, useNavigate } from 'react-router-dom';
-import { QuizContext } from 'src/context/QuizProvider';
+import useQuizIds from './useQuizIds';
 
 const useQuizNavbar = (currentId: QuizInfo['id']) => {
-	const quizContext = useContext(QuizContext);
-
+	const { quizIds } = useQuizIds();
 	const navigate = useNavigate();
 
-	if (quizContext === null)
-		throw new Error('QuizProvider 내부에서 사용할 수 있습니다');
-
-	const { quizzes } = quizContext;
-
 	const [cursor, setCursor] = useState(
-		quizzes.findIndex((id) => id === currentId)
+		quizIds.findIndex((id) => id === currentId)
 	);
 
 	const selectedRef = useRef<HTMLButtonElement | null>(null);
@@ -34,7 +27,7 @@ const useQuizNavbar = (currentId: QuizInfo['id']) => {
 
 			const path = dataset['path'];
 
-			const currentId = quizzes.findIndex((curId) => curId === path);
+			const currentId = quizIds.findIndex((curId) => curId === path);
 			setCursor(currentId);
 
 			selectedRef.current = event.target;
@@ -47,7 +40,7 @@ const useQuizNavbar = (currentId: QuizInfo['id']) => {
 
 			navigate(generatePath(URL_PATH.QUIZ, { id: path }));
 		},
-		[quizzes, currentId]
+		[quizIds, currentId]
 	);
 
 	const beforeUnLoadHandler = useCallback((event: BeforeUnloadEvent) => {
@@ -78,7 +71,7 @@ const useQuizNavbar = (currentId: QuizInfo['id']) => {
 	}, []);
 
 	return {
-		quizzes,
+		quizIds,
 		cursor,
 		moveHandler,
 	};

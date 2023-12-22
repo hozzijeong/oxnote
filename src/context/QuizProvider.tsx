@@ -2,8 +2,8 @@ import type { QuizInfo } from '@models/quiz';
 import { PropsWithChildren, createContext, useCallback, useState } from 'react';
 
 export const QuizContext = createContext<{
-	updateQuiz: (quizzes: QuizInfo['id'][]) => void;
-	quizzes: QuizInfo['id'][];
+	updateQuizIds: (quizIds: QuizInfo['id'][]) => void;
+	quizIds: QuizInfo['id'][];
 } | null>(null);
 
 export const QuizProvider = ({ children }: PropsWithChildren) => {
@@ -11,7 +11,7 @@ export const QuizProvider = ({ children }: PropsWithChildren) => {
 	const [quizMap, setQuizMap] = useState<QuizInfo['id'][]>([]);
 
 	// 퀴즈에 값을 입력하는 역할
-	const updateQuiz = useCallback(
+	const updateQuizIds = useCallback(
 		(quizIds: QuizInfo['id'][]) => setQuizMap(quizIds),
 		[]
 	);
@@ -19,8 +19,8 @@ export const QuizProvider = ({ children }: PropsWithChildren) => {
 	return (
 		<QuizContext.Provider
 			value={{
-				quizzes: quizMap,
-				updateQuiz,
+				quizIds: quizMap,
+				updateQuizIds,
 			}}
 		>
 			{children}
