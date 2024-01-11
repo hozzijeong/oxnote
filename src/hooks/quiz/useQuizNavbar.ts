@@ -4,16 +4,23 @@ import {
 	useEffect,
 	useLayoutEffect,
 	useRef,
-	useState,
+	useTransition,
 } from 'react';
 import { QuizNavbarProps } from '@components/quiz/quizNavbar/QuizNavbar';
 import useGetQuizList from '@hooks/fireStore/useGetQuizList';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { URL_PATH } from '@constants/path';
 
 const useQuizNavbar = ({ currentId, categoryId }: QuizNavbarProps) => {
+	const navigate = useNavigate();
+	const location = useLocation();
+	const queryParams = new URLSearchParams(location.search);
+	const [_, startTransition] = useTransition();
+
 	const { data: quizIds } = useGetQuizList<QuizInfo['id'][]>({
 		collectionId: 'yerim',
 		filter: {
-			category: categoryId,
+			category: [categoryId],
 		},
 		selectHandler: (data) => {
 			const result: QuizInfo['id'][] = [];
@@ -27,9 +34,7 @@ const useQuizNavbar = ({ currentId, categoryId }: QuizNavbarProps) => {
 		},
 	});
 
-	const [cursor, setCursor] = useState(
-		quizIds.findIndex((id) => id === currentId)
-	);
+	const cursor = quizIds.findIndex((id) => id === currentId);
 
 	const selectedRef = useRef<HTMLButtonElement | null>(null);
 
@@ -38,9 +43,16 @@ const useQuizNavbar = ({ currentId, categoryId }: QuizNavbarProps) => {
 			if (!(event.target instanceof HTMLButtonElement)) return;
 			const { dataset } = event.target;
 			const path = dataset['path'];
-			const currentId = quizIds.findIndex((curId) => curId === path);
-			// 여기서 cursor를 옮김으로써 다른 컴포넌트를 나타냄
-			setCursor(currentId);
+
+			if (path === undefined) return;
+			queryParams.set('quizId', path);
+
+			startTransition(() => {
+				navigate(`${URL_PATH.QUIZ}?${queryParams.toString()}`, {
+					replace: true,
+				});
+			});
+
 			selectedRef.current = event.target;
 			selectedRef.current.scrollIntoView({
 				behavior: 'smooth',
