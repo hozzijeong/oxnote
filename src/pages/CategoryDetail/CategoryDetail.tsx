@@ -1,16 +1,14 @@
 import { Header } from '@components/@common';
 import QuizItem from '@components/quiz/quizItem/QuizItem';
-import useGetCategoryQuizList from '@hooks/fireStore/useGetCategoryQuizList';
+import useGetQuizList from '@hooks/fireStore/useGetQuizList';
 import useGetCurrentCategoryFromQuery from '@hooks/useGetCurrentCategoryFromQuery';
-import { Fragment, useEffect } from 'react';
+import { Fragment } from 'react';
 import { useParams } from 'react-router-dom';
 import styles from './categoryDetail.module.scss';
-import useQuizIds from '@hooks/useQuizIds';
+import type { QuizListItem } from '@models/quiz';
 
 const CategoryDetail = () => {
 	const params = useParams();
-
-	const { updateQuizIds } = useQuizIds();
 
 	const { category, goToCategoryPage } = useGetCurrentCategoryFromQuery(
 		Number(params.id ?? 0)
@@ -21,12 +19,45 @@ const CategoryDetail = () => {
 		throw new Error('잘못된 접근입니다');
 	}
 
-	const { data: quizList } = useGetCategoryQuizList('yerim', category);
+	const { data: quizList } = useGetQuizList<QuizListItem[]>({
+		collectionId: 'yerim',
+		filter: {
+			category: category.id,
+		},
+		selectHandler: (data) => {
+			const result: QuizListItem[] = [];
 
-	useEffect(() => {
-		// 테스트를 위함
-		updateQuizIds(quizList.map((quiz) => quiz.id));
-	}, [quizList]);
+			data.forEach((value) => {
+				const id = value.id;
+				const data = value.data();
+
+				const { favorite, wrongCount, tryCount, quiz } = data;
+
+				const item = {
+					id,
+					favorite,
+					wrongCount,
+					tryCount,
+					quiz,
+				};
+
+				// 정답률이 나타나는 경우
+				const finalItem =
+					data.correctRate && tryCount !== 0
+						? {
+								...item,
+								correctRate: data.correctRate,
+						  }
+						: item;
+
+				result.push({
+					...finalItem,
+				});
+			});
+
+			return result;
+		},
+	});
 
 	return (
 		<Fragment>

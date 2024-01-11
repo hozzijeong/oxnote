@@ -1,17 +1,22 @@
-import useQuizNavbar from '@hooks/useQuizNavbar';
+import useQuizNavbar from '@hooks/quiz/useQuizNavbar';
 import styles from './quizNavbar.module.scss';
 import { useMemo } from 'react';
+import { QuizInfo } from '@models/quiz';
 
-interface QuizNavbarProps {
-	currentId: string;
+export interface QuizNavbarProps {
+	currentId: QuizInfo['id'];
+	categoryId: QuizInfo['category'];
 }
 
-const QuizNavbar = ({ currentId }: QuizNavbarProps) => {
-	const { quizzes, cursor, moveHandler } = useQuizNavbar(currentId);
+const QuizNavbar = ({ currentId, categoryId }: QuizNavbarProps) => {
+	const { quizIds, cursor, moveHandler } = useQuizNavbar({
+		currentId,
+		categoryId,
+	});
 
 	const quizNavbar = useMemo(
 		() =>
-			quizzes.map((quiz, index) => {
+			quizIds.map((quiz, index) => {
 				const className =
 					cursor === index
 						? styles['select-button']
@@ -27,7 +32,7 @@ const QuizNavbar = ({ currentId }: QuizNavbarProps) => {
 					</button>
 				);
 			}),
-		[cursor, quizzes]
+		[cursor, quizIds]
 	);
 
 	return (
