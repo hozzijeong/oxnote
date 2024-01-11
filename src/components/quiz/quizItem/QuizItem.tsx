@@ -1,6 +1,6 @@
 import type { QuizListItem } from '@models/quiz';
 import styles from './quizItem.module.scss';
-import { Link, generatePath } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { URL_PATH } from '@constants/path';
 import StarFill from '@assets/star_fill.svg';
 import StarEmpty from '@assets/star_empty.svg';
@@ -37,7 +37,7 @@ const QuizItem = ({ item, collectionId, categoryId }: QuizItemProps) => {
 		<li className={styles.item} key={item.id}>
 			<Link
 				className={styles['quiz-title']}
-				to={generatePath(URL_PATH.QUIZ, { id: item.id })}
+				to={`${URL_PATH.QUIZ}?categoryId=${categoryId}&quizId=${item.id}`}
 			>
 				<p>{item.quiz}</p>
 			</Link>

@@ -22,11 +22,17 @@
 	width: 100%;
 	overflow: hidden;
 	line-height: 40px;
-	text-overflow: ellipsis;
-	white-space: nowrap;
+
+	p {
+		overflow: hidden;
+		text-overflow: ellipsis;
+		word-break: break-all;
+		white-space: nowrap;
+	}
 }
 
 .info-container {
 	display: flex;
 	align-items: center;
+	gap: 4px;
 }
