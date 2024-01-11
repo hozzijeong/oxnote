@@ -1,31 +1,53 @@
 import { URL_PATH } from '@constants/path';
-import { Link, generatePath } from 'react-router-dom';
+import { generatePath, useNavigate } from 'react-router-dom';
 import Back from '@assets/back.svg';
 import Menu from '@assets/menu_vertical.svg';
 import styles from './header.module.scss';
+import { useMemo } from 'react';
+
+const isKeyofURLPath = (backUrl: any): backUrl is keyof typeof URL_PATH => {
+	return backUrl in URL_PATH;
+};
 
 interface HeaderProps {
 	title: string;
-	backUrl?: keyof typeof URL_PATH;
+	backUrl?: keyof typeof URL_PATH | -1;
 	pathId?: string | number;
 	menuCallback?: () => void;
 }
 
 const Header = ({ title, backUrl, pathId, menuCallback }: HeaderProps) => {
+	const navigate = useNavigate();
+
+	const backClickHandler = () => {
+		let historyBackUrl: string | number = -1;
+
+		if (isKeyofURLPath(backUrl)) {
+			historyBackUrl = pathId
+				? generatePath(URL_PATH[backUrl], { id: pathId })
+				: URL_PATH[backUrl];
+		}
+
+		if (typeof historyBackUrl === 'number') {
+			navigate(-1);
+		} else {
+			navigate(historyBackUrl);
+		}
+	};
+
+	const backUrlButton = useMemo(() => {
+		return (
+			backUrl && (
+				<button className={styles['back-arrow']} onClick={backClickHandler}>
+					<img src={Back} width={20} height={20} alt='뒤로 가기' />
+				</button>
+			)
+		);
+	}, []);
+
 	return (
 		<header className={styles.wrapper}>
-			{backUrl && (
-				<Link
-					className={styles['back-arrow']}
-					to={
-						pathId
-							? generatePath(URL_PATH[backUrl], { id: pathId })
-							: URL_PATH[backUrl]
-					}
-				>
-					<img src={Back} width={20} height={20} alt='뒤로 가기' />
-				</Link>
-			)}
+			{backUrlButton}
 			{title}
 			{menuCallback && (
 				<button
