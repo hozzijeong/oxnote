@@ -3,7 +3,7 @@ import { Quiz } from '@models/quiz';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { INITIAL_QUIZ } from '@constants/quiz';
-import useAddDocument from './fireStore/useAddDocument';
+import useAddDocument from '../fireStore/useAddDocument';
 
 const converter = (type: string, value: string) => {
 	switch (type) {

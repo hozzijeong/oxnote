@@ -1,4 +1,3 @@
-import { URL_PATH } from '@constants/path';
 import { QuizInfo } from '@models/quiz';
 import {
 	useCallback,
@@ -7,12 +6,10 @@ import {
 	useRef,
 	useState,
 } from 'react';
-import { generatePath, useNavigate } from 'react-router-dom';
 import useQuizIds from './useQuizIds';
 
 const useQuizNavbar = (currentId: QuizInfo['id']) => {
 	const { quizIds } = useQuizIds();
-	const navigate = useNavigate();
 
 	const [cursor, setCursor] = useState(
 		quizIds.findIndex((id) => id === currentId)
@@ -28,6 +25,7 @@ const useQuizNavbar = (currentId: QuizInfo['id']) => {
 			const path = dataset['path'];
 
 			const currentId = quizIds.findIndex((curId) => curId === path);
+			// 여기서 cursor를 옮김으로써 다른 컴포넌트를 나타냄
 			setCursor(currentId);
 
 			selectedRef.current = event.target;
@@ -37,8 +35,6 @@ const useQuizNavbar = (currentId: QuizInfo['id']) => {
 				block: 'nearest',
 				inline: 'center',
 			});
-
-			navigate(generatePath(URL_PATH.QUIZ, { id: path }));
 		},
 		[quizIds, currentId]
 	);

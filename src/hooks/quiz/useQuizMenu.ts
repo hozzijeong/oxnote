@@ -1,7 +1,7 @@
 import { URL_PATH } from '@constants/path';
 import { QuizInfo } from '@models/quiz';
 import { generatePath, useNavigate } from 'react-router-dom';
-import useDeleteDocument from './fireStore/useDeleteDocument';
+import useDeleteDocument from '../fireStore/useDeleteDocument';
 import useQuizIds from './useQuizIds';
 
 const useQuizMenu = (quizId: QuizInfo['id']) => {
@@ -21,6 +21,7 @@ const useQuizMenu = (quizId: QuizInfo['id']) => {
 	});
 
 	const updateClickHandler = () => {
+		// 이거는 이동이 맞음.
 		navigate(generatePath(URL_PATH.QUIZ_EDIT, { id: quizId }));
 	};
 
