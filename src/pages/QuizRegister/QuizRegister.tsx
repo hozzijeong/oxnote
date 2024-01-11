@@ -2,7 +2,7 @@ import { Input, InputLabel } from '@components/@common';
 import styles from './quizRegister.module.scss';
 import Button from '@components/@common/button';
 import Radio from '@components/@common/radio';
-import useQuizForm from '@hooks/useQuizForm';
+import useQuizForm from '@hooks/quiz/useQuizForm';
 import { INITIAL_QUIZ } from '@constants/quiz';
 import useGetCategory from '@hooks/useGetCategory';
 

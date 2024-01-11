@@ -1,7 +1,7 @@
 export const URL_PATH = {
 	HOME: '/',
 	QUIZ_FORM: '/quiz-form',
-	QUIZ: '/quiz/:id', // quiz 번호를 의미함
+	QUIZ: '/quiz', // quiz 번호를 의미함 여기에 ?로 쿼리 조건문이 붙음. 그래서 데이터를 가져옴
 	QUIZ_EDIT: '/quiz/edit/:id',
 	CATEGORY: '/category',
 	CATEGORY_DETAIL: '/category/:id', // 여기서 id는 카테고리를 의미함
