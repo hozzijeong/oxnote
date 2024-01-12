@@ -4,15 +4,19 @@ import FireStore from '@fireStore/FireStore';
 
 const useDeleteDocument = ({
 	path,
-	successCallback,
-	errorCallback,
-}: Omit<MutateDocumentProps, 'lastId'>) =>
+	onSuccess,
+	onError,
+	onMutate,
+	onSettled,
+}: Omit<MutateDocumentProps<void, string>, 'lastId'>) =>
 	useMutation({
 		mutationKey: [`delete${path}`],
 		mutationFn: async (collectionId: string) =>
 			await FireStore.deleteDocument(collectionId, path),
-		onSuccess: () => successCallback && successCallback(),
-		onError: () => errorCallback && errorCallback(),
+		onMutate,
+		onSettled,
+		onSuccess,
+		onError,
 	});
 
 export default useDeleteDocument;

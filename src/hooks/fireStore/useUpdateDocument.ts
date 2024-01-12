@@ -4,15 +4,15 @@ import { MutateDocumentParams, MutateDocumentProps } from './useAddDocument';
 
 const useUpdateDocument = ({
 	path,
-	successCallback,
-	errorCallback,
-}: Omit<MutateDocumentProps, 'lastId'>) =>
+	onError,
+	onSuccess,
+}: Omit<MutateDocumentProps<void, MutateDocumentParams>, 'lastId'>) =>
 	useMutation({
 		mutationKey: [`update${path}`],
 		mutationFn: async ({ collectionId, data }: MutateDocumentParams) =>
 			await FireStore.updateDocumentData(collectionId, path, data),
-		onSuccess: () => successCallback && successCallback(),
-		onError: () => errorCallback && errorCallback(),
+		onSuccess,
+		onError,
 	});
 
 export default useUpdateDocument;
