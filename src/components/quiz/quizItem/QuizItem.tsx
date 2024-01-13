@@ -19,7 +19,9 @@ const QuizItem = ({ item, categoryId }: QuizItemProps) => {
 		path: `${QUIZ_PATH}/${item.id}`,
 		// 여기서 데이터 업데이트 구현하기
 		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: [categoryId] });
+			queryClient.invalidateQueries({
+				queryKey: ['getCategoryQuizList', categoryId],
+			});
 		},
 	});
 
