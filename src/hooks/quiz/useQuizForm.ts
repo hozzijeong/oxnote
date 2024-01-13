@@ -1,8 +1,7 @@
 import { QUIZ_PATH, URL_PATH } from '@constants/path';
-import { Quiz } from '@models/quiz';
+import type { QuizFormType, QuizInfo } from '@models/quiz';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { INITIAL_QUIZ } from '@constants/quiz';
 import useAddDocument from '../fireStore/useAddDocument';
 
 const converter = (type: string, value: string) => {
@@ -16,17 +15,33 @@ const converter = (type: string, value: string) => {
 	}
 };
 
-const useQuizForm = (initialData = INITIAL_QUIZ) => {
+interface QuizFormHookProps {
+	type: QuizFormType;
+	initialData: QuizInfo;
+}
+
+const useQuizForm = ({ type, initialData }: QuizFormHookProps) => {
 	const navigate = useNavigate();
 
-	const [quizState, setQuizState] = useState<Quiz>(initialData);
+	const [quizState, setQuizState] = useState<QuizInfo>(initialData);
+
+	const movePrevPage = (type: QuizFormType) => {
+		if (type === 'add') {
+			navigate(URL_PATH.HOME);
+		} else if (type === 'edit') {
+			navigate(-1);
+		}
+	};
+
 	const { mutate: addQuiz } = useAddDocument({
 		path: QUIZ_PATH,
 		onSuccess: () => {
 			const answer = confirm(
 				'문제 등록에 성공했습니다 홈으로 이동하시겠습니까?'
 			);
-			if (answer) navigate(URL_PATH.HOME);
+			if (answer) {
+				movePrevPage(type);
+			}
 			setQuizState(initialData);
 		},
 	});
@@ -37,7 +52,7 @@ const useQuizForm = (initialData = INITIAL_QUIZ) => {
 		);
 
 		if (answer) {
-			navigate(URL_PATH.HOME);
+			movePrevPage(type);
 		}
 
 		setQuizState(initialData);
@@ -59,13 +74,18 @@ const useQuizForm = (initialData = INITIAL_QUIZ) => {
 	const submitHandler: React.FormEventHandler<HTMLFormElement> = (event) => {
 		event.preventDefault();
 
-		addQuiz({
-			data: {
-				...quizState,
-				tryCount: 0, // 시도 횟수
-				wrongCount: 0, // 틀린 문제
-			},
-		});
+		if (type === 'add') {
+			const { id, ...exceptQuizId } = { ...quizState };
+
+			addQuiz({
+				data: {
+					...exceptQuizId,
+				},
+			});
+		} else if (type === 'edit') {
+			// editQuiz
+			console.log('edit');
+		}
 	};
 
 	return { cancelHandler, changeHandler, submitHandler, quizState };
