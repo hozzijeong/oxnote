@@ -2,26 +2,12 @@ import useMoveQuizNavbar from '@hooks/quiz/useMoveQuizNavbar';
 import styles from './quizNavbar.module.scss';
 import { useMemo } from 'react';
 import { QuizInfo } from '@models/quiz';
-import useGetQuizList from '@hooks/fireStore/useGetQuizList';
-
-interface QuizNavbarProps {
+export interface QuizNavbarProps {
 	currentId: QuizInfo['id'];
+	quizIds: QuizInfo['id'][];
 }
 
-const QuizNavbar = ({ currentId }: QuizNavbarProps) => {
-	const { data: quizIds } = useGetQuizList<QuizInfo['id'][]>({
-		selectHandler: (data) => {
-			const result: QuizInfo['id'][] = [];
-
-			data.forEach((value) => {
-				const id = value.id;
-
-				result.push(id);
-			});
-			return result;
-		},
-	});
-
+const QuizNavbar = ({ currentId, quizIds }: QuizNavbarProps) => {
 	const { cursor, moveHandler } = useMoveQuizNavbar({
 		currentId,
 		quizIds,

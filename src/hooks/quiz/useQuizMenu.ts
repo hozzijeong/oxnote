@@ -1,36 +1,22 @@
 import { QUIZ_PATH, URL_PATH } from '@constants/path';
-import { QuizInfo } from '@models/quiz';
 import { generatePath, useNavigate } from 'react-router-dom';
 import useDeleteDocument from '../fireStore/useDeleteDocument';
 import { useQueryClient } from '@tanstack/react-query';
 import useGetQuizListQueryKey from '@hooks/quiz/useGetQuizListQueryKey';
-import useGetQuizList from '@hooks/fireStore/useGetQuizList';
 import useRedirectQuiz from '@hooks/quiz/useRedirectQuiz';
+import { QuizNavbarProps } from '@components/quiz/quizNavbar/QuizNavbar';
 
-const useQuizMenu = (quizId: QuizInfo['id']) => {
+const useQuizMenu = ({ quizIds, currentId }: QuizNavbarProps) => {
 	const navigate = useNavigate();
 	const redirectQuizHandler = useRedirectQuiz();
 	const queryClient = useQueryClient();
 
 	const queryKey = useGetQuizListQueryKey();
 
-	const { data: quizIds } = useGetQuizList<QuizInfo['id'][]>({
-		selectHandler: (data) => {
-			const result: QuizInfo['id'][] = [];
-
-			data.forEach((value) => {
-				const id = value.id;
-
-				result.push(id);
-			});
-			return result;
-		},
-	});
-
 	const { mutate: deleteQuiz } = useDeleteDocument({
-		path: `${QUIZ_PATH}/${quizId}`,
+		path: `${QUIZ_PATH}/${currentId}`,
 		onSuccess: () => {
-			const currentIdx = quizIds.findIndex((idx) => idx === quizId);
+			const currentIdx = quizIds.findIndex((idx) => idx === currentId);
 
 			const path =
 				currentIdx === -1
@@ -43,7 +29,7 @@ const useQuizMenu = (quizId: QuizInfo['id']) => {
 	});
 
 	const updateClickHandler = () => {
-		navigate(generatePath(URL_PATH.QUIZ_EDIT, { id: quizId }));
+		navigate(generatePath(URL_PATH.QUIZ_EDIT, { id: currentId }));
 	};
 
 	const deleteClickHandler = () => {

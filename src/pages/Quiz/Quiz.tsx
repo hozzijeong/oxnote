@@ -5,20 +5,38 @@ import QuizDetail from '@components/quiz/quizDetail';
 import useQuizMenu from '@hooks/quiz/useQuizMenu';
 import useLocationQueryParams from '@hooks/useLocationQueryParams';
 import { QUIZ_PARAMS } from '@constants/quiz';
+import useGetQuizList from '@hooks/fireStore/useGetQuizList';
+import { QuizInfo } from '@models/quiz';
 
 const { quiz } = QUIZ_PARAMS;
 
 const Quiz = () => {
 	const { getQueryParam } = useLocationQueryParams();
 
-	const quizId = getQueryParam(quiz);
+	const currentId = getQueryParam(quiz);
 
-	const { deleteClickHandler, updateClickHandler } = useQuizMenu(quizId);
+	const { data: quizIds } = useGetQuizList<QuizInfo['id'][]>({
+		selectHandler: (data) => {
+			const result: QuizInfo['id'][] = [];
+
+			data.forEach((value) => {
+				const id = value.id;
+
+				result.push(id);
+			});
+			return result;
+		},
+	});
+
+	const { deleteClickHandler, updateClickHandler } = useQuizMenu({
+		currentId,
+		quizIds,
+	});
 
 	return (
 		<main className={styles.main}>
 			<Header
-				key={quizId}
+				key={currentId}
 				title={'문제 풀기'}
 				backUrl={-1}
 				menuComponent={
@@ -32,8 +50,8 @@ const Quiz = () => {
 					</div>
 				}
 			/>
-			<QuizNavbar currentId={quizId} />
-			<QuizDetail quizId={quizId} />
+			<QuizNavbar currentId={currentId} quizIds={quizIds} />
+			<QuizDetail quizId={currentId} />
 		</main>
 	);
 };
