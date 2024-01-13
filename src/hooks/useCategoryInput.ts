@@ -8,7 +8,7 @@ const useCategoryInput = (categories: Category[]) => {
 	const [categoryInput, setCategoryInput] = useState('');
 	const { mutate: addCategory } = useUpdateDocument({
 		path: 'Category',
-		successCallback() {
+		onSuccess() {
 			queryClient.invalidateQueries({ queryKey: ['getCategory'] });
 		},
 	});

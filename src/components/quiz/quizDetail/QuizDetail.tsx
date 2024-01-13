@@ -23,7 +23,7 @@ const QuizDetail = ({ quizId }: QuizDetailProps) => {
 
 	const { mutate: update } = useUpdateDocument({
 		path: `Quiz/data/${quizId}`,
-		successCallback: () => {
+		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: [`getQuiz/data/${quizId}`] });
 		},
 	});

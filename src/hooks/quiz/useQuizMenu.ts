@@ -11,7 +11,7 @@ const useQuizMenu = (quizId: QuizInfo['id']) => {
 
 	const { mutate: deleteQuiz } = useDeleteDocument({
 		path: `Quiz/data/${quizId}`,
-		successCallback: () => {
+		onSuccess: () => {
 			// TODO: 현재 문제 리스트를 한번 초기화 해야 함.
 			// 카테고리에서 접근했을 때는 문제를 따로 푸는 형식이 아니게끔 할까?
 			// 데이터 업데이트를 어떻게 해야할까?

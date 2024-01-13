@@ -19,7 +19,7 @@ const QuizItem = ({ item, collectionId, categoryId }: QuizItemProps) => {
 	const { mutate: updateQuiz } = useUpdateDocument({
 		path: `Quiz/data/${item.id}`,
 		// 여기서 데이터 업데이트 구현하기
-		successCallback: () => {
+		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: [collectionId, categoryId] });
 		},
 	});
