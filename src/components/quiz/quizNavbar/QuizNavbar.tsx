@@ -1,31 +1,43 @@
-import useQuizNavbar from '@hooks/quiz/useQuizNavbar';
+import useMoveQuizNavbar from '@hooks/quiz/useMoveQuizNavbar';
 import styles from './quizNavbar.module.scss';
 import { useMemo } from 'react';
 import { QuizInfo } from '@models/quiz';
+import useGetQuizList from '@hooks/fireStore/useGetQuizList';
 
-export interface QuizNavbarProps {
+interface QuizNavbarProps {
 	currentId: QuizInfo['id'];
-	categoryId: QuizInfo['category'];
 }
 
-const QuizNavbar = ({ currentId, categoryId }: QuizNavbarProps) => {
-	const { quizIds, cursor, moveHandler } = useQuizNavbar({
+const QuizNavbar = ({ currentId }: QuizNavbarProps) => {
+	const { data: quizIds } = useGetQuizList<QuizInfo['id'][]>({
+		selectHandler: (data) => {
+			const result: QuizInfo['id'][] = [];
+
+			data.forEach((value) => {
+				const id = value.id;
+
+				result.push(id);
+			});
+			return result;
+		},
+	});
+
+	const { cursor, moveHandler } = useMoveQuizNavbar({
 		currentId,
-		categoryId,
+		quizIds,
 	});
 
 	const quizNavbar = useMemo(
 		() =>
 			quizIds.map((quiz, index) => {
 				const className =
-					cursor === index
-						? styles['select-button']
-						: styles['controller-button'];
+					cursor === index ? 'select-button' : 'controller-button';
+
 				return (
 					<button
 						key={quiz}
 						data-path={quiz}
-						className={className}
+						className={styles[className]}
 						onClick={moveHandler}
 					>
 						{index + 1}
