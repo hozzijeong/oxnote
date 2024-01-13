@@ -18,7 +18,6 @@ const useQuizNavbar = ({ currentId, categoryId }: QuizNavbarProps) => {
 	const [_, startTransition] = useTransition();
 
 	const { data: quizIds } = useGetQuizList<QuizInfo['id'][]>({
-		collectionId: 'yerim',
 		filter: {
 			category: [categoryId],
 		},

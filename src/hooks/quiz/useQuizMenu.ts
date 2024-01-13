@@ -1,4 +1,4 @@
-import { URL_PATH } from '@constants/path';
+import { QUIZ_PATH, URL_PATH } from '@constants/path';
 import { QuizInfo } from '@models/quiz';
 import { generatePath, useNavigate } from 'react-router-dom';
 import useDeleteDocument from '../fireStore/useDeleteDocument';
@@ -10,7 +10,7 @@ const useQuizMenu = (quizId: QuizInfo['id']) => {
 	const { deleteQuizId } = useQuizIds();
 
 	const { mutate: deleteQuiz } = useDeleteDocument({
-		path: `Quiz/data/${quizId}`,
+		path: `${QUIZ_PATH}/${quizId}`,
 		onSuccess: () => {
 			// TODO: 현재 문제 리스트를 한번 초기화 해야 함.
 			// 카테고리에서 접근했을 때는 문제를 따로 푸는 형식이 아니게끔 할까?
@@ -29,7 +29,7 @@ const useQuizMenu = (quizId: QuizInfo['id']) => {
 		const answer = confirm('정말 삭제하시겠습니까?');
 
 		if (answer) {
-			deleteQuiz('yerim');
+			deleteQuiz();
 		}
 	};
 

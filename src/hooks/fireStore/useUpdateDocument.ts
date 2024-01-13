@@ -9,8 +9,8 @@ const useUpdateDocument = ({
 }: Omit<MutateDocumentProps<void, MutateDocumentParams>, 'lastId'>) =>
 	useMutation({
 		mutationKey: [`update${path}`],
-		mutationFn: async ({ collectionId, data }: MutateDocumentParams) =>
-			await FireStore.updateDocumentData(collectionId, path, data),
+		mutationFn: async ({ data }: MutateDocumentParams) =>
+			await FireStore.updateDocumentData(path, data),
 		onSuccess,
 		onError,
 	});

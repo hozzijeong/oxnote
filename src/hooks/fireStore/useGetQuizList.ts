@@ -1,3 +1,4 @@
+import { QUIZ_PATH } from '@constants/path';
 import FireStore from '@fireStore/FireStore';
 import type { Category, QuizInfo } from '@models/quiz';
 import { useSuspenseQuery } from '@tanstack/react-query';
@@ -9,7 +10,6 @@ import {
 } from 'firebase/firestore';
 
 interface GetQuizListProps<V> {
-	collectionId: string;
 	filter: {
 		category?: Category['id'][];
 		favorite?: QuizInfo['favorite'];
@@ -18,12 +18,11 @@ interface GetQuizListProps<V> {
 }
 
 const useGetQuizList = <V>({
-	collectionId,
 	filter = {},
 	selectHandler,
 }: GetQuizListProps<V>) =>
 	useSuspenseQuery<QuerySnapshot<DocumentData, DocumentData>, Error, V>({
-		queryKey: [collectionId, filter.category],
+		queryKey: [...(filter.category ?? '')],
 		queryFn: async () => {
 			const { category, favorite } = filter;
 			const constrain: QueryConstraint[] = [];
@@ -38,11 +37,7 @@ const useGetQuizList = <V>({
 				constrain.push(where('favorite', '==', favorite ? true : false));
 			}
 
-			return await FireStore.getQuerySnapShot(
-				collectionId,
-				'Quiz/data',
-				constrain
-			);
+			return await FireStore.getQuerySnapShot(QUIZ_PATH, constrain);
 		},
 		select: selectHandler,
 	});

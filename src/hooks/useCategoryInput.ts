@@ -37,7 +37,6 @@ const useCategoryInput = (categories: Category[]) => {
 			const date = Date.now();
 
 			addCategory({
-				collectionId: 'yerim',
 				data: {
 					[date]: categoryInput,
 				},

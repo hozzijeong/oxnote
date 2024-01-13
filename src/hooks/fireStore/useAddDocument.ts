@@ -3,7 +3,6 @@ import { MutationOptions, useMutation } from '@tanstack/react-query';
 import { DocumentData } from 'firebase/firestore';
 
 export interface MutateDocumentParams {
-	collectionId: string;
 	data: DocumentData;
 }
 
@@ -21,9 +20,8 @@ const useAddDocument = ({
 }: MutateDocumentProps<void, MutateDocumentParams>) =>
 	useMutation<void, Error, MutateDocumentParams>({
 		mutationKey: [`add${path}${lastId}`],
-		mutationFn: ({ collectionId, data }: MutateDocumentParams) =>
+		mutationFn: ({ data }: MutateDocumentParams) =>
 			FireStore.addDocumentData({
-				collectionId,
 				path,
 				lastId,
 				data,

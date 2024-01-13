@@ -17,7 +17,6 @@ import {
 import app from './Firebase';
 
 interface DocumentPathParams {
-	collectionId: string;
 	path?: string;
 	lastId?: string;
 }
@@ -38,17 +37,12 @@ class FireStore {
 	}
 
 	// 기존에 있던 데이터에 값을 추가하는 메서드. id가 존재하는 경우 무작위 id를 할당하고 그게 아니라면 기본 값을 할당한다.
-	async addDocumentData({
-		collectionId,
-		path = '',
-		lastId = '',
-		data,
-	}: AddDocumentParams) {
+	async addDocumentData({ path = '', lastId = '', data }: AddDocumentParams) {
 		try {
 			if (lastId.length !== 0) {
-				await setDoc(doc(this.db, collectionId, path, lastId), data);
+				await setDoc(doc(this.db, path, lastId), data);
 			} else {
-				await addDoc(collection(this.db, collectionId, path), data);
+				await addDoc(collection(this.db, path), data);
 			}
 		} catch (e) {
 			console.error('Error adding document: ', e);
@@ -56,18 +50,14 @@ class FireStore {
 	}
 
 	// document의 정보를 얻는 메서드
-	async getDocumentInfos(collectionId: string, path: string) {
-		const categorySnapShot = await getDoc(doc(this.db, collectionId, path));
+	async getDocumentInfos(path: string) {
+		const categorySnapShot = await getDoc(doc(this.db, path));
 
 		return categorySnapShot.data();
 	}
 
-	async getQuerySnapShot(
-		collectionId: string,
-		path: string,
-		queryConstraints: QueryConstraint[]
-	) {
-		const docRef = collection(this.db, collectionId, path);
+	async getQuerySnapShot(path: string, queryConstraints: QueryConstraint[]) {
+		const docRef = collection(this.db, path);
 
 		const currentQuery = query(docRef, ...queryConstraints);
 
@@ -77,22 +67,18 @@ class FireStore {
 	}
 
 	// Document를 업데이트 하는 메서드
-	async updateDocumentData(
-		collectionId: string,
-		path: string,
-		updateData: DocumentData
-	) {
-		const docRef = doc(this.db, collectionId, path);
+	async updateDocumentData(path: string, updateData: DocumentData) {
+		const docRef = doc(this.db, path);
 
-		const currentData = await this.getDocumentInfos(collectionId, path);
+		const currentData = await this.getDocumentInfos(path);
 
 		const updatedData = { ...currentData, ...updateData };
 
 		setDoc(docRef, updatedData, { merge: true });
 	}
 
-	async deleteDocument(collectionId: string, path: string) {
-		const document = doc(this.db, collectionId, path);
+	async deleteDocument(path: string) {
+		const document = doc(this.db, path);
 
 		await deleteDoc(document);
 	}

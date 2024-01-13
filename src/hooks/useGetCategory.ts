@@ -1,11 +1,11 @@
 import { invariantOf } from '@utils/invariantOf';
 import useGetDocument from './fireStore/useGetDocument';
 import type { Category } from '@models/quiz';
+import { CATEGORY_PATH } from '@constants/path';
 
 const useGetCategory = () =>
 	useGetDocument<Category[]>({
-		collectionId: 'yerim',
-		path: 'Category',
+		path: CATEGORY_PATH,
 		selectCallback: (data) => {
 			const convertedArray = Object.entries(invariantOf(data)) as [
 				number,

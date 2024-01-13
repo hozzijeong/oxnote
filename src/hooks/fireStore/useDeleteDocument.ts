@@ -8,11 +8,10 @@ const useDeleteDocument = ({
 	onError,
 	onMutate,
 	onSettled,
-}: Omit<MutateDocumentProps<void, string>, 'lastId'>) =>
+}: Omit<MutateDocumentProps<void, void>, 'lastId'>) =>
 	useMutation({
 		mutationKey: [`delete${path}`],
-		mutationFn: async (collectionId: string) =>
-			await FireStore.deleteDocument(collectionId, path),
+		mutationFn: async () => await FireStore.deleteDocument(path),
 		onMutate,
 		onSettled,
 		onSuccess,

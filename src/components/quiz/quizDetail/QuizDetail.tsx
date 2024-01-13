@@ -6,6 +6,7 @@ import StarEmpty from '@assets/star_empty.svg';
 import useGetDocument from '@hooks/fireStore/useGetDocument';
 import { useQueryClient } from '@tanstack/react-query';
 import useUpdateDocument from '@hooks/fireStore/useUpdateDocument';
+import { QUIZ_PATH } from '@constants/path';
 
 interface QuizDetailProps {
 	quizId: QuizInfo['id'];
@@ -15,16 +16,17 @@ const QuizDetail = ({ quizId }: QuizDetailProps) => {
 	const { isOn: explainOn, toggleHandler: explainHandler } = useToggle();
 
 	const { data: quiz } = useGetDocument<QuizInfo>({
-		collectionId: 'yerim',
-		path: `Quiz/data/${quizId}`,
+		path: `${QUIZ_PATH}/${quizId}`,
 	});
 
 	const queryClient = useQueryClient();
 
 	const { mutate: update } = useUpdateDocument({
-		path: `Quiz/data/${quizId}`,
+		path: `${QUIZ_PATH}/${quizId}`,
 		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: [`getQuiz/data/${quizId}`] });
+			queryClient.invalidateQueries({
+				queryKey: [`get${QUIZ_PATH}/${quizId}`],
+			});
 		},
 	});
 
@@ -50,7 +52,6 @@ const QuizDetail = ({ quizId }: QuizDetailProps) => {
 		}
 
 		update({
-			collectionId: 'yerim',
 			data: {
 				...quiz,
 				recentCorrect,

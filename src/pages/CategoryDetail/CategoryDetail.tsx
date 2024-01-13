@@ -20,7 +20,6 @@ const CategoryDetail = () => {
 	}
 
 	const { data: quizList } = useGetQuizList<QuizListItem[]>({
-		collectionId: 'yerim',
 		filter: {
 			category: [category.id],
 		},
@@ -65,12 +64,7 @@ const CategoryDetail = () => {
 			<main>
 				<ul className={styles['quiz-list']}>
 					{quizList.map((item) => (
-						<QuizItem
-							key={item.id}
-							item={item}
-							collectionId='yerim'
-							categoryId={category.id}
-						/>
+						<QuizItem key={item.id} item={item} categoryId={category.id} />
 					))}
 				</ul>
 			</main>

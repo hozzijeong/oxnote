@@ -1,7 +1,7 @@
 import type { QuizListItem } from '@models/quiz';
 import styles from './quizItem.module.scss';
 import { Link } from 'react-router-dom';
-import { URL_PATH } from '@constants/path';
+import { QUIZ_PATH, URL_PATH } from '@constants/path';
 import StarFill from '@assets/star_fill.svg';
 import StarEmpty from '@assets/star_empty.svg';
 import useUpdateDocument from '@hooks/fireStore/useUpdateDocument';
@@ -9,24 +9,22 @@ import { useQueryClient } from '@tanstack/react-query';
 
 interface QuizItemProps {
 	item: QuizListItem;
-	collectionId: string;
 	categoryId: number;
 }
 
-const QuizItem = ({ item, collectionId, categoryId }: QuizItemProps) => {
+const QuizItem = ({ item, categoryId }: QuizItemProps) => {
 	const queryClient = useQueryClient();
 
 	const { mutate: updateQuiz } = useUpdateDocument({
-		path: `Quiz/data/${item.id}`,
+		path: `${QUIZ_PATH}/${item.id}`,
 		// 여기서 데이터 업데이트 구현하기
 		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: [collectionId, categoryId] });
+			queryClient.invalidateQueries({ queryKey: [categoryId] });
 		},
 	});
 
 	const favoriteClickHandler = () =>
 		updateQuiz({
-			collectionId,
 			data: {
 				...item,
 				favorite: !item.favorite,
