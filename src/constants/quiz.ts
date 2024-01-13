@@ -5,15 +5,17 @@ export const INITIAL_QUIZ: Quiz = {
 	answer: false,
 	explain: '',
 	favorite: false,
-	category: {
-		name: '',
-	},
+	category: -1,
 };
 
 export const INITIAL_QUIZ_RECORD: QuizInfo = {
 	...INITIAL_QUIZ,
 	id: '',
-	recentCorrect: false,
-	correctCount: 0,
 	wrongCount: 0,
+	tryCount: 0,
 };
+
+export const QUIZ_PARAMS = {
+	category: 'categoryId',
+	quiz: 'quizId',
+} as const;

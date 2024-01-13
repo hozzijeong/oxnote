@@ -10,13 +10,29 @@
 
 	@include mix.fontMedium;
 
+	gap: 8px;
+
 	&:hover {
 		opacity: 0.9;
 		cursor: pointer;
 	}
 }
 
+.quiz-title {
+	width: 100%;
+	overflow: hidden;
+	line-height: 40px;
+
+	p {
+		overflow: hidden;
+		text-overflow: ellipsis;
+		word-break: break-all;
+		white-space: nowrap;
+	}
+}
+
 .info-container {
 	display: flex;
 	align-items: center;
+	gap: 4px;
 }

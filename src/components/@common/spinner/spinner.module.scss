@@ -1,0 +1,29 @@
+@use '../../../style/variables.scss' as v;
+
+@keyframes spin {
+	0% {
+		transform: rotate(0deg);
+	}
+
+	100% {
+		transform: rotate(360deg);
+	}
+}
+
+.wrapper {
+	display: flex;
+	position: absolute;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	height: 100%;
+}
+
+.loader {
+	width: 40px;
+	height: 40px;
+	animation: spin 2s linear infinite;
+	border: 4px solid #{v.$gray-80};
+	border-top: 4px solid #{v.$black-80};
+	border-radius: 50%;
+}

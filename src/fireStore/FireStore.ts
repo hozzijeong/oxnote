@@ -4,92 +4,83 @@ import {
 	DocumentData,
 	Firestore,
 	doc,
-	getDocs,
 	getFirestore,
 	collection,
-	addDoc,
 	setDoc,
 	getDoc,
+	query,
+	addDoc,
+	QueryConstraint,
+	getDocs,
+	deleteDoc,
 } from 'firebase/firestore';
 import app from './Firebase';
 
+interface DocumentPathParams {
+	path?: string;
+	lastId?: string;
+}
+interface AddDocumentParams extends DocumentPathParams {
+	data: DocumentData;
+}
+
 class FireStore {
-	db: Firestore;
+	private db: Firestore;
 
 	constructor(app: FirebaseApp) {
 		this.db = getFirestore(app);
+
+		this.addDocumentData = this.addDocumentData.bind(this);
+		this.getDocumentInfos = this.getDocumentInfos.bind(this);
+		this.getQuerySnapShot = this.getQuerySnapShot.bind(this);
+		this.updateDocumentData = this.updateDocumentData.bind(this);
 	}
 
-	// 문서 구조는 예림 -> 카테고리 -> quyerimiz(컬렉션), field에 카테고리 추가 하는 방식으로 진행하겠음.
-	async addData(collectionId = '', category: string, data: DocumentData) {
-		console.log(category, collectionId);
+	// 기존에 있던 데이터에 값을 추가하는 메서드. id가 존재하는 경우 무작위 id를 할당하고 그게 아니라면 기본 값을 할당한다.
+	async addDocumentData({ path = '', lastId = '', data }: AddDocumentParams) {
 		try {
-			await addDoc(collection(this.db, collectionId, category, 'quiz'), data);
+			if (lastId.length !== 0) {
+				await setDoc(doc(this.db, path, lastId), data);
+			} else {
+				await addDoc(collection(this.db, path), data);
+			}
 		} catch (e) {
 			console.error('Error adding document: ', e);
 		}
 	}
 
-	// 카테고리들을 반환하는 메서드
-	async getDocInfos(collectionId = 'yerim') {
-		const infos: DocumentData[] = [];
+	// document의 정보를 얻는 메서드
+	async getDocumentInfos(path: string) {
+		const categorySnapShot = await getDoc(doc(this.db, path));
 
-		const categorySnapShot = await getDocs(collection(this.db, collectionId));
-		categorySnapShot.forEach((doc) => {
-			const data = doc.data();
-			infos.push(data);
-		});
-
-		return infos;
+		return categorySnapShot.data();
 	}
 
-	// 카테고리를 등록하는 메서드
-	async addCategory(collectionId = 'yerim', category: string) {
-		const date = Date.now();
-		await setDoc(doc(this.db, collectionId, category), {
-			name: category,
-			id: date,
-		});
+	async getQuerySnapShot(path: string, queryConstraints: QueryConstraint[]) {
+		const docRef = collection(this.db, path);
+
+		const currentQuery = query(docRef, ...queryConstraints);
+
+		const querySnapshot = await getDocs(currentQuery);
+
+		return querySnapshot;
 	}
 
-	// 퀴즈 리스트 전체를 받는 메서드
-	async getCategoryQuizList(collectionId = 'yerim', category: string) {
-		const collectionRef = collection(this.db, collectionId, category, 'quiz');
+	// Document를 업데이트 하는 메서드
+	async updateDocumentData(path: string, updateData: DocumentData) {
+		const docRef = doc(this.db, path);
 
-		const quizList = await getDocs(collectionRef);
+		const currentData = await this.getDocumentInfos(path);
 
-		return quizList;
-	}
-
-	// 단일 퀴즈 데이터를 받는 메서드
-	async getQuizDoc(collectionId = 'yerim', category: string, quizId: string) {
-		const docRef = doc(this.db, collectionId, category, 'quiz', quizId);
-
-		const curDoc = await getDoc(docRef);
-
-		if (!curDoc.exists()) throw new Error('존재하지 않는 문제입니다.');
-
-		return curDoc;
-	}
-
-	// 단일 퀴즈 데이터를 업데이트 하는 메서드
-	async updateQuizData(
-		collectionId = 'yerim',
-		category: string,
-		quizId: string,
-		updateData: DocumentData
-	) {
-		const docRef = doc(this.db, collectionId, category, 'quiz', quizId);
-
-		const quizDoc = await getDoc(docRef);
-
-		if (!quizDoc.exists()) throw new Error('존재하지 않는 문제입니다.');
-
-		const quizData = quizDoc.data();
-
-		const updatedData = { ...quizData, ...updateData };
+		const updatedData = { ...currentData, ...updateData };
 
 		setDoc(docRef, updatedData, { merge: true });
+	}
+
+	async deleteDocument(path: string) {
+		const document = doc(this.db, path);
+
+		await deleteDoc(document);
 	}
 }
 

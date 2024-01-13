@@ -4,25 +4,23 @@ export interface Quiz {
 	explain: string;
 	answer: boolean;
 	favorite: boolean;
-	category: Pick<Category, 'name'>; // 여기의 카테고리는 좀 애매한 느낌임
+	category: Category['id']; // 여기의 카테고리는 좀 애매한 느낌임
 }
 
 export interface QuizInfo extends Quiz {
 	id: string;
-	recentCorrect: boolean;
-	correctCount: number;
+	recentCorrect?: boolean; // 아예 문제를 푼 시도가 없는 경우에는 값을 할당하지 않음
+	tryCount: number;
 	wrongCount: number;
+	correctRate?: number; // 정답률 역시 아예 문제를 푼 사도가 없으면 값을 할당하지 않음
 }
 
-export interface Category {
-	name: string;
+export type Category = {
 	id: number;
-}
+	name: string;
+};
 
-export interface QuizListItem
-	extends Omit<
-		QuizInfo,
-		'category' | 'answer' | 'explain' | 'recentCorrect' | 'answer'
-	> {
-	wrongPercent: `${string}%`;
-}
+export type QuizListItem = Omit<
+	QuizInfo,
+	'category' | 'answer' | 'explain' | 'recentCorrect'
+>;
