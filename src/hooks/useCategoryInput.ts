@@ -2,14 +2,15 @@ import { Category } from '@models/quiz';
 import { useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import useUpdateDocument from './fireStore/useUpdateDocument';
+import { CATEGORY_PATH } from '@constants/path';
 
 const useCategoryInput = (categories: Category[]) => {
 	const queryClient = useQueryClient();
 	const [categoryInput, setCategoryInput] = useState('');
 	const { mutate: addCategory } = useUpdateDocument({
-		path: 'Category',
+		path: CATEGORY_PATH,
 		onSuccess() {
-			queryClient.invalidateQueries({ queryKey: ['getCategory'] });
+			queryClient.invalidateQueries({ queryKey: [`get${CATEGORY_PATH}`] });
 		},
 	});
 
