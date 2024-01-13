@@ -1,4 +1,4 @@
-import useCategoryInput from '@hooks/useCategoryInput';
+import useCategoryInput from '@hooks/category/useCategoryInput';
 import styles from './categoryInput.module.scss';
 import type { Category } from '@models/quiz';
 

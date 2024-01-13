@@ -1,11 +1,18 @@
-import FireStore from '@fireStore/FireStore';
 import { Category } from '@models/quiz';
 import { useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
+import useUpdateDocument from '../fireStore/useUpdateDocument';
+import { CATEGORY_PATH } from '@constants/path';
 
 const useCategoryInput = (categories: Category[]) => {
 	const queryClient = useQueryClient();
 	const [categoryInput, setCategoryInput] = useState('');
+	const { mutate: addCategory } = useUpdateDocument({
+		path: CATEGORY_PATH,
+		onSuccess() {
+			queryClient.invalidateQueries({ queryKey: [`get${CATEGORY_PATH}`] });
+		},
+	});
 
 	const inputChangeHandler: React.ChangeEventHandler<HTMLInputElement> = (
 		event
@@ -28,8 +35,14 @@ const useCategoryInput = (categories: Category[]) => {
 		);
 
 		if (result) {
-			FireStore.addCategory('yerim', categoryInput);
-			queryClient.invalidateQueries({ queryKey: ['category'] });
+			const date = Date.now();
+
+			addCategory({
+				data: {
+					[date]: categoryInput,
+				},
+			});
+
 			setCategoryInput('');
 		}
 	};

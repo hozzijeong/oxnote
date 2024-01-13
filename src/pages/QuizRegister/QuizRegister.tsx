@@ -2,8 +2,9 @@ import { Input, InputLabel } from '@components/@common';
 import styles from './quizRegister.module.scss';
 import Button from '@components/@common/button';
 import Radio from '@components/@common/radio';
-import useGetCategory from '@hooks/fireStore/useGetCategory';
-import useQuizForm from '@hooks/useQuizForm';
+import useQuizForm from '@hooks/quiz/useQuizForm';
+import { INITIAL_QUIZ } from '@constants/quiz';
+import useGetCategory from '@hooks/category/useGetCategory';
 
 const QuizRegister = () => {
 	const { data: category } = useGetCategory();
@@ -19,14 +20,16 @@ const QuizRegister = () => {
 						className={styles.category}
 						onChange={changeHandler}
 						name='category'
-						value={quizState.category.name}
+						value={quizState.category}
 						required
 					>
-						<option hidden disabled value=''>
+						<option hidden disabled value={INITIAL_QUIZ.category}>
 							분류를 선택해주세용
 						</option>
 						{category.map(({ id, name }) => (
-							<option key={id}>{name}</option>
+							<option key={id} value={id}>
+								{name}
+							</option>
 						))}
 					</select>
 				</InputLabel>

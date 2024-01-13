@@ -3,6 +3,7 @@ import { NAVBAR_PAGE } from '@constants/path';
 import { Suspense, useMemo } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 import styles from './rootTemplate.module.scss';
+import Spinner from '@components/@common/spinner';
 
 const RootTemplate = () => {
 	const location = useLocation();
@@ -14,7 +15,7 @@ const RootTemplate = () => {
 
 	return (
 		<div className={styles.container}>
-			<Suspense fallback={<div>로딩중...</div>}>
+			<Suspense fallback={<Spinner />}>
 				<Outlet />
 			</Suspense>
 			{navbar}
