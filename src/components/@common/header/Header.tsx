@@ -4,6 +4,7 @@ import Back from '@assets/back.svg';
 import Menu from '@assets/menu_vertical.svg';
 import styles from './header.module.scss';
 import { useMemo } from 'react';
+import useToggle from '@hooks/useToggle';
 
 const isKeyofURLPath = (backUrl: any): backUrl is keyof typeof URL_PATH => {
 	return backUrl in URL_PATH;
@@ -13,10 +14,10 @@ interface HeaderProps {
 	title: string;
 	backUrl?: keyof typeof URL_PATH | -1;
 	pathId?: string | number;
-	menuCallback?: () => void;
+	menuComponent?: React.ReactNode;
 }
 
-const Header = ({ title, backUrl, pathId, menuCallback }: HeaderProps) => {
+const Header = ({ title, backUrl, pathId, menuComponent }: HeaderProps) => {
 	const navigate = useNavigate();
 
 	const backClickHandler = () => {
@@ -45,20 +46,23 @@ const Header = ({ title, backUrl, pathId, menuCallback }: HeaderProps) => {
 		);
 	}, []);
 
+	const { isOn: menuOn, toggleHandler: menuHandler } = useToggle(false);
+
 	return (
 		<header className={styles.wrapper}>
 			{backUrlButton}
 			{title}
-			{menuCallback && (
+			{menuComponent && (
 				<button
 					className={styles.menu}
 					type='button'
-					onClick={menuCallback}
+					onClick={menuHandler}
 					aria-label='메뉴'
 				>
 					<img src={Menu} width={20} height={20} alt='메뉴 클릭' />
 				</button>
 			)}
+			{menuOn && menuComponent}
 		</header>
 	);
 };
