@@ -1,5 +1,5 @@
 import { invariantOf } from '@utils/invariantOf';
-import useGetDocument from './fireStore/useGetDocument';
+import useGetDocument from '../fireStore/useGetDocument';
 import type { Category } from '@models/quiz';
 import { CATEGORY_PATH } from '@constants/path';
 

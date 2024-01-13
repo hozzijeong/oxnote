@@ -1,6 +1,6 @@
 import { QUIZ_PATH } from '@constants/path';
 import FireStore from '@fireStore/FireStore';
-import useGetQuizListQueryKey from '@hooks/useGetQuizListQueryKey';
+import useGetQuizListQueryKey from '@hooks/quiz/useGetQuizListQueryKey';
 import useLocationQueryParams from '@hooks/useLocationQueryParams';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import {

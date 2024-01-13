@@ -1,7 +1,7 @@
 import { Category } from '@models/quiz';
 import { useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
-import useUpdateDocument from './fireStore/useUpdateDocument';
+import useUpdateDocument from '../fireStore/useUpdateDocument';
 import { CATEGORY_PATH } from '@constants/path';
 
 const useCategoryInput = (categories: Category[]) => {

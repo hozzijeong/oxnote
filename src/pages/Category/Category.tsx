@@ -6,7 +6,7 @@ import { URL_PATH } from '@constants/path';
 
 import Folder from '@assets/folder.svg';
 import { Header } from '@components/@common';
-import useGetCategory from '@hooks/useGetCategory';
+import useGetCategory from '@hooks/category/useGetCategory';
 
 const Category = () => {
 	const { data: category } = useGetCategory();

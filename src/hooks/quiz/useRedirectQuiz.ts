@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import useLocationQueryParams from './useLocationQueryParams';
+import useLocationQueryParams from '../useLocationQueryParams';
 import { useCallback, useTransition } from 'react';
 import { QUIZ_PARAMS } from '@constants/quiz';
 import { URL_PATH } from '@constants/path';

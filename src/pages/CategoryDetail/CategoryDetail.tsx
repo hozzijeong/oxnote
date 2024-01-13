@@ -1,7 +1,7 @@
 import { Header } from '@components/@common';
 import QuizItem from '@components/quiz/quizItem/QuizItem';
 import useGetQuizList from '@hooks/fireStore/useGetQuizList';
-import useGetCurrentCategoryFromQuery from '@hooks/useGetCurrentCategoryFromQuery';
+import useGetCurrentCategoryFromQuery from '@hooks/category/useGetCurrentCategoryFromQuery';
 import { Fragment } from 'react';
 import { useParams } from 'react-router-dom';
 import styles from './categoryDetail.module.scss';

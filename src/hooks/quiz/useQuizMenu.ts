@@ -3,9 +3,9 @@ import { QuizInfo } from '@models/quiz';
 import { generatePath, useNavigate } from 'react-router-dom';
 import useDeleteDocument from '../fireStore/useDeleteDocument';
 import { useQueryClient } from '@tanstack/react-query';
-import useGetQuizListQueryKey from '@hooks/useGetQuizListQueryKey';
+import useGetQuizListQueryKey from '@hooks/quiz/useGetQuizListQueryKey';
 import useGetQuizList from '@hooks/fireStore/useGetQuizList';
-import useRedirectQuiz from '@hooks/useRedirectQuiz';
+import useRedirectQuiz from '@hooks/quiz/useRedirectQuiz';
 
 const useQuizMenu = (quizId: QuizInfo['id']) => {
 	const navigate = useNavigate();

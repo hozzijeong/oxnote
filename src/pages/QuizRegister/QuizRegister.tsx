@@ -4,7 +4,7 @@ import Button from '@components/@common/button';
 import Radio from '@components/@common/radio';
 import useQuizForm from '@hooks/quiz/useQuizForm';
 import { INITIAL_QUIZ } from '@constants/quiz';
-import useGetCategory from '@hooks/useGetCategory';
+import useGetCategory from '@hooks/category/useGetCategory';
 
 const QuizRegister = () => {
 	const { data: category } = useGetCategory();

@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useLayoutEffect, useRef } from 'react';
 
 import { QuizInfo } from '@models/quiz';
-import useRedirectQuiz from '@hooks/useRedirectQuiz';
+import useRedirectQuiz from '@hooks/quiz/useRedirectQuiz';
 
 const useMoveQuizNavbar = ({
 	currentId,
