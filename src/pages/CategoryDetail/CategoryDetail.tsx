@@ -20,6 +20,7 @@ const CategoryDetail = () => {
 	}
 
 	const { data: quizList } = useGetQuizList<QuizListItem[]>({
+		categoryId: category.id,
 		selectHandler: (data) => {
 			const result: QuizListItem[] = [];
 
