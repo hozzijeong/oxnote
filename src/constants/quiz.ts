@@ -14,3 +14,8 @@ export const INITIAL_QUIZ_RECORD: QuizInfo = {
 	wrongCount: 0,
 	tryCount: 0,
 };
+
+export const QUIZ_PARAMS = {
+	category: 'categoryId',
+	quiz: 'quizId',
+} as const;

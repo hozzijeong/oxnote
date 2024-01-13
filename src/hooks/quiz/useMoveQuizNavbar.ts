@@ -1,37 +1,16 @@
+import { useCallback, useEffect, useLayoutEffect, useRef } from 'react';
+
 import { QuizInfo } from '@models/quiz';
-import {
-	useCallback,
-	useEffect,
-	useLayoutEffect,
-	useRef,
-	useTransition,
-} from 'react';
-import { QuizNavbarProps } from '@components/quiz/quizNavbar/QuizNavbar';
-import useGetQuizList from '@hooks/fireStore/useGetQuizList';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { URL_PATH } from '@constants/path';
+import useRedirectQuiz from '@hooks/useRedirectQuiz';
 
-const useQuizNavbar = ({ currentId, categoryId }: QuizNavbarProps) => {
-	const navigate = useNavigate();
-	const location = useLocation();
-	const queryParams = new URLSearchParams(location.search);
-	const [_, startTransition] = useTransition();
-
-	const { data: quizIds } = useGetQuizList<QuizInfo['id'][]>({
-		filter: {
-			category: [categoryId],
-		},
-		selectHandler: (data) => {
-			const result: QuizInfo['id'][] = [];
-
-			data.forEach((value) => {
-				const id = value.id;
-
-				result.push(id);
-			});
-			return result;
-		},
-	});
+const useMoveQuizNavbar = ({
+	currentId,
+	quizIds,
+}: {
+	currentId: QuizInfo['id'];
+	quizIds: QuizInfo['id'][];
+}) => {
+	const redirectQuizHandler = useRedirectQuiz();
 
 	const cursor = quizIds.findIndex((id) => id === currentId);
 
@@ -44,13 +23,8 @@ const useQuizNavbar = ({ currentId, categoryId }: QuizNavbarProps) => {
 			const path = dataset['path'];
 
 			if (path === undefined) return;
-			queryParams.set('quizId', path);
 
-			startTransition(() => {
-				navigate(`${URL_PATH.QUIZ}?${queryParams.toString()}`, {
-					replace: true,
-				});
-			});
+			redirectQuizHandler(path);
 
 			selectedRef.current = event.target;
 			selectedRef.current.scrollIntoView({
@@ -90,10 +64,9 @@ const useQuizNavbar = ({ currentId, categoryId }: QuizNavbarProps) => {
 	}, []);
 
 	return {
-		quizIds,
-		cursor,
+		cursor: cursor === -1 ? 0 : cursor,
 		moveHandler,
 	};
 };
 
-export default useQuizNavbar;
+export default useMoveQuizNavbar;
