@@ -100,7 +100,7 @@ const QuizForm = ({
 					취소하기
 				</Button>
 				<Button type='submit' size='small' color='primary'>
-					등록하기
+					{type === 'add' ? '등록하기' : '수정하기'}
 				</Button>
 			</div>
 		</form>

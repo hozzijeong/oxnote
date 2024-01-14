@@ -3,6 +3,8 @@ import type { QuizFormType, QuizInfo } from '@models/quiz';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useAddDocument from '../fireStore/useAddDocument';
+import useUpdateDocument from '@hooks/fireStore/useUpdateDocument';
+import { useQueryClient } from '@tanstack/react-query';
 
 const converter = (type: string, value: string) => {
 	switch (type) {
@@ -25,6 +27,8 @@ const useQuizForm = ({ type, initialData }: QuizFormHookProps) => {
 
 	const [quizState, setQuizState] = useState<QuizInfo>(initialData);
 
+	const queryClient = useQueryClient();
+
 	const movePrevPage = (type: QuizFormType) => {
 		if (type === 'add') {
 			navigate(URL_PATH.HOME);
@@ -40,9 +44,27 @@ const useQuizForm = ({ type, initialData }: QuizFormHookProps) => {
 				'문제 등록에 성공했습니다 홈으로 이동하시겠습니까?'
 			);
 			if (answer) {
-				movePrevPage(type);
+				navigate(URL_PATH.HOME);
 			}
 			setQuizState(initialData);
+		},
+	});
+
+	const { mutate: updateQuiz } = useUpdateDocument({
+		path: `${QUIZ_PATH}/${quizState.id}`,
+		onSuccess: () => {
+			const answer = confirm('문제 수정에 성공했습니다!');
+
+			// 여기서 queryInvalidate 해줌. 문제는 category가 변경되면 어떡하냐... 이거임;;
+			// category가 변경되면 해당 카테고리에 이 quizId는 존재하지 않는게 되어버림.
+			// 그렇다면 업데이트를 하고나서 따로 변경을 해야하나?
+			queryClient.invalidateQueries({
+				queryKey: [`get${QUIZ_PATH}/${quizState.id}`],
+			});
+
+			if (answer) {
+				navigate(-1);
+			}
 		},
 	});
 
@@ -73,18 +95,20 @@ const useQuizForm = ({ type, initialData }: QuizFormHookProps) => {
 
 	const submitHandler: React.FormEventHandler<HTMLFormElement> = (event) => {
 		event.preventDefault();
+		const { id, ...exceptQuizId } = { ...quizState };
 
 		if (type === 'add') {
-			const { id, ...exceptQuizId } = { ...quizState };
-
 			addQuiz({
 				data: {
 					...exceptQuizId,
 				},
 			});
 		} else if (type === 'edit') {
-			// editQuiz
-			console.log('edit');
+			updateQuiz({
+				data: {
+					...exceptQuizId,
+				},
+			});
 		}
 	};
 
