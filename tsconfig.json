@@ -34,7 +34,7 @@
 			"@utils/*": ["src/utils/*"],
 			"@assets/*": ["src/assets/*"],
 			"@constants/*": ["src/constants/*"],
-			"@contexts/*": ["src/contexts/*"],
+			"@context/*": ["src/context/*"],
 			"@style/*": ["src/style/*"]
 		}
 	},
