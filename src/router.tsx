@@ -1,5 +1,5 @@
 import { URL_PATH } from '@constants/path';
-import { createBrowserRouter } from 'react-router-dom';
+import { Navigate, createBrowserRouter } from 'react-router-dom';
 import {
 	Category,
 	QuizRegister,
@@ -8,13 +8,21 @@ import {
 	Quiz,
 } from './pages';
 import QuizEdit from '@pages/QuizEdit/QuizEdit';
+import QuizFilter from '@pages/QuizFilter/QuizFilter';
 
 const router = createBrowserRouter([
 	{
-		path: URL_PATH.HOME,
 		element: <RootTemplate />,
 		errorElement: <div>에러입니다</div>,
 		children: [
+			{
+				path: URL_PATH.HOME,
+				element: <Navigate to={URL_PATH.QUIZ_FILTER} />,
+			},
+			{
+				path: URL_PATH.QUIZ_FILTER,
+				element: <QuizFilter />,
+			},
 			{
 				path: URL_PATH.QUIZ_FORM,
 				element: <QuizRegister />,
