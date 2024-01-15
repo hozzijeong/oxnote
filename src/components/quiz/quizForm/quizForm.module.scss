@@ -1,0 +1,26 @@
+@use '../../../style/mixin' as mix;
+
+.quiz-form {
+	display: flex;
+	flex-direction: column;
+	gap: 48px;
+}
+
+.category {
+	height: var(--button-height);
+	@include mix.fontMedium;
+}
+
+.explain {
+	height: 240px;
+	@include mix.fontMedium;
+
+	resize: none;
+}
+
+.button-container {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 16px;
+}

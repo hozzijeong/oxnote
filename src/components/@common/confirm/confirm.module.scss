@@ -1,0 +1,75 @@
+/* stylelint-disable keyframes-name-pattern */
+@use '../../../style/variables' as v;
+@use '../../../style/mixin' as m;
+
+@keyframes alert {
+	0% {
+		transform: rotate(1deg);
+	}
+
+	25% {
+		transform: rotate(0deg);
+	}
+
+	50% {
+		transform: rotate(-1deg);
+	}
+
+	100% {
+		transform: rotate(0deg);
+	}
+}
+
+.confirm-box {
+	@include m.modalBox;
+
+	display: flex;
+	top: calc(50vh - 50%);
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	width: 90%;
+	max-width: #{v.$mid-device-width};
+	margin: auto;
+	padding: 30px 0;
+	animation: alert 0.15s linear 2;
+	row-gap: 20px;
+
+	&::backdrop {
+		cursor: default;
+	}
+}
+
+.title {
+	@include m.confirmText;
+	@include m.fontMedium;
+}
+
+.message {
+	@include m.confirmText;
+	@include m.fontSmall;
+}
+
+.button-area {
+	display: flex;
+	width: calc(100% - 50px);
+	min-width: calc(#{v.$min-device-width} - 50px);
+	max-width: calc(#{v.$mid-device-width} - 50px);
+	padding: 0 30px;
+	column-gap: 30px;
+}
+
+.primary-button {
+	@include m.confirmButton;
+
+	background: #{v.$correct};
+	color: #{v.$white-100};
+}
+
+.secondary-button {
+	@include m.confirmButton;
+
+	border: 1px solid #{v.$correct};
+	background: #{v.$white-100};
+	color: #{v.$black-80};
+}

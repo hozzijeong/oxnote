@@ -32,15 +32,20 @@ const useGetQuizList = <V>(
 	let queryKey: unknown[];
 
 	if ('categoryId' in props) {
-		queryKey = [props.categoryId];
+		queryKey = ['getCategoryQuizList', props.categoryId];
 		constrain.push(where('category', '==', props.categoryId));
 	} else {
 		queryKey = [...useGetQuizListQueryKey()];
 		const params = getWholeURLParams();
-
 		// 카테고리 중복 선언 가능
-		if (params['category'] !== undefined) {
-			constrain.push(where('category', 'in', [...params['category']]));
+		if (params['categoryId'] !== undefined) {
+			constrain.push(
+				where(
+					'category',
+					'in',
+					[...params['categoryId'].split(',')].map(Number)
+				)
+			);
 		}
 
 		// 좋아요 확인

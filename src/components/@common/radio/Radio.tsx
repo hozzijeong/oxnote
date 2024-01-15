@@ -9,6 +9,7 @@ interface RadioProps {
 	changeHandler?: React.ChangeEventHandler<HTMLInputElement>;
 	required?: boolean;
 	name: string;
+	checkedValue?: React.InputHTMLAttributes<HTMLInputElement>['value'];
 }
 
 const Radio = ({
@@ -16,22 +17,28 @@ const Radio = ({
 	required = false,
 	name,
 	changeHandler,
+	checkedValue,
 }: RadioProps) => {
-	const radioOptions = options.map(({ value, title }) => (
-		<div key={title} className={styles['label-container']}>
-			<label htmlFor={title}>
-				<input
-					id={title}
-					value={value}
-					type='radio'
-					name={name}
-					onChange={changeHandler}
-					required={required}
-				/>
-				{title}
-			</label>
-		</div>
-	));
+	const radioOptions = options.map(({ value, title }) => {
+		const checked = checkedValue === value;
+
+		return (
+			<div key={title} className={styles['label-container']}>
+				<label htmlFor={title}>
+					<input
+						id={title}
+						value={value}
+						type='radio'
+						name={name}
+						onChange={changeHandler}
+						required={required}
+						checked={checked}
+					/>
+					{title}
+				</label>
+			</div>
+		);
+	});
 
 	return <div className={styles.wrapper}>{radioOptions}</div>;
 };

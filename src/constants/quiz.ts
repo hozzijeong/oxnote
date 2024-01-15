@@ -2,9 +2,9 @@ import type { Quiz, QuizInfo } from '@models/quiz';
 
 export const INITIAL_QUIZ: Quiz = {
 	quiz: '',
-	answer: false,
+	answer: true,
 	explain: '',
-	favorite: false,
+	favorite: true,
 	category: -1,
 };
 

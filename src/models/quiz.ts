@@ -24,3 +24,5 @@ export type QuizListItem = Omit<
 	QuizInfo,
 	'category' | 'answer' | 'explain' | 'recentCorrect'
 >;
+
+export type QuizFormType = 'edit' | 'add';

@@ -5,10 +5,12 @@ import { useQueryClient } from '@tanstack/react-query';
 import useGetQuizListQueryKey from '@hooks/quiz/useGetQuizListQueryKey';
 import useRedirectQuiz from '@hooks/quiz/useRedirectQuiz';
 import { QuizNavbarProps } from '@components/quiz/quizNavbar/QuizNavbar';
+import useConfirm from '@hooks/useConfirm';
 
 const useQuizMenu = ({ quizIds, currentId }: QuizNavbarProps) => {
 	const navigate = useNavigate();
 	const redirectQuizHandler = useRedirectQuiz();
+	const confirm = useConfirm();
 	const queryClient = useQueryClient();
 
 	const queryKey = useGetQuizListQueryKey();
@@ -32,8 +34,10 @@ const useQuizMenu = ({ quizIds, currentId }: QuizNavbarProps) => {
 		navigate(generatePath(URL_PATH.QUIZ_EDIT, { id: currentId }));
 	};
 
-	const deleteClickHandler = () => {
-		const answer = confirm('정말 삭제하시겠습니까?');
+	const deleteClickHandler = async () => {
+		const answer = await confirm({
+			message: '정말 삭제하시겠습니까?',
+		});
 
 		if (answer) {
 			deleteQuiz();

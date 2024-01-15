@@ -21,7 +21,6 @@ const Quiz = () => {
 
 			data.forEach((value) => {
 				const id = value.id;
-
 				result.push(id);
 			});
 			return result;
