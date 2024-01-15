@@ -2,11 +2,10 @@ import useToggle from '@hooks/useToggle';
 import styles from './quizDetail.module.scss';
 import type { QuizInfo } from '@models/quiz';
 import useGetDocument from '@hooks/fireStore/useGetDocument';
-import { useQueryClient } from '@tanstack/react-query';
-import useUpdateDocument from '@hooks/fireStore/useUpdateDocument';
 import { QUIZ_PATH } from '@constants/path';
 import useToast from '@hooks/useToast';
 import FavoriteButton from '@components/@common/favoriteButton';
+import useUpdateQuiz from '@hooks/quiz/useUpdateQuiz';
 
 interface QuizDetailProps {
 	quizId: QuizInfo['id'];
@@ -20,16 +19,7 @@ const QuizDetail = ({ quizId }: QuizDetailProps) => {
 		path: `${QUIZ_PATH}/${quizId}`,
 	});
 
-	const queryClient = useQueryClient();
-
-	const { mutate: updateQuiz } = useUpdateDocument({
-		path: `${QUIZ_PATH}/${quizId}`,
-		onSuccess: () => {
-			queryClient.invalidateQueries({
-				queryKey: [`get${QUIZ_PATH}/${quizId}`],
-			});
-		},
-	});
+	const updateQuiz = useUpdateQuiz({ quizId, type: 'favorite' });
 
 	const answerClickHandler: React.MouseEventHandler<HTMLDivElement> = (
 		event

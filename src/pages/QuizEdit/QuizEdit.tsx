@@ -4,10 +4,12 @@ import useGetDocument from '@hooks/fireStore/useGetDocument';
 import useQuizForm from '@hooks/quiz/useQuizForm';
 import { QuizInfo } from '@models/quiz';
 import { QUIZ_PATH } from '@constants/path';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import useUpdateQuiz from '@hooks/quiz/useUpdateQuiz';
 
 const QuizEdit = () => {
 	const params = useParams();
+	const navigate = useNavigate();
 
 	const quizId = params.id;
 
@@ -19,10 +21,15 @@ const QuizEdit = () => {
 		path: `${QUIZ_PATH}/${quizId}`,
 	});
 
+	const updateQuiz = useUpdateQuiz({ quizId: quizId, type: 'edit' });
+
 	const { submitHandler, changeHandler, cancelHandler, quizState } =
 		useQuizForm({
-			type: 'edit',
 			initialData: quiz,
+			submitCallback: updateQuiz,
+			cancelCallback: () => {
+				navigate(-1);
+			},
 		});
 
 	return (
