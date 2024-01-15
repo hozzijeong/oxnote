@@ -29,6 +29,7 @@ const QuizForm = ({
 		<form className={styles['quiz-form']}>
 			<InputLabel title='카테고리' htmlFor='category'>
 				<select
+					id='category'
 					className={styles.category}
 					onChange={changeHandler}
 					name='category'
@@ -74,6 +75,7 @@ const QuizForm = ({
 
 			<InputLabel title='해설' htmlFor='explain'>
 				<textarea
+					id='explain'
 					className={styles.explain}
 					value={quizState.explain}
 					onChange={changeHandler}
