@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import useAddDocument from '../fireStore/useAddDocument';
 import useUpdateDocument from '@hooks/fireStore/useUpdateDocument';
 import { useQueryClient } from '@tanstack/react-query';
+import useConfirm from '@hooks/useConfirm';
 
 const converter = (type: string, value: string) => {
 	switch (type) {
@@ -29,6 +30,8 @@ const useQuizForm = ({ type, initialData }: QuizFormHookProps) => {
 
 	const queryClient = useQueryClient();
 
+	const confirm = useConfirm();
+
 	const movePrevPage = (type: QuizFormType) => {
 		if (type === 'add') {
 			navigate(URL_PATH.HOME);
@@ -39,10 +42,10 @@ const useQuizForm = ({ type, initialData }: QuizFormHookProps) => {
 
 	const { mutate: addQuiz } = useAddDocument({
 		path: QUIZ_PATH,
-		onSuccess: () => {
-			const answer = confirm(
-				'문제 등록에 성공했습니다 홈으로 이동하시겠습니까?'
-			);
+		onSuccess: async () => {
+			const answer = await confirm({
+				message: '문제 등록에 성공했습니다 홈으로 이동하시겠습니까?',
+			});
 			if (answer) {
 				navigate(URL_PATH.HOME);
 			}
@@ -52,8 +55,10 @@ const useQuizForm = ({ type, initialData }: QuizFormHookProps) => {
 
 	const { mutate: updateQuiz } = useUpdateDocument({
 		path: `${QUIZ_PATH}/${quizState.id}`,
-		onSuccess: () => {
-			const answer = confirm('문제 수정에 성공했습니다!');
+		onSuccess: async () => {
+			const answer = await confirm({
+				message: '문제 수정에 성공했습니다! 이전 페이지로 이동합니다',
+			});
 
 			// 여기서 queryInvalidate 해줌. 문제는 category가 변경되면 어떡하냐... 이거임;;
 			// category가 변경되면 해당 카테고리에 이 quizId는 존재하지 않는게 되어버림.
@@ -68,10 +73,12 @@ const useQuizForm = ({ type, initialData }: QuizFormHookProps) => {
 		},
 	});
 
-	const cancelHandler: React.MouseEventHandler<HTMLButtonElement> = () => {
-		const answer = confirm(
-			'여기서 취소하면 작성한 내용이 사라집니다. 취소하시겠습니까?'
-		);
+	const cancelHandler: React.MouseEventHandler<
+		HTMLButtonElement
+	> = async () => {
+		const answer = await confirm({
+			message: '여기서 취소하면 작성한 내용이 사라집니다. 취소하시겠습니까?',
+		});
 
 		if (answer) {
 			movePrevPage(type);
