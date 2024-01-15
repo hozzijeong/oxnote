@@ -24,6 +24,11 @@
 	}
 }
 
+@mixin fontSmall {
+	font-size: v.$font-small;
+	line-height: 1.8rem;
+}
+
 @mixin fontMedium {
 	font-size: v.$font-medium;
 	line-height: 2rem;
@@ -32,4 +37,66 @@
 @mixin fontLarge {
 	font-size: v.$font-large;
 	line-height: 2.4rem;
+}
+
+@keyframes showModal {
+	0% {
+		transform: translateY(100%);
+	}
+	100% {
+		transform: translateY(0%);
+	}
+}
+
+@mixin modalBox {
+	position: fixed;
+	z-index: #{v.$modal};
+	top: auto;
+	bottom: 0;
+
+	width: 100%;
+	margin: 0 auto;
+	padding: 16px 0;
+
+	background-color: #{v.$white-100};
+	border: none;
+	border-radius: 8px;
+
+	animation: showModal 0.3s ease-out;
+
+	&::backdrop {
+		cursor: pointer;
+
+		position: fixed;
+		z-index: #{v.$modal-backdrop};
+		top: 0;
+		left: 0;
+
+		width: 100%;
+		height: 100%;
+
+		background-color: rgba(0, 0, 0, 0.25);
+	}
+}
+
+@mixin confirmButton {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	height: 32px;
+	border-radius: 8px;
+	font-size: 1.5rem;
+	font-weight: normal;
+	letter-spacing: 1px;
+	line-height: 2rem;
+}
+
+@mixin confirmText {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: calc(100% - 50px);
+	min-width: calc(#{v.$min-device-width} - 50px);
+	max-width: calc(#{v.$mid-device-width} - 50px);
 }

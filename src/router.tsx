@@ -7,6 +7,7 @@ import {
 	CategoryDetail,
 	Quiz,
 } from './pages';
+import QuizEdit from '@pages/QuizEdit/QuizEdit';
 
 const router = createBrowserRouter([
 	{
@@ -29,6 +30,10 @@ const router = createBrowserRouter([
 			{
 				path: URL_PATH.QUIZ,
 				element: <Quiz />,
+			},
+			{
+				path: URL_PATH.QUIZ_EDIT,
+				element: <QuizEdit />,
 			},
 		],
 	},

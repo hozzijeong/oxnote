@@ -1,9 +1,11 @@
 import { QUIZ_PATH, URL_PATH } from '@constants/path';
-import { Quiz } from '@models/quiz';
+import type { QuizFormType, QuizInfo } from '@models/quiz';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { INITIAL_QUIZ } from '@constants/quiz';
 import useAddDocument from '../fireStore/useAddDocument';
+import useUpdateDocument from '@hooks/fireStore/useUpdateDocument';
+import { useQueryClient } from '@tanstack/react-query';
+import useConfirm from '@hooks/useConfirm';
 
 const converter = (type: string, value: string) => {
 	switch (type) {
@@ -16,28 +18,70 @@ const converter = (type: string, value: string) => {
 	}
 };
 
-const useQuizForm = (initialData = INITIAL_QUIZ) => {
+interface QuizFormHookProps {
+	type: QuizFormType;
+	initialData: QuizInfo;
+}
+
+const useQuizForm = ({ type, initialData }: QuizFormHookProps) => {
 	const navigate = useNavigate();
 
-	const [quizState, setQuizState] = useState<Quiz>(initialData);
+	const [quizState, setQuizState] = useState<QuizInfo>(initialData);
+
+	const queryClient = useQueryClient();
+
+	const confirm = useConfirm();
+
+	const movePrevPage = (type: QuizFormType) => {
+		if (type === 'add') {
+			navigate(URL_PATH.HOME);
+		} else if (type === 'edit') {
+			navigate(-1);
+		}
+	};
+
 	const { mutate: addQuiz } = useAddDocument({
 		path: QUIZ_PATH,
-		onSuccess: () => {
-			const answer = confirm(
-				'문제 등록에 성공했습니다 홈으로 이동하시겠습니까?'
-			);
-			if (answer) navigate(URL_PATH.HOME);
+		onSuccess: async () => {
+			const answer = await confirm({
+				message: '문제 등록에 성공했습니다 홈으로 이동하시겠습니까?',
+			});
+			if (answer) {
+				navigate(URL_PATH.HOME);
+			}
 			setQuizState(initialData);
 		},
 	});
 
-	const cancelHandler: React.MouseEventHandler<HTMLButtonElement> = () => {
-		const answer = confirm(
-			'여기서 취소하면 작성한 내용이 사라집니다. 취소하시겠습니까?'
-		);
+	const { mutate: updateQuiz } = useUpdateDocument({
+		path: `${QUIZ_PATH}/${quizState.id}`,
+		onSuccess: async () => {
+			const answer = await confirm({
+				message: '문제 수정에 성공했습니다! 이전 페이지로 이동합니다',
+			});
+
+			// 여기서 queryInvalidate 해줌. 문제는 category가 변경되면 어떡하냐... 이거임;;
+			// category가 변경되면 해당 카테고리에 이 quizId는 존재하지 않는게 되어버림.
+			// 그렇다면 업데이트를 하고나서 따로 변경을 해야하나?
+			queryClient.invalidateQueries({
+				queryKey: [`get${QUIZ_PATH}/${quizState.id}`],
+			});
+
+			if (answer) {
+				navigate(-1);
+			}
+		},
+	});
+
+	const cancelHandler: React.MouseEventHandler<
+		HTMLButtonElement
+	> = async () => {
+		const answer = await confirm({
+			message: '여기서 취소하면 작성한 내용이 사라집니다. 취소하시겠습니까?',
+		});
 
 		if (answer) {
-			navigate(URL_PATH.HOME);
+			movePrevPage(type);
 		}
 
 		setQuizState(initialData);
@@ -58,14 +102,21 @@ const useQuizForm = (initialData = INITIAL_QUIZ) => {
 
 	const submitHandler: React.FormEventHandler<HTMLFormElement> = (event) => {
 		event.preventDefault();
+		const { id, ...exceptQuizId } = { ...quizState };
 
-		addQuiz({
-			data: {
-				...quizState,
-				tryCount: 0, // 시도 횟수
-				wrongCount: 0, // 틀린 문제
-			},
-		});
+		if (type === 'add') {
+			addQuiz({
+				data: {
+					...exceptQuizId,
+				},
+			});
+		} else if (type === 'edit') {
+			updateQuiz({
+				data: {
+					...exceptQuizId,
+				},
+			});
+		}
 	};
 
 	return { cancelHandler, changeHandler, submitHandler, quizState };

@@ -1,18 +1,19 @@
 import useToggle from '@hooks/useToggle';
 import styles from './quizDetail.module.scss';
 import type { QuizInfo } from '@models/quiz';
-import StarFill from '@assets/star_fill.svg';
-import StarEmpty from '@assets/star_empty.svg';
 import useGetDocument from '@hooks/fireStore/useGetDocument';
 import { useQueryClient } from '@tanstack/react-query';
 import useUpdateDocument from '@hooks/fireStore/useUpdateDocument';
 import { QUIZ_PATH } from '@constants/path';
+import useToast from '@hooks/useToast';
+import FavoriteButton from '@components/@common/favoriteButton';
 
 interface QuizDetailProps {
 	quizId: QuizInfo['id'];
 }
 
 const QuizDetail = ({ quizId }: QuizDetailProps) => {
+	const { addToast } = useToast();
 	const { isOn: explainOn, toggleHandler: explainHandler } = useToggle();
 
 	const { data: quiz } = useGetDocument<QuizInfo>({
@@ -21,7 +22,7 @@ const QuizDetail = ({ quizId }: QuizDetailProps) => {
 
 	const queryClient = useQueryClient();
 
-	const { mutate: update } = useUpdateDocument({
+	const { mutate: updateQuiz } = useUpdateDocument({
 		path: `${QUIZ_PATH}/${quizId}`,
 		onSuccess: () => {
 			queryClient.invalidateQueries({
@@ -44,14 +45,20 @@ const QuizDetail = ({ quizId }: QuizDetailProps) => {
 		let tryCount = quiz.tryCount + 1;
 
 		if (answer === quiz.answer) {
-			console.log('맞았습니다');
+			addToast({
+				type: 'success',
+				message: '맞았습니다',
+			});
 			recentCorrect = true;
 		} else {
-			console.log('틀렸습니다');
+			addToast({
+				type: 'error',
+				message: '틀렸습니다',
+			});
 			wrongCount += 1;
 		}
 
-		update({
+		updateQuiz({
 			data: {
 				...quiz,
 				recentCorrect,
@@ -62,15 +69,22 @@ const QuizDetail = ({ quizId }: QuizDetailProps) => {
 		});
 	};
 
+	const favoriteClickHandler = () => {
+		updateQuiz({
+			data: {
+				...quiz,
+				favorite: !quiz.favorite,
+			},
+		});
+	};
+
 	return (
 		<section>
 			<div className={styles['quiz-container']}>
 				<p>{quiz.quiz}</p>
-				<img
-					src={quiz.favorite ? StarFill : StarEmpty}
-					width={24}
-					height={24}
-					alt='즐겨찾기 상태'
+				<FavoriteButton
+					isFavorite={quiz.favorite}
+					onClick={favoriteClickHandler}
 				/>
 			</div>
 
