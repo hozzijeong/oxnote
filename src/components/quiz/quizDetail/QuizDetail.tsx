@@ -7,12 +7,14 @@ import useGetDocument from '@hooks/fireStore/useGetDocument';
 import { useQueryClient } from '@tanstack/react-query';
 import useUpdateDocument from '@hooks/fireStore/useUpdateDocument';
 import { QUIZ_PATH } from '@constants/path';
+import useToast from '@hooks/useToast';
 
 interface QuizDetailProps {
 	quizId: QuizInfo['id'];
 }
 
 const QuizDetail = ({ quizId }: QuizDetailProps) => {
+	const { addToast } = useToast();
 	const { isOn: explainOn, toggleHandler: explainHandler } = useToggle();
 
 	const { data: quiz } = useGetDocument<QuizInfo>({
@@ -44,10 +46,16 @@ const QuizDetail = ({ quizId }: QuizDetailProps) => {
 		let tryCount = quiz.tryCount + 1;
 
 		if (answer === quiz.answer) {
-			console.log('맞았습니다');
+			addToast({
+				type: 'success',
+				message: '맞았습니다',
+			});
 			recentCorrect = true;
 		} else {
-			console.log('틀렸습니다');
+			addToast({
+				type: 'error',
+				message: '틀렸습니다',
+			});
 			wrongCount += 1;
 		}
 
