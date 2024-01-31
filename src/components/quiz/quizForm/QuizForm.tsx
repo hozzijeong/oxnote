@@ -56,6 +56,7 @@ const QuizForm = ({
 					name='quiz'
 					value={quizState.quiz}
 					onChange={changeHandler}
+					placeholder='문제를 입력해주세요'
 					required
 				/>
 			</InputLabel>
@@ -80,6 +81,7 @@ const QuizForm = ({
 					value={quizState.explain}
 					onChange={changeHandler}
 					name='explain'
+					placeholder='해설을 입력해주세요'
 					required
 				/>
 			</InputLabel>
