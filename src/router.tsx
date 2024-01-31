@@ -6,9 +6,9 @@ import {
 	RootTemplate,
 	CategoryDetail,
 	Quiz,
+	QuizEdit,
+	QuizFilter,
 } from './pages';
-import QuizEdit from '@pages/QuizEdit/QuizEdit';
-import QuizFilter from '@pages/QuizFilter/QuizFilter';
 
 const router = createBrowserRouter([
 	{

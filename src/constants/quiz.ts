@@ -15,9 +15,14 @@ export const INITIAL_QUIZ_RECORD: QuizInfo = {
 	tryCount: 0,
 };
 
+/**
+ * 카테고리 즐겨찾기 여부, 정답률, 최근 틀린 문제,
+ * 문제 시도가 없는 경우 = trycount === 0
+ *
+ */
 export const INITIAL_QUIZ_FILTER: QuizSelectFilter = {
-	category: -1,
-	correctRate: 0,
+	category: [],
+	isFirst: 1,
 };
 
 export const QUIZ_PARAMS = {

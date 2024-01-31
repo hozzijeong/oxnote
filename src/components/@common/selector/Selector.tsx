@@ -115,8 +115,6 @@ const Selector = ({ type, list, placeholder, selected, onSubmit }: Props) => {
 		}
 	}, [menuOpen]);
 
-	console.log(selected, selected.length, 'selected');
-
 	return (
 		<div className={styles['wrapper']}>
 			<Button
