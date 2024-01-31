@@ -14,6 +14,7 @@ const Item = ({
 	itemType = 'default',
 	checked,
 	className,
+	type = 'button',
 	...props
 }: ItemProps & Props<HTMLButtonElement>) => {
 	const itemClassName = `${styles['item']} ${
@@ -22,7 +23,7 @@ const Item = ({
 		className ? className : ''
 	}`;
 
-	return <button className={itemClassName} {...props} />;
+	return <button className={itemClassName} type={type} {...props} />;
 };
 
 const Menu = Object.assign(
