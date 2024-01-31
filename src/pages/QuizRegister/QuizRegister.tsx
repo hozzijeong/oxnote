@@ -10,14 +10,19 @@ const QuizRegister = () => {
 	const addQuiz = useAddQuiz();
 	const navigate = useNavigate();
 
-	const { submitHandler, changeHandler, cancelHandler, quizState } =
-		useQuizForm({
-			initialData: INITIAL_QUIZ_RECORD,
-			submitCallback: addQuiz,
-			cancelCallback: () => {
-				navigate(URL_PATH.HOME);
-			},
-		});
+	const {
+		submitHandler,
+		changeHandler,
+		cancelHandler,
+		selectHandler,
+		quizState,
+	} = useQuizForm({
+		initialData: INITIAL_QUIZ_RECORD,
+		submitCallback: addQuiz,
+		cancelCallback: () => {
+			navigate(URL_PATH.HOME);
+		},
+	});
 
 	return (
 		<main className={styles.main} onSubmit={submitHandler}>
@@ -26,6 +31,7 @@ const QuizRegister = () => {
 				changeHandler={changeHandler}
 				cancelHandler={cancelHandler}
 				quizState={quizState}
+				selectHandler={selectHandler}
 			/>
 		</main>
 	);

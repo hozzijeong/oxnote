@@ -41,9 +41,7 @@ const useQuizForm = <T extends DocumentData>({
 		}
 	};
 
-	const changeHandler = <
-		T extends HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-	>(
+	const changeHandler = <T extends HTMLInputElement | HTMLTextAreaElement>(
 		event: React.ChangeEvent<T>
 	) => {
 		const { name, value, type } = event.target;
@@ -54,13 +52,26 @@ const useQuizForm = <T extends DocumentData>({
 		}));
 	};
 
+	const selectHandler = <V>(key: string, value: V) => {
+		setQuizState((prev) => ({
+			...prev,
+			[key]: value,
+		}));
+	};
+
 	const submitHandler: React.FormEventHandler<HTMLFormElement> = (event) => {
 		event.preventDefault();
 
 		submitCallback({ data: quizState });
 	};
 
-	return { cancelHandler, changeHandler, submitHandler, quizState };
+	return {
+		cancelHandler,
+		changeHandler,
+		submitHandler,
+		selectHandler,
+		quizState,
+	};
 };
 
 export default useQuizForm;

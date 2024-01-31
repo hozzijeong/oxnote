@@ -19,9 +19,6 @@ type Props = {
 };
 
 const Selector = ({ type, list, placeholder, selected, onSubmit }: Props) => {
-	/* [여기에 코드 추가/수정/삭제] */
-
-	// onSubmit을 완료해야지만 selected로 변경될 수 있게 설정하기
 	const [selectedOption, setSelectedOption] = useState<typeof list>([]);
 	const [menuOpen, setMenuOpen] = useState(false);
 
@@ -118,9 +115,15 @@ const Selector = ({ type, list, placeholder, selected, onSubmit }: Props) => {
 		}
 	}, [menuOpen]);
 
+	console.log(selected, selected.length, 'selected');
+
 	return (
 		<div className={styles['wrapper']}>
-			<Button className={styles['selector-button']} onClick={selectorToggle}>
+			<Button
+				className={styles['selector-button']}
+				onClick={selectorToggle}
+				type='button'
+			>
 				<span>{selected.length === 0 ? placeholder : selected.join(', ')}</span>
 			</Button>
 			{menuOpen && (
@@ -128,7 +131,7 @@ const Selector = ({ type, list, placeholder, selected, onSubmit }: Props) => {
 					<div className={styles['input-container']}>
 						<Input
 							ref={searchInputRef}
-							placeholder='밸류 검색'
+							placeholder='검색'
 							onChange={searchChangeHandler}
 							value={search}
 						/>
