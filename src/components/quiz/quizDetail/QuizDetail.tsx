@@ -73,7 +73,7 @@ const QuizDetail = ({ quizId }: QuizDetailProps) => {
 			<div className={styles['quiz-container']}>
 				<p>{quiz.quiz}</p>
 				<FavoriteButton
-					isFavorite={quiz.favorite}
+					isFavorite={Boolean(quiz.favorite)}
 					onClick={favoriteClickHandler}
 				/>
 			</div>

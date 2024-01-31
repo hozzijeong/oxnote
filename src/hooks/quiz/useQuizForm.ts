@@ -6,7 +6,7 @@ import { useState } from 'react';
 const converter = (type: string, value: string) => {
 	switch (type) {
 		case 'radio':
-			return Boolean(Number(value));
+			return Number(value);
 		case 'select-one':
 			return Number(value);
 		default:
@@ -47,7 +47,7 @@ const useQuizForm = <T extends DocumentData>({
 		event: React.ChangeEvent<T>
 	) => {
 		const { name, value, type } = event.target;
-
+		console.log(name, value, type);
 		setQuizState((prev) => ({
 			...prev,
 			[name]: converter(type, value),
