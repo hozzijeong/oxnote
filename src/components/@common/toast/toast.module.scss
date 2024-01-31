@@ -5,7 +5,7 @@
 $borderColors: (
 	info: #{v.$sky},
 	success: #{v.$correct},
-	warning: #{v.$gray-100},
+	warning: #{v.$gray-90},
 	error: #{v.$accent},
 );
 
@@ -88,7 +88,7 @@ $borderColors: (
 	overflow: hidden;
 	border-radius: 8px;
 	background-color: #{v.$white-100};
-	box-shadow: 0 0 8px #{v.$gray-100}+ '33';
+	box-shadow: 0 0 8px #{v.$gray-90}+ '33';
 	color: #{v.$white-100} + 'e3';
 	backdrop-filter: blur(1px);
 }
