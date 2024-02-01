@@ -49,7 +49,9 @@ const FilterParse = () => {
 
 	setQueryParam('quizId', data[0]);
 
-	return <Navigate to={`${URL_PATH.QUIZ}?${getCurrentParams()}`} />;
+	return (
+		<Navigate to={`${URL_PATH.QUIZ}?${getCurrentParams()}`} replace={true} />
+	);
 };
 
 export default FilterParse;
