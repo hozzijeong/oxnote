@@ -1,3 +1,4 @@
+import { NONE, YES } from '@constants/form';
 import { QUIZ_PATH } from '@constants/path';
 import FireStore from '@fireStore/FireStore';
 import useGetQuizListQueryKey from '@hooks/quiz/useGetQuizListQueryKey';
@@ -6,7 +7,7 @@ import { Category } from '@models/quiz';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import {
 	DocumentData,
-	QueryConstraint,
+	QueryFieldFilterConstraint,
 	QuerySnapshot,
 	where,
 } from 'firebase/firestore';
@@ -28,31 +29,64 @@ const useGetQuizList = <V>(
 ) => {
 	const { getWholeURLParams } = useLocationQueryParams();
 
-	const constrain: QueryConstraint[] = [];
+	const constrain: QueryFieldFilterConstraint[] = [];
 	let queryKey: unknown[];
+
+	const params = getWholeURLParams();
+
+	if (params['category'] !== undefined) {
+		constrain.push(
+			where('category', 'in', [...params['category'].split(',')].map(Number))
+		);
+	}
 
 	if ('categoryId' in props) {
 		queryKey = ['getCategoryQuizList', props.categoryId];
-		constrain.push(where('category', '==', props.categoryId));
 	} else {
+		/**
+		 * *중요*
+		 * 같은 필드에 한에서면 >= <= < >와 같은 비교 연산자 사용이 가능하다
+		 * 따라서 정답률을 나누는 correctRate같은 경우에는 필터를 나중에 받도록 하자
+		 */
+
 		queryKey = [...useGetQuizListQueryKey()];
-		const params = getWholeURLParams();
 		// 카테고리 중복 선언 가능
-		if (params['categoryId'] !== undefined) {
-			constrain.push(
-				where(
-					'category',
-					'in',
-					[...params['categoryId'].split(',')].map(Number)
-				)
-			);
-		}
 
 		// 좋아요 확인
 		if (params['favorite'] !== undefined) {
 			constrain.push(
-				where('favorite', '==', params['favorite'] ? true : false)
+				where(
+					'favorite',
+					'==',
+					Number(params['favorite']) === YES ? true : false
+				)
 			);
+		}
+
+		if (params['isFirst'] !== undefined) {
+			const isFirst = Number(params['isFirst']) === YES;
+			constrain.push(where('tryCount', '>=', isFirst ? 1 : 0));
+
+			if (!isFirst) {
+				if (
+					params['recentCorrect'] !== undefined &&
+					Number(params['recentCorrect']) !== NONE
+				) {
+					constrain.push(
+						where(
+							'recentCorrect',
+							'==',
+							Number(params['recentCorrect']) ? true : false
+						)
+					);
+				}
+
+				// if (params['correctRate'] !== undefined) {
+				// 	constrain.push(
+				// 		where('correctRate', '<=', Number(params['correctRate']) / 100)
+				// 	);
+				// }
+			}
 		}
 	}
 

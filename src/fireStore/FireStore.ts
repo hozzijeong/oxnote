@@ -10,9 +10,10 @@ import {
 	getDoc,
 	query,
 	addDoc,
-	QueryConstraint,
 	getDocs,
 	deleteDoc,
+	QueryFieldFilterConstraint,
+	and,
 } from 'firebase/firestore';
 import app from './Firebase';
 
@@ -56,10 +57,13 @@ class FireStore {
 		return categorySnapShot.data();
 	}
 
-	async getQuerySnapShot(path: string, queryConstraints: QueryConstraint[]) {
+	async getQuerySnapShot(
+		path: string,
+		queryConstraints: QueryFieldFilterConstraint[]
+	) {
 		const docRef = collection(this.db, path);
 
-		const currentQuery = query(docRef, ...queryConstraints);
+		const currentQuery = query(docRef, and(...queryConstraints));
 
 		const querySnapshot = await getDocs(currentQuery);
 
