@@ -45,3 +45,8 @@
 	font-size: 13px;
 	text-align: left;
 }
+
+.placeholder {
+	color: #{v.$gray-80};
+	line-height: inherit !important;
+}

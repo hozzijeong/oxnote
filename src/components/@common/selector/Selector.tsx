@@ -45,6 +45,16 @@ const Selector = ({
 		setMenuOpen((prev) => !prev);
 	}, []);
 
+	const submitHandler = useCallback(
+		(values?: string[]) => {
+			const selectedSet = new Set(values ? [...values] : [...selectedOption]);
+			onSubmit([...selectedSet]);
+			setSearch('');
+			setMenuOpen(false);
+		},
+		[selectedOption]
+	);
+
 	const optionClickHandler: React.MouseEventHandler<HTMLButtonElement> =
 		useCallback((event) => {
 			const { innerText } = event.currentTarget;
@@ -59,6 +69,10 @@ const Selector = ({
 
 				return [...prev, innerText];
 			});
+
+			if (type === 'single') {
+				submitHandler([innerText]);
+			}
 		}, []);
 
 	const id = useId();
@@ -98,10 +112,7 @@ const Selector = ({
 				event.clientX <= menu.left + menu.width;
 
 			if (!isClickInsideMenu) {
-				const selectedSet = new Set([...selectedOption]);
-				onSubmit([...selectedSet]);
-				setSearch('');
-				setMenuOpen(false);
+				submitHandler();
 			}
 		},
 		[onSubmit, selectedOption]
@@ -130,7 +141,11 @@ const Selector = ({
 				onClick={selectorToggle}
 				type='button'
 			>
-				<span>{selected.length === 0 ? placeholder : selected.join(', ')}</span>
+				{selected.length === 0 ? (
+					<span className={styles['placeholder']}>{placeholder}</span>
+				) : (
+					selected.join(', ')
+				)}
 			</Button>
 			{menuOpen && (
 				<Menu className={styles['menu-container']} ref={menuRef}>
