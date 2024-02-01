@@ -52,7 +52,10 @@ const useGetQuizList = <V>(
 		queryKey = [...useGetQuizListQueryKey()];
 
 		// 좋아요 확인
-		if (params['favorite'] !== undefined) {
+		if (
+			params['favorite'] !== undefined &&
+			Number(params['favorite']) !== NONE
+		) {
 			constrain.push(
 				where(
 					'favorite',
