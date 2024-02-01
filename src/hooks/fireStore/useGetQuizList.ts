@@ -50,7 +50,6 @@ const useGetQuizList = <V>(
 		 */
 
 		queryKey = [...useGetQuizListQueryKey()];
-		// 카테고리 중복 선언 가능
 
 		// 좋아요 확인
 		if (params['favorite'] !== undefined) {
@@ -80,12 +79,6 @@ const useGetQuizList = <V>(
 						)
 					);
 				}
-
-				// if (params['correctRate'] !== undefined) {
-				// 	constrain.push(
-				// 		where('correctRate', '<=', Number(params['correctRate']) / 100)
-				// 	);
-				// }
 			}
 		}
 	}

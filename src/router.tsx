@@ -8,6 +8,7 @@ import {
 	Quiz,
 	QuizEdit,
 	QuizFilter,
+	FilterParse,
 } from './pages';
 
 const router = createBrowserRouter([
@@ -42,6 +43,10 @@ const router = createBrowserRouter([
 			{
 				path: URL_PATH.QUIZ_EDIT,
 				element: <QuizEdit />,
+			},
+			{
+				path: `/parse`,
+				element: <FilterParse />,
 			},
 		],
 	},

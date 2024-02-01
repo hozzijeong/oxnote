@@ -44,7 +44,7 @@ const QuizItem = ({ item, categoryId }: QuizItemProps) => {
 					<span>{`${(item.correctRate * 100).toFixed(2)}%`}</span>
 				)}
 				<FavoriteButton
-					isFavorite={item.favorite}
+					isFavorite={Boolean(item.favorite)}
 					onClick={favoriteClickHandler}
 				/>
 			</div>

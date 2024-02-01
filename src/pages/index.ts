@@ -5,3 +5,4 @@ export { default as CategoryDetail } from './CategoryDetail/CategoryDetail';
 export { default as Quiz } from './Quiz/Quiz';
 export { default as QuizEdit } from './QuizEdit/QuizEdit';
 export { default as QuizFilter } from './QuizFilter/QuizFilter';
+export { default as FilterParse } from './QuizFilter/FilterParse';
