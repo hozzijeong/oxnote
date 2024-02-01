@@ -20,7 +20,7 @@ export type QuizSelectFilter = Pick<
 	'correctRate' | 'recentCorrect' | 'favorite'
 > & {
 	category: number[];
-	isFirst: number;
+	isFirst?: number;
 };
 
 export type Category = {

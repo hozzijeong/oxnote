@@ -10,29 +10,70 @@ import Selector from '@components/@common/selector/Selector';
 import { MutateDocumentParams } from '@hooks/fireStore/useAddDocument';
 import { useNavigate } from 'react-router-dom';
 import { QuizSelectFilter } from '@models/quiz';
+import useToast from '@hooks/useToast';
 
 const QuizFilter = () => {
 	const { data: categories } = useGetCategory();
 	const navigate = useNavigate();
+	const { addToast } = useToast();
+
 	const { submitHandler, changeHandler, quizState, selectHandler } =
 		useQuizForm({
 			initialData: INITIAL_QUIZ_FILTER,
 			submitCallback: ({ data }: MutateDocumentParams) => {
-				/**
-				 * Navigate로 페이지 이동
-				 *  그리고 그 페이지는 Navigate에서 return 때려버리기
-				 */
-
 				let url = '';
 
 				const obj: QuizSelectFilter = Object.assign(data);
+
+				if (obj.category.length === 0) {
+					addToast({ type: 'warning', message: '카테고리를 선택해주세요' });
+
+					return;
+				}
+
+				if (obj.favorite === undefined) {
+					addToast({
+						type: 'warning',
+						message: '즐겨찾기 등록 여부를 선택해주세요',
+					});
+
+					return;
+				}
+
+				if (obj.isFirst === undefined) {
+					addToast({ type: 'warning', message: '시도 유형을 선택해주세요' });
+
+					return;
+				}
+
+				if (obj.isFirst !== YES) {
+					if (obj.recentCorrect === undefined) {
+						addToast({
+							type: 'warning',
+							message: '최근 오답 여부를 선택해주세요',
+						});
+
+						return;
+					}
+
+					if (
+						obj.correctRate &&
+						(obj.correctRate < 0 || obj.correctRate > 100)
+					) {
+						addToast({
+							type: 'warning',
+							message: '정답률은 0 ~ 100까지의 숫자가 입력 가능합니다',
+						});
+
+						return;
+					}
+				}
 
 				Object.entries(obj).forEach(([key, val]) => {
 					url += `${key}=${val}&`;
 				});
 
 				url = url.slice(0, -1);
-
 				navigate(`/parse?${url}`);
 			},
 		});
@@ -90,7 +131,7 @@ const QuizFilter = () => {
 							checkedValue={Number(isFirst)}
 						/>
 					</InputLabel>
-					{isFirst !== YES && (
+					{isFirst !== YES && isFirst !== undefined && (
 						<Fragment>
 							<InputLabel title='최근 틀린 문제' htmlFor='recentCorrect'>
 								<Radio

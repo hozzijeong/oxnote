@@ -22,7 +22,6 @@ export const INITIAL_QUIZ_RECORD: QuizInfo = {
  */
 export const INITIAL_QUIZ_FILTER: QuizSelectFilter = {
 	category: [],
-	isFirst: 1,
 };
 
 export const QUIZ_PARAMS = {
