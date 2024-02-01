@@ -1,4 +1,3 @@
-import { NONE, YES } from '@constants/form';
 import { QUIZ_PATH } from '@constants/path';
 import FireStore from '@fireStore/FireStore';
 import useGetQuizListQueryKey from '@hooks/quiz/useGetQuizListQueryKey';
@@ -52,27 +51,20 @@ const useGetQuizList = <V>(
 		queryKey = [...useGetQuizListQueryKey()];
 
 		// 좋아요 확인
-		if (
-			params['favorite'] !== undefined &&
-			Number(params['favorite']) !== NONE
-		) {
+		if (params['favorite'] !== undefined && Number(params['favorite']) !== 2) {
 			constrain.push(
-				where(
-					'favorite',
-					'==',
-					Number(params['favorite']) === YES ? true : false
-				)
+				where('favorite', '==', Number(params['favorite']) === 1 ? true : false)
 			);
 		}
 
 		if (params['isFirst'] !== undefined) {
-			const isFirst = Number(params['isFirst']) === YES;
+			const isFirst = Number(params['isFirst']) === 1;
 			constrain.push(where('tryCount', '>=', isFirst ? 1 : 0));
 
 			if (!isFirst) {
 				if (
 					params['recentCorrect'] !== undefined &&
-					Number(params['recentCorrect']) !== NONE
+					Number(params['recentCorrect']) !== 2
 				) {
 					constrain.push(
 						where(

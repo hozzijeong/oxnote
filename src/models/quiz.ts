@@ -1,3 +1,5 @@
+import { UserAnswer } from '@constants/form';
+
 // TODO QUIZ 문제 발생하는지 확인하기
 export interface Quiz {
 	quiz: string;
@@ -15,12 +17,11 @@ export interface QuizInfo extends Quiz {
 	correctRate?: number; // 정답률 역시 아예 문제를 푼 사도가 없으면 값을 할당하지 않음
 }
 
-export type QuizSelectFilter = Pick<
-	QuizInfo,
-	'correctRate' | 'recentCorrect' | 'favorite'
-> & {
+export type QuizSelectFilter = Pick<QuizInfo, 'correctRate'> & {
 	category: number[];
-	isFirst?: number;
+	isFirst?: UserAnswer;
+	favorite?: UserAnswer;
+	recentCorrect?: UserAnswer;
 };
 
 export type Category = {

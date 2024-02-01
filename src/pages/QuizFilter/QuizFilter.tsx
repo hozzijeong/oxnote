@@ -1,16 +1,16 @@
-import { Button, Header, Input, InputLabel, Radio } from '@components/@common';
+import { Button, Header, Input, InputLabel } from '@components/@common';
 import useGetCategory from '@hooks/category/useGetCategory';
 import styles from '@components/quiz/quizForm/quizForm.module.scss';
 import quizMain from '../QuizRegister/quizRegister.module.scss';
 import useQuizForm from '@hooks/quiz/useQuizForm';
 import { INITIAL_QUIZ_FILTER } from '@constants/quiz';
 import { Fragment, useMemo } from 'react';
-import { NO, NONE, YES } from '@constants/form';
 import Selector from '@components/@common/selector/Selector';
 import { MutateDocumentParams } from '@hooks/fireStore/useAddDocument';
 import { useNavigate } from 'react-router-dom';
 import { QuizSelectFilter } from '@models/quiz';
 import useToast from '@hooks/useToast';
+import { ANSWER_OPTIONS } from '@constants/form';
 
 const QuizFilter = () => {
 	const { data: categories } = useGetCategory();
@@ -46,7 +46,7 @@ const QuizFilter = () => {
 					return;
 				}
 
-				if (obj.isFirst !== YES) {
+				if (obj.isFirst !== 1) {
 					if (obj.recentCorrect === undefined) {
 						addToast({
 							type: 'warning',
@@ -72,7 +72,7 @@ const QuizFilter = () => {
 				Object.entries(obj).forEach(([key, val]) => {
 					url += `${key}=${val}&`;
 				});
-
+				console.log(obj, 'object...');
 				url = url.slice(0, -1);
 				navigate(`/parse?${url}`);
 			},
@@ -80,7 +80,7 @@ const QuizFilter = () => {
 
 	const { category, isFirst, favorite, recentCorrect, correctRate } = quizState;
 
-	const selected = useMemo(() => {
+	const selectedCategories = useMemo(() => {
 		return categories.filter((c) => category.includes(c.id)).map((c) => c.name);
 	}, [categories, category]);
 
@@ -89,6 +89,17 @@ const QuizFilter = () => {
 			.filter((c) => val.includes(c.name))
 			.map((c) => c.id);
 		selectHandler && selectHandler('category', values);
+	};
+
+	const userAnswerSelectHandler = (
+		key: keyof QuizSelectFilter,
+		val: string[]
+	) => {
+		const [selected] = Object.entries(ANSWER_OPTIONS).find(
+			([_, value]) => val[0] === value
+		) ?? [0];
+
+		selectHandler && selectHandler(key, Number(selected));
 	};
 
 	return (
@@ -100,49 +111,57 @@ const QuizFilter = () => {
 						<Selector
 							type='multi'
 							placeholder='카테고리를 선택해주세요'
-							list={categories.map((d) => d.name)}
+							list={categories.map((c) => c.name)}
 							onSubmit={categorySelectHandler}
-							selected={selected}
+							selected={selectedCategories}
 						/>
 					</InputLabel>
 
-					<InputLabel title='즐겨찾기 등록 여부' htmlFor='favorite'>
-						<Radio
-							options={[
-								{ title: '등록하기', value: YES },
-								{ title: '등록안함', value: NO },
-								{ title: '상관 없음', value: NONE },
-							]}
-							name='favorite'
-							changeHandler={changeHandler}
-							checkedValue={Number(favorite)}
+					<InputLabel
+						title='즐겨찾기 등록한 문제를 찾으시나요?'
+						htmlFor='favorite'
+					>
+						<Selector
+							type='single'
+							placeholder='선택해주세요'
+							list={Object.values(ANSWER_OPTIONS)}
+							onSubmit={(args) => userAnswerSelectHandler('favorite', args)}
+							selected={
+								favorite !== undefined ? [ANSWER_OPTIONS[favorite]] : []
+							}
 						/>
 					</InputLabel>
 
-					<InputLabel title='시도 유형' htmlFor='isFirst'>
-						<Radio
-							options={[
-								{ title: '한번도 안풀어봄', value: YES },
-								{ title: '한번 이상 풀어봄', value: NO },
-								{ title: '상관 없음', value: NONE },
-							]}
-							name='isFirst'
-							changeHandler={changeHandler}
-							checkedValue={Number(isFirst)}
+					<InputLabel
+						title='처음 풀어보는 문제를 선택하시겠어요?'
+						htmlFor='isFirst'
+					>
+						<Selector
+							type='single'
+							placeholder='선택해주세요'
+							list={Object.values(ANSWER_OPTIONS)}
+							onSubmit={(args) => userAnswerSelectHandler('isFirst', args)}
+							selected={isFirst !== undefined ? [ANSWER_OPTIONS[isFirst]] : []}
 						/>
 					</InputLabel>
-					{isFirst !== YES && isFirst !== undefined && (
+					{isFirst !== 1 && isFirst !== undefined && (
 						<Fragment>
-							<InputLabel title='최근 틀린 문제' htmlFor='recentCorrect'>
-								<Radio
-									options={[
-										{ title: '최근 틀리지 않음', value: YES },
-										{ title: '최근 틀림', value: NO },
-										{ title: '상관 없음', value: NONE },
-									]}
-									name='recentCorrect'
-									changeHandler={changeHandler}
-									checkedValue={Number(recentCorrect)}
+							<InputLabel
+								title='최근 틀린문제를 선택하시겠어요?'
+								htmlFor='recentCorrect'
+							>
+								<Selector
+									type='single'
+									placeholder='선택해주세요'
+									list={Object.values(ANSWER_OPTIONS)}
+									onSubmit={(args) =>
+										userAnswerSelectHandler('recentCorrect', args)
+									}
+									selected={
+										recentCorrect !== undefined
+											? [ANSWER_OPTIONS[recentCorrect]]
+											: []
+									}
 								/>
 							</InputLabel>
 
