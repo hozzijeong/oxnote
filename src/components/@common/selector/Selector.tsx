@@ -15,10 +15,18 @@ type Props = {
 	list: string[];
 	placeholder: string;
 	selected: string[];
+	searchOption?: boolean;
 	onSubmit(arg: string[]): void;
 };
 
-const Selector = ({ type, list, placeholder, selected, onSubmit }: Props) => {
+const Selector = ({
+	type,
+	list,
+	placeholder,
+	selected,
+	onSubmit,
+	searchOption = false,
+}: Props) => {
 	const [selectedOption, setSelectedOption] = useState<typeof list>([]);
 	const [menuOpen, setMenuOpen] = useState(false);
 
@@ -126,14 +134,16 @@ const Selector = ({ type, list, placeholder, selected, onSubmit }: Props) => {
 			</Button>
 			{menuOpen && (
 				<Menu className={styles['menu-container']} ref={menuRef}>
-					<div className={styles['input-container']}>
-						<Input
-							ref={searchInputRef}
-							placeholder='검색'
-							onChange={searchChangeHandler}
-							value={search}
-						/>
-					</div>
+					{searchOption && (
+						<div className={styles['input-container']}>
+							<Input
+								ref={searchInputRef}
+								placeholder='검색'
+								onChange={searchChangeHandler}
+								value={search}
+							/>
+						</div>
+					)}
 					{search.trim().length !== 0 && (
 						<span className={styles['search-guide']}>검색 결과</span>
 					)}
