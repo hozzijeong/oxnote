@@ -7,17 +7,37 @@ import { INITIAL_QUIZ_FILTER } from '@constants/quiz';
 import { Fragment, useMemo } from 'react';
 import { NO, NONE, YES } from '@constants/form';
 import Selector from '@components/@common/selector/Selector';
+import { MutateDocumentParams } from '@hooks/fireStore/useAddDocument';
+import { useNavigate } from 'react-router-dom';
+import { QuizSelectFilter } from '@models/quiz';
 
 const QuizFilter = () => {
 	const { data: categories } = useGetCategory();
-
+	const navigate = useNavigate();
 	const { submitHandler, changeHandler, quizState, selectHandler } =
 		useQuizForm({
 			initialData: INITIAL_QUIZ_FILTER,
-			submitCallback: () => {},
+			submitCallback: ({ data }: MutateDocumentParams) => {
+				/**
+				 * Navigate로 페이지 이동
+				 *  그리고 그 페이지는 Navigate에서 return 때려버리기
+				 */
+
+				let url = '';
+
+				const obj: QuizSelectFilter = Object.assign(data);
+
+				Object.entries(obj).forEach(([key, val]) => {
+					url += `${key}=${val}&`;
+				});
+
+				url = url.slice(0, -1);
+
+				navigate(`/parse?${url}`);
+			},
 		});
 
-	const { category, isFirst } = quizState;
+	const { category, isFirst, favorite, recentCorrect, correctRate } = quizState;
 
 	const selected = useMemo(() => {
 		return categories.filter((c) => category.includes(c.id)).map((c) => c.name);
@@ -54,8 +74,7 @@ const QuizFilter = () => {
 							]}
 							name='favorite'
 							changeHandler={changeHandler}
-							checkedValue={Number(quizState.favorite)}
-							required
+							checkedValue={Number(favorite)}
 						/>
 					</InputLabel>
 
@@ -68,8 +87,7 @@ const QuizFilter = () => {
 							]}
 							name='isFirst'
 							changeHandler={changeHandler}
-							checkedValue={Number(quizState.isFirst)}
-							required
+							checkedValue={Number(isFirst)}
 						/>
 					</InputLabel>
 					{isFirst !== YES && (
@@ -83,21 +101,20 @@ const QuizFilter = () => {
 									]}
 									name='recentCorrect'
 									changeHandler={changeHandler}
-									checkedValue={Number(quizState.recentCorrect)}
-									required
+									checkedValue={Number(recentCorrect)}
 								/>
 							</InputLabel>
 
 							<InputLabel title='정답률' htmlFor='correctRate'>
 								<Input
 									id='correctRate'
+									placeholder='n% 이하의 문제를 보여줍니다'
 									type='number'
 									max={100}
 									min={0}
 									name='correctRate'
-									value={quizState.correctRate}
+									value={correctRate ?? ''}
 									onChange={changeHandler}
-									required
 								/>
 							</InputLabel>
 						</Fragment>
