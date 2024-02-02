@@ -1,5 +1,7 @@
 @use '../../../style/mixin' as mix;
 
+@use '../../../style/variables.scss' as v;
+
 .quiz-form {
 	display: flex;
 	flex-direction: column;
@@ -13,9 +15,23 @@
 
 .explain {
 	height: 240px;
+	padding: 10px;
+	border: 1px solid #{v.$gray-80};
+	border-radius: 4px;
+	box-shadow: inset 1px 1px 2px 0 rgb(0 0 0 / 4%);
+	color: #{v.$gray-100};
+	resize: none;
 	@include mix.fontMedium;
 
-	resize: none;
+	&:focus {
+		border: 1px solid #{v.$correct};
+		outline: none;
+	}
+
+	&::placeholder {
+		color: #{v.$gray-80};
+		line-height: inherit !important;
+	}
 }
 
 .button-container {

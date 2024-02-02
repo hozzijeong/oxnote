@@ -1,16 +1,11 @@
-import { QUIZ_PATH, URL_PATH } from '@constants/path';
-import type { QuizFormType, QuizInfo } from '@models/quiz';
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import useAddDocument from '../fireStore/useAddDocument';
-import useUpdateDocument from '@hooks/fireStore/useUpdateDocument';
-import { useQueryClient } from '@tanstack/react-query';
+import { MutateDocumentParams } from '@hooks/fireStore/useAddDocument';
 import useConfirm from '@hooks/useConfirm';
+import { QuizInfo, QuizSelectFilter } from '@models/quiz';
+import { DocumentData } from 'firebase/firestore';
+import { useState } from 'react';
 
 const converter = (type: string, value: string) => {
 	switch (type) {
-		case 'radio':
-			return Boolean(Number(value));
 		case 'select-one':
 			return Number(value);
 		default:
@@ -18,60 +13,19 @@ const converter = (type: string, value: string) => {
 	}
 };
 
-interface QuizFormHookProps {
-	type: QuizFormType;
-	initialData: QuizInfo;
+interface QuizFormHookProps<T extends QuizInfo | QuizSelectFilter> {
+	initialData: T;
+	submitCallback: (params: MutateDocumentParams) => void;
+	cancelCallback?: () => void;
 }
 
-const useQuizForm = ({ type, initialData }: QuizFormHookProps) => {
-	const navigate = useNavigate();
-
-	const [quizState, setQuizState] = useState<QuizInfo>(initialData);
-
-	const queryClient = useQueryClient();
-
+const useQuizForm = <T extends QuizInfo | QuizSelectFilter>({
+	initialData,
+	submitCallback,
+	cancelCallback,
+}: QuizFormHookProps<T>) => {
+	const [quizState, setQuizState] = useState<T>(initialData);
 	const confirm = useConfirm();
-
-	const movePrevPage = (type: QuizFormType) => {
-		if (type === 'add') {
-			navigate(URL_PATH.HOME);
-		} else if (type === 'edit') {
-			navigate(-1);
-		}
-	};
-
-	const { mutate: addQuiz } = useAddDocument({
-		path: QUIZ_PATH,
-		onSuccess: async () => {
-			const answer = await confirm({
-				message: '문제 등록에 성공했습니다 홈으로 이동하시겠습니까?',
-			});
-			if (answer) {
-				navigate(URL_PATH.HOME);
-			}
-			setQuizState(initialData);
-		},
-	});
-
-	const { mutate: updateQuiz } = useUpdateDocument({
-		path: `${QUIZ_PATH}/${quizState.id}`,
-		onSuccess: async () => {
-			const answer = await confirm({
-				message: '문제 수정에 성공했습니다! 이전 페이지로 이동합니다',
-			});
-
-			// 여기서 queryInvalidate 해줌. 문제는 category가 변경되면 어떡하냐... 이거임;;
-			// category가 변경되면 해당 카테고리에 이 quizId는 존재하지 않는게 되어버림.
-			// 그렇다면 업데이트를 하고나서 따로 변경을 해야하나?
-			queryClient.invalidateQueries({
-				queryKey: [`get${QUIZ_PATH}/${quizState.id}`],
-			});
-
-			if (answer) {
-				navigate(-1);
-			}
-		},
-	});
 
 	const cancelHandler: React.MouseEventHandler<
 		HTMLButtonElement
@@ -81,15 +35,12 @@ const useQuizForm = ({ type, initialData }: QuizFormHookProps) => {
 		});
 
 		if (answer) {
-			movePrevPage(type);
+			cancelCallback && cancelCallback();
+			setQuizState(initialData);
 		}
-
-		setQuizState(initialData);
 	};
 
-	const changeHandler = <
-		T extends HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-	>(
+	const changeHandler = <T extends HTMLInputElement | HTMLTextAreaElement>(
 		event: React.ChangeEvent<T>
 	) => {
 		const { name, value, type } = event.target;
@@ -100,26 +51,42 @@ const useQuizForm = ({ type, initialData }: QuizFormHookProps) => {
 		}));
 	};
 
-	const submitHandler: React.FormEventHandler<HTMLFormElement> = (event) => {
-		event.preventDefault();
-		const { id, ...exceptQuizId } = { ...quizState };
-
-		if (type === 'add') {
-			addQuiz({
-				data: {
-					...exceptQuizId,
-				},
-			});
-		} else if (type === 'edit') {
-			updateQuiz({
-				data: {
-					...exceptQuizId,
-				},
-			});
-		}
+	const selectHandler = <V>(key: string, value: V) => {
+		setQuizState((prev) => ({
+			...prev,
+			[key]: value,
+		}));
 	};
 
-	return { cancelHandler, changeHandler, submitHandler, quizState };
+	const submitHandler: React.FormEventHandler<HTMLFormElement> = (event) => {
+		event.preventDefault();
+
+		const updateData: DocumentData = { ...quizState };
+
+		if ('favorite' in quizState) {
+			updateData['favorite'] = Boolean(quizState.favorite);
+		}
+
+		if ('recentCorrect' in quizState) {
+			updateData['recentCorrect'] = Boolean(quizState.recentCorrect);
+		}
+
+		if ('answer' in quizState) {
+			updateData['answer'] = Boolean(quizState.answer);
+		}
+
+		submitCallback({
+			data: updateData,
+		});
+	};
+
+	return {
+		cancelHandler,
+		changeHandler,
+		submitHandler,
+		selectHandler,
+		quizState,
+	};
 };
 
 export default useQuizForm;
