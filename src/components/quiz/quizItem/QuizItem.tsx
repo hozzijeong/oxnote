@@ -35,7 +35,7 @@ const QuizItem = ({ item, categoryId }: QuizItemProps) => {
 		<li className={styles.item} key={item.id}>
 			<Link
 				className={styles['quiz-title']}
-				to={`${URL_PATH.QUIZ}?categoryId=${categoryId}&quizId=${item.id}`}
+				to={`${URL_PATH.QUIZ}?category=${categoryId}&quizId=${item.id}`}
 			>
 				<p>{item.quiz}</p>
 			</Link>

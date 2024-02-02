@@ -36,14 +36,9 @@ const useGetQuizList = <V>(
 
 	const params = getWholeURLParams();
 
-	if (params['category'] !== undefined) {
-		constrain.push(
-			where('category', 'in', [...params['category'].split(',')].map(Number))
-		);
-	}
-
 	if ('categoryId' in props) {
 		queryKey = ['getCategoryQuizList', props.categoryId];
+		constrain.push(where('category', '==', props.categoryId));
 	} else {
 		/**
 		 * *중요*
@@ -52,7 +47,11 @@ const useGetQuizList = <V>(
 		 */
 
 		queryKey = [...useGetQuizListQueryKey()];
-
+		if (params['category'] !== undefined) {
+			constrain.push(
+				where('category', 'in', [...params['category'].split(',')].map(Number))
+			);
+		}
 		// 좋아요 확인
 		if (
 			params['favorite'] !== undefined &&
@@ -87,6 +86,8 @@ const useGetQuizList = <V>(
 			}
 		}
 	}
+
+	console.log(constrain, 'getQulzList');
 
 	return useSuspenseQuery<QuerySnapshot<DocumentData, DocumentData>, Error, V>({
 		queryKey: queryKey,
