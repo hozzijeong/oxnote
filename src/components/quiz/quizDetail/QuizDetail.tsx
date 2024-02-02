@@ -34,7 +34,7 @@ const QuizDetail = ({ quizId }: QuizDetailProps) => {
 		let wrongCount = quiz.wrongCount;
 		let tryCount = quiz.tryCount + 1;
 
-		if (answer === quiz.answer) {
+		if (answer === Boolean(quiz.answer)) {
 			addToast({
 				type: 'success',
 				message: '맞았습니다',
