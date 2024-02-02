@@ -9,6 +9,7 @@ import {
 	QuizEdit,
 	QuizFilter,
 	FilterParse,
+	Auth,
 } from './pages';
 
 const router = createBrowserRouter([
@@ -47,6 +48,14 @@ const router = createBrowserRouter([
 			{
 				path: `/parse`,
 				element: <FilterParse />,
+			},
+		],
+	},
+	{
+		children: [
+			{
+				path: URL_PATH.AUTH,
+				element: <Auth />,
 			},
 		],
 	},
