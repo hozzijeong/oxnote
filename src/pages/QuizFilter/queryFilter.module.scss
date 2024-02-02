@@ -1,0 +1,23 @@
+@use '../../style/variables.scss' as v;
+@use '../../style/mixin.scss' as mix;
+
+.wrapper {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	height: 100%;
+}
+
+.title {
+	@include mix.fontLarge;
+
+	font-weight: 700;
+}
+
+.back-button {
+	height: 32px;
+	border-radius: 4px;
+	@include mix.fontMedium;
+}

@@ -12,10 +12,19 @@ const useGetCategory = () =>
 				string
 			][];
 
-			const convertedData = convertedArray.map(([id, name]) => ({
-				id: Number(id),
-				name,
-			}));
+			const convertedData = convertedArray
+				.map(([id, name]) => ({
+					id: Number(id),
+					name,
+				}))
+				.sort((a, b) => {
+					if (a.name < b.name) {
+						return -1;
+					} else if (a.name > b.name) {
+						return 1;
+					}
+					return 0;
+				});
 
 			return convertedData;
 		},

@@ -9,7 +9,7 @@ const Navbar = () => {
 	return (
 		<nav className={styles.wrapper}>
 			<div>
-				<Link className={styles.link} to={URL_PATH.HOME}>
+				<Link className={styles.link} to={URL_PATH.QUIZ_FILTER}>
 					<img src={Quiz} alt='문제 풀기' width={24} height={24} />
 					문제 풀기
 				</Link>

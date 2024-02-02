@@ -1,3 +1,4 @@
+import { useId } from 'react';
 import styles from './radio.module.scss';
 
 interface Option {
@@ -22,11 +23,16 @@ const Radio = ({
 	const radioOptions = options.map(({ value, title }) => {
 		const checked = checkedValue === value;
 
+		const id = useId();
+
 		return (
-			<div key={title} className={styles['label-container']}>
-				<label htmlFor={title}>
+			<div
+				key={`$${name}-${title}-${{ id }}`}
+				className={styles['label-container']}
+			>
+				<label htmlFor={`$${name}-${title}-${{ id }}`}>
 					<input
-						id={title}
+						id={`$${name}-${title}-${{ id }}`}
 						value={value}
 						type='radio'
 						name={name}

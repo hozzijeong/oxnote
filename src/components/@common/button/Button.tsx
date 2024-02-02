@@ -4,19 +4,19 @@ import styles from './button.module.scss';
 type Size = 'small' | 'large';
 type Color = 'default' | 'primary';
 
-interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+type Props = ButtonHTMLAttributes<HTMLButtonElement> & {
 	size?: Size;
 	color?: Color;
-	clickHandler?: () => void;
-}
+	className?: string;
+};
 
-const Button = forwardRef<HTMLButtonElement, ButtonProps>(function (
-	{ size = 'large', color = 'default', ...props },
-	ref
-) {
-	const className = `${styles.base} ${styles[size]} ${styles[color]}`;
-
-	return <button ref={ref} {...props} className={className} />;
-});
+const Button = forwardRef<HTMLButtonElement, Props>(
+	({ size = 'large', color = 'default', className, ...props }, ref) => {
+		const buttonClassName = `${styles['base']} ${styles[size]} ${
+			styles[color]
+		} ${className ? `${className}` : ''}`;
+		return <button ref={ref} {...props} className={buttonClassName} />;
+	}
+);
 
 export default Button;

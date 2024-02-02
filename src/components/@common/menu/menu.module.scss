@@ -1,0 +1,64 @@
+@use '../../../style/variables.scss' as v;
+
+.menu {
+	display: flex;
+	z-index: 40;
+	box-sizing: border-box;
+	flex-direction: column;
+	flex-grow: 1;
+	width: 100%;
+	min-width: 120px;
+	max-height: 300px;
+	padding: 5px 0;
+	overflow-y: scroll;
+	border: 1px solid #{v.$gray-80};
+	border-radius: 3px;
+	background-color: #{v.$white-100};
+	box-shadow: 0 2px 4px rgb(0 0 0 / 20%), 0 0 2px rgb(0 0 0 / 6%);
+}
+
+.item {
+	display: flex;
+	align-items: center;
+	width: 100%;
+	height: 32px;
+	padding: 0 12px;
+	border: none;
+	background: none;
+	color: #{v.$gray-100};
+	font-size: 13px;
+	text-align: left;
+
+	&:hover,
+	&:focus {
+		background-color: #{v.$gray-70};
+	}
+}
+
+.check-box {
+	&::before {
+		content: '';
+		display: inline-flex;
+		flex: 0 0 auto;
+		align-items: center;
+		justify-content: center;
+		width: 14px;
+		height: 14px;
+		margin-top: -2px;
+		margin-right: 6px;
+		border-radius: 3px;
+		background-color: #{v.$white-100};
+		box-shadow: inset 0 0 0 2px #ced4dc;
+		color: #{v.$white-100};
+		font-size: 10px;
+		line-height: 14px;
+	}
+
+	&.checked {
+		&::before {
+			content: '✓';
+			background-color: #{v.$correct};
+			box-shadow: inset 0 0 0 2px #{v.$correct};
+		}
+	}
+}

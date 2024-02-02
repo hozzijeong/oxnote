@@ -35,7 +35,7 @@ const QuizItem = ({ item, categoryId }: QuizItemProps) => {
 		<li className={styles.item} key={item.id}>
 			<Link
 				className={styles['quiz-title']}
-				to={`${URL_PATH.QUIZ}?categoryId=${categoryId}&quizId=${item.id}`}
+				to={`${URL_PATH.QUIZ}?category=${categoryId}&quizId=${item.id}`}
 			>
 				<p>{item.quiz}</p>
 			</Link>
@@ -44,7 +44,7 @@ const QuizItem = ({ item, categoryId }: QuizItemProps) => {
 					<span>{`${(item.correctRate * 100).toFixed(2)}%`}</span>
 				)}
 				<FavoriteButton
-					isFavorite={item.favorite}
+					isFavorite={Boolean(item.favorite)}
 					onClick={favoriteClickHandler}
 				/>
 			</div>

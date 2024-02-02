@@ -1,12 +1,31 @@
 @use './../../../style/mixin' as mix;
+@use './../../../style/variables' as v;
 
 .base {
-	height: 40px;
+	box-sizing: border-box;
+	width: 100%;
+	height: 32px;
+	padding: 0 10px;
 	border: none;
+	border: 1px solid #{v.$gray-80};
+	border-radius: 4px;
 	outline: none;
+	box-shadow: inset 1px 1px 2px 0 rgb(0 0 0 / 4%);
+	color: #{v.$gray-100};
+	line-height: 1;
+	text-overflow: ellipsis;
+
+	&:focus {
+		border: 1px solid #{v.$correct};
+		outline: none;
+	}
+
+	&::placeholder {
+		color: #{v.$gray-80};
+		line-height: inherit !important;
+	}
 }
 
 .text {
-	border-bottom: 1px solid var(--black-80);
 	@include mix.fontMedium;
 }

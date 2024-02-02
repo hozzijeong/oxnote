@@ -8,3 +8,4 @@ export { default as FavoriteButton } from '@components/@common/favoriteButton';
 export { default as Spinner } from '@components/@common/spinner';
 export { default as Confirm } from '@components/@common/confirm';
 export { default as Radio } from '@components/@common/radio';
+export { default as Menu } from '@components/@common/menu';

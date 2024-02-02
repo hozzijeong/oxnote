@@ -1,0 +1,52 @@
+@use './../../../style/variables' as v;
+
+.selector-button {
+	justify-content: space-between;
+	background-color: #{v.$white-100};
+
+	&:focus {
+		border: 1px solid #{v.$correct};
+		outline: none;
+	}
+}
+
+.options {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+
+	button {
+		&:focus {
+			border: 1px solid #{v.$correct};
+			outline: none;
+		}
+	}
+}
+
+.wrapper {
+	position: relative;
+}
+
+.menu-container {
+	display: flex;
+	position: absolute;
+	z-index: 1080;
+	top: 32px;
+}
+
+.input-container {
+	padding: 8px;
+	border-bottom: 1px solid #{v.$gray-70};
+}
+
+.search-guide {
+	padding: 12px;
+	color: #{v.$gray-100};
+	font-size: 13px;
+	text-align: left;
+}
+
+.placeholder {
+	color: #{v.$gray-80};
+	line-height: inherit !important;
+}
