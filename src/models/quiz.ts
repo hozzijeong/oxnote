@@ -1,11 +1,11 @@
-import { UserAnswer } from '@constants/form';
+import { UserAnswer, YesOrNo } from '@constants/form';
 
 // TODO QUIZ 문제 발생하는지 확인하기
 export interface Quiz {
 	quiz: string;
 	explain: string;
-	answer: boolean;
-	favorite?: number;
+	answer?: YesOrNo;
+	favorite?: YesOrNo;
 	category: Category['id']; // 여기의 카테고리는 좀 애매한 느낌임
 }
 

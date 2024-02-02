@@ -2,9 +2,7 @@ import type { Quiz, QuizInfo, QuizSelectFilter } from '@models/quiz';
 
 export const INITIAL_QUIZ: Quiz = {
 	quiz: '',
-	answer: true,
 	explain: '',
-	favorite: 1,
 	category: -1,
 };
 

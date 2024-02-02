@@ -53,6 +53,7 @@ const useQuizForm = <T extends DocumentData>({
 	};
 
 	const selectHandler = <V>(key: string, value: V) => {
+		console.log(value, 'value??');
 		setQuizState((prev) => ({
 			...prev,
 			[key]: value,

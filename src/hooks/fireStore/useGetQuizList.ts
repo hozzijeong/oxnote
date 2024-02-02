@@ -1,3 +1,4 @@
+import { UserAnswer } from '@constants/form';
 import { QUIZ_PATH } from '@constants/path';
 import FireStore from '@fireStore/FireStore';
 import useGetQuizListQueryKey from '@hooks/quiz/useGetQuizListQueryKey';
@@ -22,6 +23,8 @@ interface GetQuizListProps<V> {
 
 // 현재 location에 있는 params를 활용해서 해당 값을 받아내는 hook
 // 사실 params 중에서 quizId만을 제외하고 다 받을 수 있음.
+
+const { YES, NONE } = UserAnswer;
 
 const useGetQuizList = <V>(
 	props: GetQuizListProps<V> | GetCategoryQuizListProps<V>
@@ -51,20 +54,27 @@ const useGetQuizList = <V>(
 		queryKey = [...useGetQuizListQueryKey()];
 
 		// 좋아요 확인
-		if (params['favorite'] !== undefined && Number(params['favorite']) !== 2) {
+		if (
+			params['favorite'] !== undefined &&
+			Number(params['favorite']) !== NONE
+		) {
 			constrain.push(
-				where('favorite', '==', Number(params['favorite']) === 1 ? true : false)
+				where(
+					'favorite',
+					'==',
+					Number(params['favorite']) === YES ? true : false
+				)
 			);
 		}
 
 		if (params['isFirst'] !== undefined) {
-			const isFirst = Number(params['isFirst']) === 1;
+			const isFirst = Number(params['isFirst']) === YES;
 			constrain.push(where('tryCount', '>=', isFirst ? 1 : 0));
 
 			if (!isFirst) {
 				if (
 					params['recentCorrect'] !== undefined &&
-					Number(params['recentCorrect']) !== 2
+					Number(params['recentCorrect']) !== NONE
 				) {
 					constrain.push(
 						where(

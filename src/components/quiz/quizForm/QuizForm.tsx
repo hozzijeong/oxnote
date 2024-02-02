@@ -1,11 +1,23 @@
 import Button from '@components/@common/button';
 import styles from './quizForm.module.scss';
 import { Input, InputLabel } from '@components/@common';
-import Radio from '@components/@common/radio';
 import useGetCategory from '@hooks/category/useGetCategory';
 import { QuizFormType, QuizInfo } from '@models/quiz';
 import Selector from '@components/@common/selector/Selector';
 import { useMemo } from 'react';
+import { UserAnswer, YesOrNoOption } from '@constants/form';
+
+const { YES, NO } = UserAnswer;
+
+const FAVORITE_SELECT: YesOrNoOption = {
+	[YES]: '등록할게요',
+	[NO]: '등록하지 않을래요',
+};
+
+const QUIZ_ANSWER: YesOrNoOption = {
+	[YES]: 'O',
+	[NO]: 'X',
+};
 
 interface QuizFormProps {
 	quizState: QuizInfo;
@@ -14,7 +26,7 @@ interface QuizFormProps {
 	changeHandler: <T extends HTMLInputElement | HTMLTextAreaElement>(
 		event: React.ChangeEvent<T>
 	) => void;
-	selectHandler?: <K>(key: string, value: K) => void;
+	selectHandler: <K>(key: string, value: K) => void;
 }
 
 const QuizForm = ({
@@ -36,8 +48,18 @@ const QuizForm = ({
 		const values = categories
 			.filter((c) => val.includes(c.name))
 			.map((c) => c.id);
-		selectHandler && selectHandler('category', values[0]);
+		selectHandler('category', values[0]);
 	};
+
+	const answerHandler = (val: string[]) => {
+		selectHandler('answer', QUIZ_ANSWER[YES] === val[0] ? YES : NO);
+	};
+
+	const favoriteHandler = (val: string[]) => {
+		selectHandler('favorite', FAVORITE_SELECT[YES] === val[0] ? YES : NO);
+	};
+
+	console.log(answer, favorite, 'quiz form');
 
 	return (
 		<form className={styles['quiz-form']}>
@@ -64,15 +86,12 @@ const QuizForm = ({
 			</InputLabel>
 
 			<InputLabel title='답' htmlFor='answer'>
-				<Radio
-					options={[
-						{ title: 'O', value: 1 },
-						{ title: 'X', value: 0 },
-					]}
-					name='answer'
-					changeHandler={changeHandler}
-					checkedValue={Number(answer)}
-					required
+				<Selector
+					type='single'
+					placeholder='선택해주세요'
+					list={Object.values(QUIZ_ANSWER)}
+					onSubmit={answerHandler}
+					selected={answer !== undefined ? [QUIZ_ANSWER[answer]] : []}
 				/>
 			</InputLabel>
 
@@ -89,15 +108,12 @@ const QuizForm = ({
 			</InputLabel>
 
 			<InputLabel title='즐겨찾기 등록' htmlFor='favorite'>
-				<Radio
-					options={[
-						{ title: '등록하기', value: 1 },
-						{ title: '등록안함', value: 0 },
-					]}
-					name='favorite'
-					changeHandler={changeHandler}
-					checkedValue={Number(favorite)}
-					required
+				<Selector
+					type='single'
+					placeholder='선택해주세요'
+					list={Object.values(FAVORITE_SELECT)}
+					onSubmit={favoriteHandler}
+					selected={favorite !== undefined ? [FAVORITE_SELECT[favorite]] : []}
 				/>
 			</InputLabel>
 

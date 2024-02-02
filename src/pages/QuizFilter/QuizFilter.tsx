@@ -10,7 +10,9 @@ import { MutateDocumentParams } from '@hooks/fireStore/useAddDocument';
 import { useNavigate } from 'react-router-dom';
 import { QuizSelectFilter } from '@models/quiz';
 import useToast from '@hooks/useToast';
-import { ANSWER_OPTIONS } from '@constants/form';
+import { ANSWER_OPTIONS, UserAnswer } from '@constants/form';
+
+const { YES, NO } = UserAnswer;
 
 const QuizFilter = () => {
 	const { data: categories } = useGetCategory();
@@ -88,7 +90,7 @@ const QuizFilter = () => {
 		const values = categories
 			.filter((c) => val.includes(c.name))
 			.map((c) => c.id);
-		selectHandler && selectHandler('category', values);
+		selectHandler('category', values);
 	};
 
 	const userAnswerSelectHandler = (
@@ -97,7 +99,7 @@ const QuizFilter = () => {
 	) => {
 		const [selected] = Object.entries(ANSWER_OPTIONS).find(
 			([_, value]) => val[0] === value
-		) ?? [0];
+		) ?? [NO];
 
 		selectHandler && selectHandler(key, Number(selected));
 	};
@@ -144,7 +146,7 @@ const QuizFilter = () => {
 							selected={isFirst !== undefined ? [ANSWER_OPTIONS[isFirst]] : []}
 						/>
 					</InputLabel>
-					{isFirst !== 1 && isFirst !== undefined && (
+					{isFirst !== YES && isFirst !== undefined && (
 						<Fragment>
 							<InputLabel
 								title='최근 틀린문제를 선택하시겠어요?'

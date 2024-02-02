@@ -9,7 +9,13 @@ export type UserAnswerOption = {
 };
 
 export const ANSWER_OPTIONS: UserAnswerOption = {
-	1: '예',
-	0: '아니오',
-	2: '상관 없어요',
+	[UserAnswer.YES]: '예',
+	[UserAnswer.NO]: '아니오',
+	[UserAnswer.NONE]: '상관 없어요',
+};
+
+export type YesOrNo = Exclude<UserAnswer, UserAnswer.NONE>;
+
+export type YesOrNoOption = {
+	[key in YesOrNo]: string;
 };

@@ -23,14 +23,19 @@ const QuizEdit = () => {
 
 	const updateQuiz = useUpdateQuiz({ quizId: quizId, type: 'edit' });
 
-	const { submitHandler, changeHandler, cancelHandler, quizState } =
-		useQuizForm({
-			initialData: quiz,
-			submitCallback: updateQuiz,
-			cancelCallback: () => {
-				navigate(-1);
-			},
-		});
+	const {
+		submitHandler,
+		changeHandler,
+		cancelHandler,
+		quizState,
+		selectHandler,
+	} = useQuizForm({
+		initialData: quiz,
+		submitCallback: updateQuiz,
+		cancelCallback: () => {
+			navigate(-1);
+		},
+	});
 
 	return (
 		<main className={styles.main} onSubmit={submitHandler}>
@@ -39,6 +44,7 @@ const QuizEdit = () => {
 				changeHandler={changeHandler}
 				cancelHandler={cancelHandler}
 				quizState={quizState}
+				selectHandler={selectHandler}
 			/>
 		</main>
 	);
