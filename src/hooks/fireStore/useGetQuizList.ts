@@ -87,8 +87,6 @@ const useGetQuizList = <V>(
 		}
 	}
 
-	console.log(constrain, 'getQulzList');
-
 	return useSuspenseQuery<QuerySnapshot<DocumentData, DocumentData>, Error, V>({
 		queryKey: queryKey,
 		queryFn: async () => {

@@ -14,8 +14,6 @@ const CategoryDetail = () => {
 		Number(params.id ?? 0)
 	);
 
-	console.log(category);
-
 	if (!category) {
 		goToCategoryPage();
 		throw new Error('잘못된 접근입니다');

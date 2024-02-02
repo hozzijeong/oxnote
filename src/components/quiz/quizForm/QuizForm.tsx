@@ -59,8 +59,6 @@ const QuizForm = ({
 		selectHandler('favorite', FAVORITE_SELECT[YES] === val[0] ? YES : NO);
 	};
 
-	console.log(answer, favorite, 'quiz form');
-
 	return (
 		<form className={styles['quiz-form']}>
 			<InputLabel title='카테고리' htmlFor='category'>
