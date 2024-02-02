@@ -1,12 +1,11 @@
 import { MutateDocumentParams } from '@hooks/fireStore/useAddDocument';
 import useConfirm from '@hooks/useConfirm';
+import { QuizInfo, QuizSelectFilter } from '@models/quiz';
 import { DocumentData } from 'firebase/firestore';
 import { useState } from 'react';
 
 const converter = (type: string, value: string) => {
 	switch (type) {
-		case 'radio':
-			return Number(value);
 		case 'select-one':
 			return Number(value);
 		default:
@@ -14,13 +13,13 @@ const converter = (type: string, value: string) => {
 	}
 };
 
-interface QuizFormHookProps<T> {
+interface QuizFormHookProps<T extends QuizInfo | QuizSelectFilter> {
 	initialData: T;
 	submitCallback: (params: MutateDocumentParams) => void;
 	cancelCallback?: () => void;
 }
 
-const useQuizForm = <T extends DocumentData>({
+const useQuizForm = <T extends QuizInfo | QuizSelectFilter>({
 	initialData,
 	submitCallback,
 	cancelCallback,
@@ -53,7 +52,6 @@ const useQuizForm = <T extends DocumentData>({
 	};
 
 	const selectHandler = <V>(key: string, value: V) => {
-		console.log(value, 'value??');
 		setQuizState((prev) => ({
 			...prev,
 			[key]: value,
@@ -63,7 +61,23 @@ const useQuizForm = <T extends DocumentData>({
 	const submitHandler: React.FormEventHandler<HTMLFormElement> = (event) => {
 		event.preventDefault();
 
-		submitCallback({ data: quizState });
+		const updateData: DocumentData = { ...quizState };
+
+		if ('favorite' in quizState) {
+			updateData['favorite'] = Boolean(quizState.favorite);
+		}
+
+		if ('recentCorrect' in quizState) {
+			updateData['recentCorrect'] = Boolean(quizState.recentCorrect);
+		}
+
+		if ('answer' in quizState) {
+			updateData['answer'] = Boolean(quizState.answer);
+		}
+
+		submitCallback({
+			data: updateData,
+		});
 	};
 
 	return {

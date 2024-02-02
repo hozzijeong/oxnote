@@ -2,11 +2,9 @@ import { Button, Header, Input, InputLabel } from '@components/@common';
 import useGetCategory from '@hooks/category/useGetCategory';
 import styles from '@components/quiz/quizForm/quizForm.module.scss';
 import quizMain from '../QuizRegister/quizRegister.module.scss';
-import useQuizForm from '@hooks/quiz/useQuizForm';
 import { INITIAL_QUIZ_FILTER } from '@constants/quiz';
-import { Fragment, useMemo } from 'react';
+import { Fragment, useMemo, useState } from 'react';
 import Selector from '@components/@common/selector/Selector';
-import { MutateDocumentParams } from '@hooks/fireStore/useAddDocument';
 import { useNavigate } from 'react-router-dom';
 import { QuizSelectFilter } from '@models/quiz';
 import useToast from '@hooks/useToast';
@@ -19,66 +17,86 @@ const QuizFilter = () => {
 	const navigate = useNavigate();
 	const { addToast } = useToast();
 
-	const { submitHandler, changeHandler, quizState, selectHandler } =
-		useQuizForm({
-			initialData: INITIAL_QUIZ_FILTER,
-			submitCallback: ({ data }: MutateDocumentParams) => {
-				let url = '';
+	const [quizState, setQuizState] = useState(INITIAL_QUIZ_FILTER);
 
-				const obj: QuizSelectFilter = Object.assign(data);
+	const submitHandler: React.FormEventHandler<HTMLFormElement> = (e) => {
+		e.preventDefault();
 
-				if (obj.category.length === 0) {
-					addToast({ type: 'warning', message: '카테고리를 선택해주세요' });
+		let url = '';
 
-					return;
-				}
+		if (quizState.category.length === 0) {
+			addToast({ type: 'warning', message: '카테고리를 선택해주세요' });
 
-				if (obj.favorite === undefined) {
-					addToast({
-						type: 'warning',
-						message: '즐겨찾기 등록 여부를 선택해주세요',
-					});
+			return;
+		}
 
-					return;
-				}
+		if (quizState.favorite === undefined) {
+			addToast({
+				type: 'warning',
+				message: '즐겨찾기 등록 여부를 선택해주세요',
+			});
 
-				if (obj.isFirst === undefined) {
-					addToast({ type: 'warning', message: '시도 유형을 선택해주세요' });
+			return;
+		}
 
-					return;
-				}
+		if (quizState.isFirst === undefined) {
+			addToast({ type: 'warning', message: '시도 유형을 선택해주세요' });
 
-				if (obj.isFirst !== 1) {
-					if (obj.recentCorrect === undefined) {
-						addToast({
-							type: 'warning',
-							message: '최근 오답 여부를 선택해주세요',
-						});
+			return;
+		}
 
-						return;
-					}
-
-					if (
-						obj.correctRate &&
-						(obj.correctRate < 0 || obj.correctRate > 100)
-					) {
-						addToast({
-							type: 'warning',
-							message: '정답률은 0 ~ 100까지의 숫자가 입력 가능합니다',
-						});
-
-						return;
-					}
-				}
-
-				Object.entries(obj).forEach(([key, val]) => {
-					url += `${key}=${val}&`;
+		if (quizState.isFirst !== 1) {
+			if (quizState.recentCorrect === undefined) {
+				addToast({
+					type: 'warning',
+					message: '최근 오답 여부를 선택해주세요',
 				});
-				console.log(obj, 'object...');
-				url = url.slice(0, -1);
-				navigate(`/parse?${url}`);
-			},
+
+				return;
+			}
+
+			if (
+				quizState.correctRate &&
+				(quizState.correctRate < 0 || quizState.correctRate > 100)
+			) {
+				addToast({
+					type: 'warning',
+					message: '정답률은 0 ~ 100까지의 숫자가 입력 가능합니다',
+				});
+
+				return;
+			}
+		}
+
+		Object.entries(quizState).forEach(([key, val]) => {
+			url += `${key}=${val}&`;
 		});
+
+		url = url.slice(0, -1);
+
+		navigate(`/parse?${url}`);
+	};
+
+	const selectHandler = <T extends unknown>(
+		key: keyof QuizSelectFilter,
+		value: T
+	) => {
+		setQuizState((prev) => ({
+			...prev,
+			[key]: value,
+		}));
+	};
+
+	const changeHandler = <T extends HTMLInputElement | HTMLTextAreaElement>(
+		event: React.ChangeEvent<T>
+	) => {
+		const { name, value } = event.target;
+
+		setQuizState((prev) => ({
+			...prev,
+			[name]: value,
+		}));
+	};
 
 	const { category, isFirst, favorite, recentCorrect, correctRate } = quizState;
 
