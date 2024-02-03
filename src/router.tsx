@@ -9,7 +9,7 @@ import {
 	QuizEdit,
 	QuizFilter,
 	FilterParse,
-	Auth,
+	Login,
 } from './pages';
 
 const router = createBrowserRouter([
@@ -54,8 +54,8 @@ const router = createBrowserRouter([
 	{
 		children: [
 			{
-				path: URL_PATH.AUTH,
-				element: <Auth />,
+				path: URL_PATH.LOGIN,
+				element: <Login />,
 			},
 		],
 	},

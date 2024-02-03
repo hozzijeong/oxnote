@@ -6,7 +6,7 @@ export const URL_PATH = {
 	QUIZ_FILTER: '/quiz/filter',
 	CATEGORY: '/category',
 	CATEGORY_DETAIL: '/category/:id', // 여기서 id는 카테고리를 의미함
-	AUTH: '/auth',
+	LOGIN: '/login',
 };
 
 export const NAVBAR_PAGE = [

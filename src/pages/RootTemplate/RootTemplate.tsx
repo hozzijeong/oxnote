@@ -18,7 +18,7 @@ const RootTemplate = () => {
 
 	onAuthStateChanged(auth, (user) => {
 		if (!user) {
-			navigate(URL_PATH.AUTH, { replace: true });
+			navigate(URL_PATH.LOGIN, { replace: true });
 		}
 	});
 
