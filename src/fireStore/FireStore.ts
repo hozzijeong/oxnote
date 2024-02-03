@@ -15,7 +15,7 @@ import {
 	QueryFieldFilterConstraint,
 	and,
 } from 'firebase/firestore';
-import app from './Firebase';
+import { app } from './Firebase';
 
 interface DocumentPathParams {
 	path?: string;

@@ -1,24 +1,23 @@
 import { URL_PATH } from '@constants/path';
-import app from '@fireStore/Firebase';
-import { getAuth, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+import { auth } from '@fireStore/Firebase';
+import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
-
-const auth = getAuth(app);
 
 const Auth = () => {
 	const navigate = useNavigate();
+
 	const googleLoginHandler: React.MouseEventHandler<
 		HTMLButtonElement
 	> = async () => {
 		const provider = new GoogleAuthProvider();
-
 		try {
-			const data = await signInWithPopup(auth, provider);
-			navigate(URL_PATH.QUIZ_FILTER, { replace: true });
+			await signInWithPopup(auth, provider);
+			navigate(URL_PATH.QUIZ_FILTER);
 		} catch (e) {
 			console.error(e);
 		}
 	};
+
 	return (
 		<div>
 			<h1>Welcome to My Awesome App</h1>
