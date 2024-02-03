@@ -9,3 +9,4 @@ export { default as Spinner } from '@components/@common/spinner';
 export { default as Confirm } from '@components/@common/confirm';
 export { default as Radio } from '@components/@common/radio';
 export { default as Menu } from '@components/@common/menu';
+export { default as SignOut } from '@components/@common/signOut';
