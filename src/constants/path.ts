@@ -7,12 +7,14 @@ export const URL_PATH = {
 	CATEGORY: '/category',
 	CATEGORY_DETAIL: '/category/:id', // 여기서 id는 카테고리를 의미함
 	LOGIN: '/login',
+	MY_PAGE: '/mypage',
 };
 
 export const NAVBAR_PAGE = [
 	URL_PATH.QUIZ_FILTER,
 	URL_PATH.CATEGORY,
 	URL_PATH.CATEGORY_DETAIL,
+	URL_PATH.MY_PAGE,
 ];
 
 // TODO 처음 설정되는 COLLECT_ID 값을 잘 처리하기.

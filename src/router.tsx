@@ -10,6 +10,7 @@ import {
 	QuizFilter,
 	FilterParse,
 	Login,
+	MyPage,
 } from './pages';
 
 const router = createBrowserRouter([
@@ -48,6 +49,10 @@ const router = createBrowserRouter([
 			{
 				path: `/parse`,
 				element: <FilterParse />,
+			},
+			{
+				path: `/mypage`,
+				element: <MyPage />,
 			},
 		],
 	},
