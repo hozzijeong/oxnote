@@ -2,6 +2,7 @@ import { URL_PATH } from '@constants/path';
 import { auth } from '@fireStore/Firebase';
 import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
+import styles from './auth.module.scss';
 
 const Auth = () => {
 	const navigate = useNavigate();
@@ -19,10 +20,18 @@ const Auth = () => {
 	};
 
 	return (
-		<div>
-			<h1>Welcome to My Awesome App</h1>
-			<button onClick={googleLoginHandler}>구글로 로그인하기</button>
-		</div>
+		<main className={styles['login-container']}>
+			<section className={styles['login-content']}>
+				<h1 className={styles['title']}>오답노트</h1>
+				<button
+					className={styles['sign-in-button']}
+					onClick={googleLoginHandler}
+					type='button'
+				>
+					구글로 시작하기/로그인하기
+				</button>
+			</section>
+		</main>
 	);
 };
 
