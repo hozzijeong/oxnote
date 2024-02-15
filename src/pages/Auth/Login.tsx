@@ -37,13 +37,15 @@ const Auth = () => {
 		<main className={styles['login-container']}>
 			<section className={styles['login-content']}>
 				<h1 className={styles['title']}>오답노트</h1>
-				<button
-					className={styles['sign-in-button']}
-					onClick={googleLoginHandler}
-					type='button'
-				>
-					구글로 시작하기/로그인하기
-				</button>
+				<div className={styles['login-button-container']}>
+					<button
+						className={styles['sign-in-button']}
+						onClick={googleLoginHandler}
+						type='button'
+					>
+						구글로 시작하기/로그인하기
+					</button>
+				</div>
 			</section>
 		</main>
 	);
