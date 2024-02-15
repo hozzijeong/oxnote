@@ -1,11 +1,22 @@
 @use '../../style//mixin.scss' as m;
 @use '../../style/variables' as v;
 
-.button-container {
+.wrapper {
 	display: flex;
+	position: relative;
 	flex-direction: column;
 	align-items: center;
+	min-height: 80vh;
+	padding: 0 16px;
+}
+
+.button-container {
+	display: flex;
+	position: absolute;
+	bottom: 0;
+	align-items: center;
 	justify-content: center;
+	margin: 0 auto;
 	gap: 16px;
 }
 

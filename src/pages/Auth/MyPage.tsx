@@ -27,21 +27,23 @@ const MyPage = () => {
 	return (
 		<div>
 			<Header title='마이 페이지' />
-			<div className={styles['button-container']}>
-				<Button
-					className={styles['button']}
-					onClick={signOutHandler}
-					type='button'
-				>
-					로그아웃
-				</Button>
-				<Button
-					className={`${styles['button']} ${styles['delete']}`}
-					onClick={deleteUserHandler}
-					type='button'
-				>
-					회원탈퇴
-				</Button>
+			<div className={styles['wrapper']}>
+				<div className={styles['button-container']}>
+					<Button
+						className={styles['button']}
+						onClick={signOutHandler}
+						type='button'
+					>
+						로그아웃
+					</Button>
+					<Button
+						className={`${styles['button']} ${styles['delete']}`}
+						onClick={deleteUserHandler}
+						type='button'
+					>
+						회원탈퇴
+					</Button>
+				</div>
 			</div>
 		</div>
 	);
