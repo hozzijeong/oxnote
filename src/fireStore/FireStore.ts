@@ -23,6 +23,7 @@ interface DocumentPathParams {
 }
 interface AddDocumentParams extends DocumentPathParams {
 	data: DocumentData;
+	merge?: boolean;
 }
 
 class FireStore {
@@ -37,10 +38,15 @@ class FireStore {
 	}
 
 	// 기존에 있던 데이터에 값을 추가하는 메서드. id가 존재하는 경우 무작위 id를 할당하고 그게 아니라면 기본 값을 할당한다.
-	async addDocumentData({ path = '', lastId = '', data }: AddDocumentParams) {
+	async addDocumentData({
+		path = '',
+		lastId = '',
+		merge = false,
+		data,
+	}: AddDocumentParams) {
 		try {
 			if (lastId.length !== 0) {
-				await setDoc(doc(this.db, `${path}`, lastId), data);
+				await setDoc(doc(this.db, `${path}`, lastId), data, { merge });
 			} else {
 				await addDoc(collection(this.db, `${path}`), data);
 			}

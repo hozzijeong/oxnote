@@ -22,11 +22,14 @@ const Auth = () => {
 				lastId: 'User',
 			});
 
+			// TODO: 아예 덮어 씌워져 버린다... 초기에 값이 없으면 만들고 있으면 안만들어야 하는데 흐음...
 			await FireStore.addDocumentData({
 				path: `${result.user.email}`,
 				data: {},
 				lastId: FIRE_STORE.CATEGORY,
+				merge: true,
 			});
+
 			navigate(URL_PATH.QUIZ_FILTER);
 		} catch (e) {
 			console.error(e);
