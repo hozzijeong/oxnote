@@ -1,8 +1,9 @@
-import { URL_PATH } from '@constants/path';
+import { FIRE_STORE, URL_PATH } from '@constants/path';
 import { auth } from '@fireStore/Firebase';
 import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 import styles from './auth.module.scss';
+import FireStore from '@fireStore/FireStore';
 
 const Auth = () => {
 	const navigate = useNavigate();
@@ -12,7 +13,20 @@ const Auth = () => {
 	> = async () => {
 		const provider = new GoogleAuthProvider();
 		try {
-			await signInWithPopup(auth, provider);
+			const result = await signInWithPopup(auth, provider);
+			const { uid, displayName, email } = result.user;
+
+			await FireStore.addDocumentData({
+				path: 'user',
+				data: { uid: uid, name: displayName, email },
+				lastId: 'User',
+			});
+
+			await FireStore.addDocumentData({
+				path: `${result.user.email}`,
+				data: {},
+				lastId: FIRE_STORE.CATEGORY,
+			});
 			navigate(URL_PATH.QUIZ_FILTER);
 		} catch (e) {
 			console.error(e);
