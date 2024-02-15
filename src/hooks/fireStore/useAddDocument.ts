@@ -1,4 +1,5 @@
 import FireStore from '@fireStore/FireStore';
+import useCurrentUser from '@hooks/auth/useCurrentUser';
 import { MutationOptions, useMutation } from '@tanstack/react-query';
 import { DocumentData } from 'firebase/firestore';
 
@@ -17,17 +18,20 @@ const useAddDocument = ({
 	onError,
 	path,
 	lastId = '',
-}: MutateDocumentProps<void, MutateDocumentParams>) =>
-	useMutation<void, Error, MutateDocumentParams>({
+}: MutateDocumentProps<void, MutateDocumentParams>) => {
+	const { user } = useCurrentUser();
+
+	return useMutation<void, Error, MutateDocumentParams>({
 		mutationKey: [`add${path}${lastId}`],
 		mutationFn: ({ data }: MutateDocumentParams) =>
 			FireStore.addDocumentData({
-				path,
+				path: `${user?.email}/${path}`,
 				lastId,
 				data,
 			}),
 		onSuccess,
 		onError,
 	});
+};
 
 export default useAddDocument;

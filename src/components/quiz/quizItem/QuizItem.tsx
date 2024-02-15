@@ -1,7 +1,7 @@
 import type { QuizListItem } from '@models/quiz';
 import styles from './quizItem.module.scss';
 import { Link } from 'react-router-dom';
-import { QUIZ_PATH, URL_PATH } from '@constants/path';
+import { FIRE_STORE, URL_PATH } from '@constants/path';
 import useUpdateDocument from '@hooks/fireStore/useUpdateDocument';
 import { useQueryClient } from '@tanstack/react-query';
 import FavoriteButton from '@components/@common/favoriteButton';
@@ -15,7 +15,7 @@ const QuizItem = ({ item, categoryId }: QuizItemProps) => {
 	const queryClient = useQueryClient();
 
 	const { mutate: updateQuiz } = useUpdateDocument({
-		path: `${QUIZ_PATH}/${item.id}`,
+		path: `${FIRE_STORE.QUIZ}/${item.id}`,
 		onSuccess: () => {
 			queryClient.invalidateQueries({
 				queryKey: ['getCategoryQuizList', categoryId],

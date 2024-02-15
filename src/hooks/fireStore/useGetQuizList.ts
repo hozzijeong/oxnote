@@ -1,6 +1,7 @@
 import { UserAnswer } from '@constants/form';
-import { QUIZ_PATH } from '@constants/path';
+import { FIRE_STORE } from '@constants/path';
 import FireStore from '@fireStore/FireStore';
+import useCurrentUser from '@hooks/auth/useCurrentUser';
 import useGetQuizListQueryKey from '@hooks/quiz/useGetQuizListQueryKey';
 import useLocationQueryParams from '@hooks/useLocationQueryParams';
 import { Category } from '@models/quiz';
@@ -30,6 +31,7 @@ const useGetQuizList = <V>(
 	props: GetQuizListProps<V> | GetCategoryQuizListProps<V>
 ) => {
 	const { getWholeURLParams } = useLocationQueryParams();
+	const { user } = useCurrentUser();
 
 	const constrain: QueryFieldFilterConstraint[] = [];
 	let queryKey: unknown[];
@@ -90,7 +92,10 @@ const useGetQuizList = <V>(
 	return useSuspenseQuery<QuerySnapshot<DocumentData, DocumentData>, Error, V>({
 		queryKey: queryKey,
 		queryFn: async () => {
-			return await FireStore.getQuerySnapShot(QUIZ_PATH, constrain);
+			return await FireStore.getQuerySnapShot(
+				`${user?.email}/${FIRE_STORE.QUIZ}`,
+				constrain
+			);
 		},
 		select: props.selectHandler,
 	});

@@ -5,19 +5,22 @@ import { ToastProvider } from '@context/ToastProvider';
 import { ToastList } from '@components/@common';
 import { ConfirmProvider } from '@context/ConfirmProvider';
 import Confirm from '@components/@common/confirm/Confirm';
+import { UserProvider } from '@context/UserProvider';
 
 const queryClient = new QueryClient();
 
 function App() {
 	return (
 		<QueryClientProvider client={queryClient}>
-			<ConfirmProvider>
-				<ToastProvider>
-					<RouterProvider router={router} />
-					<ToastList />
-					<Confirm />
-				</ToastProvider>
-			</ConfirmProvider>
+			<UserProvider>
+				<ConfirmProvider>
+					<ToastProvider>
+						<RouterProvider router={router} />
+						<ToastList />
+						<Confirm />
+					</ToastProvider>
+				</ConfirmProvider>
+			</UserProvider>
 		</QueryClientProvider>
 	);
 }
