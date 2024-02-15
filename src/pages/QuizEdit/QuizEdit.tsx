@@ -3,7 +3,7 @@ import styles from '../QuizRegister/quizRegister.module.scss';
 import useGetDocument from '@hooks/fireStore/useGetDocument';
 import useQuizForm from '@hooks/quiz/useQuizForm';
 import { QuizInfo } from '@models/quiz';
-import { QUIZ_PATH } from '@constants/path';
+import { FIRE_STORE } from '@constants/path';
 import { useNavigate, useParams } from 'react-router-dom';
 import useUpdateQuiz from '@hooks/quiz/useUpdateQuiz';
 
@@ -18,7 +18,7 @@ const QuizEdit = () => {
 	}
 
 	const { data: quiz } = useGetDocument<QuizInfo>({
-		path: `${QUIZ_PATH}/${quizId}`,
+		path: `${FIRE_STORE.QUIZ}/${quizId}`,
 	});
 
 	const updateQuiz = useUpdateQuiz({ quizId: quizId, type: 'edit' });

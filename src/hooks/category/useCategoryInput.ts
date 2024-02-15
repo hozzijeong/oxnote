@@ -2,9 +2,9 @@ import { Category } from '@models/quiz';
 import { useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import useUpdateDocument from '../fireStore/useUpdateDocument';
-import { CATEGORY_PATH } from '@constants/path';
 import useConfirm from '@hooks/useConfirm';
 import useToast from '@hooks/useToast';
+import { FIRE_STORE } from '@constants/path';
 
 const useCategoryInput = (categories: Category[]) => {
 	const queryClient = useQueryClient();
@@ -14,9 +14,11 @@ const useCategoryInput = (categories: Category[]) => {
 	const confirm = useConfirm();
 
 	const { mutate: addCategory } = useUpdateDocument({
-		path: CATEGORY_PATH,
+		path: FIRE_STORE.CATEGORY,
 		onSuccess() {
-			queryClient.invalidateQueries({ queryKey: [`get${CATEGORY_PATH}`] });
+			queryClient.invalidateQueries({
+				queryKey: [`get${FIRE_STORE.CATEGORY}`],
+			});
 		},
 	});
 

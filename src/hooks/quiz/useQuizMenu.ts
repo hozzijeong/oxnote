@@ -1,4 +1,4 @@
-import { QUIZ_PATH, URL_PATH } from '@constants/path';
+import { FIRE_STORE, URL_PATH } from '@constants/path';
 import { generatePath, useNavigate } from 'react-router-dom';
 import useDeleteDocument from '../fireStore/useDeleteDocument';
 import { useQueryClient } from '@tanstack/react-query';
@@ -16,7 +16,7 @@ const useQuizMenu = ({ quizIds, currentId }: QuizNavbarProps) => {
 	const queryKey = useGetQuizListQueryKey();
 
 	const { mutate: deleteQuiz } = useDeleteDocument({
-		path: `${QUIZ_PATH}/${currentId}`,
+		path: `${FIRE_STORE.QUIZ}/${currentId}`,
 		onSuccess: () => {
 			const currentIdx = quizIds.findIndex((idx) => idx === currentId);
 

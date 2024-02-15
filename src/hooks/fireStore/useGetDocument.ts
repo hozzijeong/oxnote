@@ -1,4 +1,5 @@
 import FireStore from '@fireStore/FireStore';
+import useCurrentUser from '@hooks/auth/useCurrentUser';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import type { DocumentData } from 'firebase/firestore';
 
@@ -7,11 +8,15 @@ interface DocumentProps<T> {
 	selectCallback?: (data: DocumentData) => T;
 }
 
-const useGetDocument = <T>({ path, selectCallback }: DocumentProps<T>) =>
-	useSuspenseQuery<DocumentData, Error, T>({
+const useGetDocument = <T>({ path, selectCallback }: DocumentProps<T>) => {
+	const { user } = useCurrentUser();
+	console.log(user);
+
+	return useSuspenseQuery<DocumentData, Error, T>({
 		queryKey: [`get${path}`],
-		queryFn: () => FireStore.getDocumentInfos(path),
+		queryFn: () => FireStore.getDocumentInfos(`${user?.email}/${path}`),
 		select: selectCallback,
 	});
+};
 
 export default useGetDocument;

@@ -1,6 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
 import { MutateDocumentProps } from './useAddDocument';
 import FireStore from '@fireStore/FireStore';
+import useCurrentUser from '@hooks/auth/useCurrentUser';
 
 const useDeleteDocument = ({
 	path,
@@ -8,14 +9,18 @@ const useDeleteDocument = ({
 	onError,
 	onMutate,
 	onSettled,
-}: Omit<MutateDocumentProps<void, void>, 'lastId'>) =>
-	useMutation({
+}: Omit<MutateDocumentProps<void, void>, 'lastId'>) => {
+	const { user } = useCurrentUser();
+
+	return useMutation({
 		mutationKey: [`delete${path}`],
-		mutationFn: async () => await FireStore.deleteDocument(path),
+		mutationFn: async () =>
+			await FireStore.deleteDocument(`${user?.email}/${path}`),
 		onMutate,
 		onSettled,
 		onSuccess,
 		onError,
 	});
+};
 
 export default useDeleteDocument;

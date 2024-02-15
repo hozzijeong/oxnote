@@ -1,4 +1,4 @@
-import { QUIZ_PATH } from '@constants/path';
+import { FIRE_STORE } from '@constants/path';
 import useUpdateDocument from '@hooks/fireStore/useUpdateDocument';
 import useConfirm from '@hooks/useConfirm';
 import { QuizInfo } from '@models/quiz';
@@ -24,7 +24,7 @@ const useUpdateQuiz = ({ type, quizId }: UpdateQuizProps) => {
 
 		// TODO: 카테고리 업데이트시 처리할 것
 		queryClient.invalidateQueries({
-			queryKey: [`get${QUIZ_PATH}/${quizId}`],
+			queryKey: [`get${FIRE_STORE.QUIZ}/${quizId}`],
 		});
 
 		if (answer) {
@@ -34,17 +34,17 @@ const useUpdateQuiz = ({ type, quizId }: UpdateQuizProps) => {
 
 	const favoriteSuccess = () => {
 		queryClient.invalidateQueries({
-			queryKey: [`get${QUIZ_PATH}/${quizId}`],
+			queryKey: [`get${FIRE_STORE.QUIZ}/${quizId}`],
 		});
 	};
 
 	const successCallback = (type: 'edit' | 'favorite') => {
 		if (type === 'edit') editSuccess();
-		else if (type === 'favorite') favoriteSuccess();
+		if (type === 'favorite') favoriteSuccess();
 	};
 
 	const { mutate: updateQuiz } = useUpdateDocument({
-		path: `${QUIZ_PATH}/${quizId}`,
+		path: `${FIRE_STORE.QUIZ}/${quizId}`,
 		onSuccess: () => successCallback(type),
 	});
 

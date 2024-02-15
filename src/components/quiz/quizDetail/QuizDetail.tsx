@@ -2,11 +2,10 @@ import useToggle from '@hooks/useToggle';
 import styles from './quizDetail.module.scss';
 import type { QuizInfo } from '@models/quiz';
 import useGetDocument from '@hooks/fireStore/useGetDocument';
-import { QUIZ_PATH } from '@constants/path';
+import { FIRE_STORE } from '@constants/path';
 import useToast from '@hooks/useToast';
 import FavoriteButton from '@components/@common/favoriteButton';
 import useUpdateQuiz from '@hooks/quiz/useUpdateQuiz';
-
 interface QuizDetailProps {
 	quizId: QuizInfo['id'];
 }
@@ -16,7 +15,7 @@ const QuizDetail = ({ quizId }: QuizDetailProps) => {
 	const { isOn: explainOn, toggleHandler: explainHandler } = useToggle();
 
 	const { data: quiz } = useGetDocument<QuizInfo>({
-		path: `${QUIZ_PATH}/${quizId}`,
+		path: `${FIRE_STORE.QUIZ}/${quizId}`,
 	});
 
 	const updateQuiz = useUpdateQuiz({ quizId, type: 'favorite' });

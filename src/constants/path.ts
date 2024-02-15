@@ -23,6 +23,3 @@ export const FIRE_STORE = {
 	CATEGORY: 'Category',
 	COLLECT_ID: import.meta.env.VITE_COLLECTION_ID,
 } as const;
-
-export const QUIZ_PATH = `${FIRE_STORE.COLLECT_ID}/${FIRE_STORE.QUIZ}`;
-export const CATEGORY_PATH = `${FIRE_STORE.COLLECT_ID}/${FIRE_STORE.CATEGORY}`;
