@@ -10,7 +10,6 @@ interface DocumentProps<T> {
 
 const useGetDocument = <T>({ path, selectCallback }: DocumentProps<T>) => {
 	const { user } = useCurrentUser();
-	console.log(user);
 
 	return useSuspenseQuery<DocumentData, Error, T>({
 		queryKey: [`get${path}`],
