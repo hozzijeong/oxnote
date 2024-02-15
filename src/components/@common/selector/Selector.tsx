@@ -77,27 +77,33 @@ const Selector = ({
 
 	const id = useId();
 
-	const options = useMemo(
-		() =>
-			list
-				.filter((item) =>
-					search.trim().length
-						? item.toLowerCase().includes(search.toLowerCase())
-						: true
-				)
-				.map((item) => (
-					<li className={styles['options']} key={item + id}>
-						<Menu.Item
-							onClick={optionClickHandler}
-							itemType='checkBox'
-							checked={selectedOption.includes(item)}
-						>
-							{item}
-						</Menu.Item>
-					</li>
-				)),
-		[id, list, optionClickHandler, search, selectedOption]
-	);
+	const options = useMemo(() => {
+		const filtered = list.filter((item) =>
+			search.trim().length
+				? item.toLowerCase().includes(search.toLowerCase())
+				: true
+		);
+
+		if (filtered.length === 0) {
+			return (
+				<li className={styles['options']}>
+					<Menu.Item itemType='default'>등록된 값이 없습니다.</Menu.Item>
+				</li>
+			);
+		}
+
+		return filtered.map((item) => (
+			<li className={styles['options']} key={item + id}>
+				<Menu.Item
+					onClick={optionClickHandler}
+					itemType='checkBox'
+					checked={selectedOption.includes(item)}
+				>
+					{item}
+				</Menu.Item>
+			</li>
+		));
+	}, [id, list, optionClickHandler, search, selectedOption]);
 
 	const clickMenuOutside = useCallback(
 		(event: MouseEvent) => {

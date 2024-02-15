@@ -6,3 +6,5 @@ export { default as Quiz } from './Quiz/Quiz';
 export { default as QuizEdit } from './QuizEdit/QuizEdit';
 export { default as QuizFilter } from './QuizFilter/QuizFilter';
 export { default as FilterParse } from './QuizFilter/FilterParse';
+export { default as Login } from './Auth/Login';
+export { default as MyPage } from './Auth/MyPage';

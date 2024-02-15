@@ -10,6 +10,8 @@
 
 .category-container {
 	display: grid;
+	position: relative;
+
 	@include mix.small {
 		grid-template-columns: repeat(2, 1fr);
 	}
@@ -37,4 +39,12 @@
 	@include mix.fontLarge;
 
 	gap: 8px;
+}
+
+.empty-container {
+	position: absolute;
+	width: 100%;
+	margin: 0 auto;
+	font-size: 2rem;
+	text-align: center;
 }

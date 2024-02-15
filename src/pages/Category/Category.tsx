@@ -13,16 +13,22 @@ const Category = () => {
 
 	const categories = useMemo(
 		() =>
-			category.map(({ id, name }) => (
-				<Link
-					key={id}
-					className={styles['category-folder']}
-					to={generatePath(URL_PATH.CATEGORY_DETAIL, { id: String(id) })}
-				>
-					<img src={Folder} width={72} height={72} alt={`${name} 폴더`} />
-					{name}
-				</Link>
-			)),
+			category.length === 0 ? (
+				<div className={styles['empty-container']}>
+					<p>등록된 카테고리가 없습니다</p>
+				</div>
+			) : (
+				category.map(({ id, name }) => (
+					<Link
+						key={id}
+						className={styles['category-folder']}
+						to={generatePath(URL_PATH.CATEGORY_DETAIL, { id: String(id) })}
+					>
+						<img src={Folder} width={72} height={72} alt={`${name} 폴더`} />
+						{name}
+					</Link>
+				))
+			),
 		[category]
 	);
 
