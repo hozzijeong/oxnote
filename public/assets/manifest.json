@@ -1,0 +1,60 @@
+{
+	"name": "오답노트",
+	"short_name": "ox-note",
+	"icons": [
+		{
+			"src": "/public/assets/android-launchericon-48-48.png",
+			"sizes": "48x48",
+			"type": "image/png",
+			"density": "1.0",
+			"purpose": "any"
+		},
+		{
+			"src": "/public/assets/android-launchericon-72-72.png",
+			"sizes": "72x72",
+			"type": "image/png",
+			"density": "1.5",
+			"purpose": "any"
+		},
+		{
+			"src": "/public/assets/android-launchericon-96-96.png",
+			"sizes": "96x96",
+			"type": "image/png",
+			"density": "2.0",
+			"purpose": "any"
+		},
+		{
+			"src": "/public/assets/android-launchericon-144-144.png",
+			"sizes": "144x144",
+			"type": "image/png",
+			"density": "3.0",
+			"purpose": "any"
+		},
+		{
+			"src": "/public/assets/android-launchericon-192-192.png",
+			"sizes": "192x192",
+			"type": "image/png",
+			"density": "4.0",
+			"purpose": "maskable"
+		},
+		{
+			"src": "/public/assets/android-launchericon-512-512.png",
+			"sizes": "512x512",
+			"type": "image/png",
+			"density": "5.0",
+			"purpose": "maskable"
+		}
+	],
+	"display": "standalone",
+	"theme_color": "#A64029",
+	"background_color": "#ffffff",
+	"id": "ox-note",
+	"description": "오답노트는 문제를 풀면서 틀렸던 문제들을 기록하고 다시 풀어보는 어플이에요",
+	"start_url": "/quiz/filter",
+	"dir": "auto",
+	"lang": "ko",
+	"orientation": "portrait",
+	"scope": "/",
+	"categories": ["study"],
+	"display_override": ["window-controls-overlay"]
+}
