@@ -3,21 +3,21 @@
 	"short_name": "ox-note",
 	"icons": [
 		{
-			"src": "/public/assets/android-launchericon-4-x48.png",
+			"src": "/public/assets/android-launchericon-48-48.png",
 			"sizes": "48x48",
 			"type": "image/png",
 			"density": "1.0",
 			"purpose": "any"
 		},
 		{
-			"src": "/public/assets/android-launchericon-7-x72.png",
+			"src": "/public/assets/android-launchericon-72-72.png",
 			"sizes": "72x72",
 			"type": "image/png",
 			"density": "1.5",
 			"purpose": "any"
 		},
 		{
-			"src": "/public/assets/android-launchericon-9-x96.png",
+			"src": "/public/assets/android-launchericon-96-96.png",
 			"sizes": "96x96",
 			"type": "image/png",
 			"density": "2.0",
