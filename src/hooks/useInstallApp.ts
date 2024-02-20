@@ -39,11 +39,9 @@ const useInstallApp = () => {
 		setShowPrompt(false);
 	};
 
-	// TODO: 해당 이벤트를 지원하지 않는 브라우저의 경우에 어떻게 처리를 할 것인가?
 	const beforeInstallPromptHandler = useCallback(
 		(event: BeforeInstallPromptEvent) => {
 			event.preventDefault();
-			console.log('beforeInstallPrompt', showPrompt, '@');
 			if (!showPrompt) return;
 
 			deferredPrompt = event;
