@@ -1,7 +1,7 @@
 self.addEventListener('install', (event) => {
 	event.waitUntil(
 		caches.open(assetCacheName).then((cache) => {
-			cache.addAll(['/index.html', '/']);
+			cache.addAll(['/index.html', '/assets', '/manifest.json']);
 		})
 	);
 

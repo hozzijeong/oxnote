@@ -4,7 +4,7 @@ import App from './App.tsx';
 import './index.scss';
 import registerPwaServiceWorker from './registerServiceWorker.ts';
 
-registerPwaServiceWorker('/public/serviceWorker.js');
+registerPwaServiceWorker('/public/sw.js');
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
 	<React.StrictMode>
