@@ -3,17 +3,10 @@ import react from '@vitejs/plugin-react';
 import sass from 'sass';
 import tsconfigPath from 'vite-tsconfig-paths';
 import { resolve } from 'path';
-import { VitePWA } from 'vite-plugin-pwa';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-	plugins: [
-		react(),
-		tsconfigPath(),
-		VitePWA({
-			registerType: 'autoUpdate',
-		}),
-	],
+	plugins: [react(), tsconfigPath()],
 
 	css: {
 		preprocessorOptions: {
