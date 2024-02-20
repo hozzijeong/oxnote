@@ -14,8 +14,10 @@ const useInstallApp = () => {
 	);
 
 	const installApp = async () => {
-		console.log('install', deferredPrompt, '@@');
-		if (!deferredPrompt) return;
+		if (!deferredPrompt) {
+			closePrompt();
+			return;
+		}
 		await deferredPrompt.prompt();
 
 		await deferredPrompt.userChoice;
