@@ -1,4 +1,10 @@
-import { Button, Header, Input, InputLabel } from '@components/@common';
+import {
+	Button,
+	Header,
+	Input,
+	InputLabel,
+	InstallPrompt,
+} from '@components/@common';
 import useGetCategory from '@hooks/category/useGetCategory';
 import styles from '@components/quiz/quizForm/quizForm.module.scss';
 import quizMain from '../QuizRegister/quizRegister.module.scss';
@@ -125,6 +131,7 @@ const QuizFilter = () => {
 	return (
 		<Fragment>
 			<Header title='문제 설정하기' />
+			<InstallPrompt />
 			<main className={quizMain['main']}>
 				<form className={styles['quiz-form']} onSubmit={submitHandler}>
 					<InputLabel title='카테고리' htmlFor='category'>

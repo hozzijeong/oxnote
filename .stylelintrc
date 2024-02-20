@@ -16,6 +16,12 @@
 		"string-quotes": "single",
 		"scss/at-rule-conditional-no-parentheses": null
 	},
-	"ignoreFiles": ["**/*.ts", "**/*.tsx", ".eslintrc.cjs", "/node_modules"],
+	"ignoreFiles": [
+		"**/*.js",
+		"**/*.ts",
+		"**/*.tsx",
+		".eslintrc.cjs",
+		"/node_modules"
+	],
 	"defaultSeverity": "warning"
 }
