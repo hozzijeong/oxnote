@@ -59,11 +59,10 @@ class FireStore {
 	async getDocumentInfos(path: string) {
 		const categorySnapShot = await getDoc(doc(this.db, `${path}`));
 
-		if (categorySnapShot.exists()) {
-			return categorySnapShot.data();
-		}
+		if (!categorySnapShot.exists())
+			throw new Error('해당 경로에 맞는 데이터가 없습니다.');
 
-		throw new Error('해당 경로에 맞는 데이터가 없습니다.');
+		return categorySnapShot.data();
 	}
 
 	async getQuerySnapShot(
@@ -90,6 +89,7 @@ class FireStore {
 		setDoc(docRef, updatedData, { merge: true });
 	}
 
+	// 컬렉션 삭제를 제공하지 않음... 아...
 	async deleteDocument(path: string) {
 		const document = doc(this.db, `${path}`);
 

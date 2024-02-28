@@ -21,5 +21,4 @@ export const NAVBAR_PAGE = [
 export const FIRE_STORE = {
 	QUIZ: 'Quiz/data',
 	CATEGORY: 'Category',
-	COLLECT_ID: import.meta.env.VITE_COLLECTION_ID,
 } as const;
