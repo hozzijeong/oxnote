@@ -1,21 +1,39 @@
 @use './../../../style/mixin' as mix;
 @use './../../../style/variables' as v;
 
+.main {
+	display: flex;
+	position: relative;
+	flex-direction: column;
+	min-height: 200px;
+	margin: 0 20px;
+	padding: 20px;
+	border: 1px solid #{v.$gray-60};
+	border-radius: 20px;
+	gap: 24px;
+}
+
 .quiz-container {
 	display: flex;
 	justify-content: space-between;
-	padding: 20px;
+	gap: 8px;
+}
 
-	p {
-		@include mix.fontLarge;
-	}
+.paragraph {
+	@include mix.fontLarge;
+
+	width: 100%;
+	overflow: scroll;
+	font-size: 2rem;
+	line-height: 2.4rem;
+	overflow-wrap: break-word;
 }
 
 .answer-container {
 	display: flex;
 	flex-direction: column;
-	padding: 20px;
 	gap: 16px;
+	margin-bottom: 40px;
 
 	button {
 		@include mix.fontLarge;
@@ -34,19 +52,25 @@
 	display: flex;
 	position: absolute;
 	bottom: 0;
+	left: 0;
 	width: 100%;
 }
 
 .button {
 	width: 100%;
 	height: #{v.$button-height};
+	height: 60px;
 	color: #{v.$white-100};
+
+	@include mix.fontMedium;
 }
 
 .false-bg {
+	border-bottom-left-radius: 20px;
 	background-color: #{v.$accent};
 }
 
 .true-bg {
+	border-bottom-right-radius: 20px;
 	background-color: #{v.$correct};
 }

@@ -86,9 +86,9 @@ const QuizDetail = ({ quizId, nextId }: QuizDetailProps) => {
 	};
 
 	return (
-		<section>
+		<section className={styles['main']}>
 			<div className={styles['quiz-container']}>
-				<p>{quiz.quiz}</p>
+				<p className={styles['paragraph']}>{quiz.quiz}</p>
 				<FavoriteButton
 					isFavorite={Boolean(quiz.favorite)}
 					onClick={favoriteClickHandler}
@@ -99,7 +99,7 @@ const QuizDetail = ({ quizId, nextId }: QuizDetailProps) => {
 				<button type='button' onClick={explainHandler}>{`해설 ${
 					explainOn ? '닫기' : '보기'
 				}`}</button>
-				{explainOn && <p>{quiz.explain}</p>}
+				{explainOn && <p className={styles['paragraph']}>{quiz.explain}</p>}
 			</div>
 
 			<div
