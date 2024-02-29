@@ -32,6 +32,9 @@ const Quiz = () => {
 		quizIds,
 	});
 
+	const currentIndex = quizIds.findIndex((id) => id === currentId);
+	const nextId = quizIds[currentIndex + 1] ?? null;
+
 	return (
 		<main className={styles.main}>
 			<Header
@@ -50,7 +53,7 @@ const Quiz = () => {
 				}
 			/>
 			<QuizNavbar currentId={currentId} quizIds={quizIds} />
-			<QuizDetail quizId={currentId} />
+			<QuizDetail quizId={currentId} nextId={nextId} />
 		</main>
 	);
 };

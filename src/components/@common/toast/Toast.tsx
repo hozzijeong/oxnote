@@ -4,7 +4,14 @@ import useToast from '@hooks/useToast';
 import styles from './toast.module.scss';
 
 const Toast = (props: ToastItem) => {
-	const { id, type, message, time = 2100 } = props;
+	const {
+		id,
+		type,
+		message,
+		time = 2100,
+		buttonContent,
+		onClickButton,
+	} = props;
 
 	const { setToastItem } = useToast();
 
@@ -42,6 +49,20 @@ const Toast = (props: ToastItem) => {
 					</div>
 				</div>
 			</div>
+			{buttonContent && onClickButton && (
+				<div>
+					<button
+						onClick={() => {
+							onClickButton();
+							toastClose();
+						}}
+						type='button'
+					>
+						{buttonContent}
+					</button>
+				</div>
+			)}
+
 			<div
 				className={`${styles['progress-bar']} ${styles[`${type}-border`]}`}
 			/>
