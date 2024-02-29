@@ -18,16 +18,6 @@ const MyPage = () => {
 		auth.signOut();
 	};
 
-	/**
-	 * TODO:
-	 * 사용자 데이터 저장하는데 있어서 구조 문제가 분명히 존재한다.
-	 *
-	 * 따라서 기존 user > uid > Quiz > 문서
-	 * user > uid > Category > 문서 이렇게 갈지,
-	 * 아니면 uid[category] = {} > 이렇게 갈지 고민
-	 *
-	 *
-	 */
 	const deleteUserHandler = async () => {
 		if (!user) return;
 
