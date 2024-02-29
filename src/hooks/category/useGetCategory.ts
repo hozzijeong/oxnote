@@ -1,9 +1,9 @@
-import useGetDocument from '../fireStore/useGetDocument';
 import type { Category } from '@models/quiz';
 import { FIRE_STORE } from '@constants/path';
+import useGetSnapshot from '@hooks/fireStore/useGetSnapshot';
 
 const useGetCategory = () => {
-	return useGetDocument<Category[]>({
+	return useGetSnapshot<Category[]>({
 		path: `${FIRE_STORE.CATEGORY}`,
 		selectCallback: (data) => {
 			if (data.empty) return [];

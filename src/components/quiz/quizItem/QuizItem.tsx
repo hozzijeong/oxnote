@@ -27,7 +27,7 @@ const QuizItem = ({ item, categoryId }: QuizItemProps) => {
 		updateQuiz({
 			data: {
 				...item,
-				favorite: !item.favorite,
+				favorite: Number(!item.favorite),
 			},
 		});
 

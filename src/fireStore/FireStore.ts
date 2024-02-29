@@ -78,7 +78,6 @@ class FireStore {
 	}
 
 	async updateDocumentData(path: string, updateData: DocumentData) {
-		console.log(path, updateData);
 		const docRef = doc(this.db, path);
 
 		const currentData = await this.getDocumentInfos(`${path}`);

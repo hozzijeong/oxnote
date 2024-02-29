@@ -51,7 +51,7 @@ const useGetQuizList = <V>(
 		queryKey = [...useGetQuizListQueryKey()];
 		if (params['category'] !== undefined) {
 			constrain.push(
-				where('category', 'in', [...params['category'].split(',')].map(Number))
+				where('category', 'in', [...params['category'].split(',')])
 			);
 		}
 		// 좋아요 확인

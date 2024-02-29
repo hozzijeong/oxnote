@@ -64,7 +64,7 @@ const useQuizForm = <T extends QuizInfo | QuizSelectFilter>({
 		const updateData: DocumentData = { ...quizState };
 
 		if ('favorite' in quizState) {
-			updateData['favorite'] = Boolean(quizState.favorite);
+			updateData['favorite'] = quizState.favorite ?? 0;
 		}
 
 		if ('recentCorrect' in quizState) {
@@ -72,7 +72,7 @@ const useQuizForm = <T extends QuizInfo | QuizSelectFilter>({
 		}
 
 		if ('answer' in quizState) {
-			updateData['answer'] = Boolean(quizState.answer);
+			updateData['answer'] = quizState.answer ?? 0;
 		}
 
 		submitCallback({

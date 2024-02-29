@@ -80,7 +80,7 @@ const QuizDetail = ({ quizId, nextId }: QuizDetailProps) => {
 		updateQuiz({
 			data: {
 				...quiz,
-				favorite: !quiz.favorite,
+				favorite: Number(!quiz.favorite),
 			},
 		});
 	};

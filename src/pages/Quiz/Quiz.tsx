@@ -19,6 +19,8 @@ const Quiz = () => {
 
 	const { data: quizIds } = useGetQuizList<QuizInfo['id'][]>({
 		selectHandler: (data) => {
+			if (data.empty) return [];
+
 			const result: QuizInfo['id'][] = [];
 
 			data.forEach((value) => {
