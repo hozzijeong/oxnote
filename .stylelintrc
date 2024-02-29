@@ -21,7 +21,8 @@
 		"**/*.ts",
 		"**/*.tsx",
 		".eslintrc.cjs",
-		"/node_modules"
+		"/node_modules",
+		"**/*.md"
 	],
 	"defaultSeverity": "warning"
 }
