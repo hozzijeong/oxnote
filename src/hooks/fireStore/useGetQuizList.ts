@@ -93,7 +93,7 @@ const useGetQuizList = <V>(
 		queryKey: queryKey,
 		queryFn: async () => {
 			return await FireStore.getQuerySnapShot(
-				`${user?.email}/${FIRE_STORE.QUIZ}`,
+				`user/${user?.uid}/${FIRE_STORE.QUIZ}`,
 				constrain
 			);
 		},

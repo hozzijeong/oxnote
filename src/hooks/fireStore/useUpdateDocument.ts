@@ -13,7 +13,8 @@ const useUpdateDocument = ({
 	return useMutation({
 		mutationKey: [`update${path}`],
 		mutationFn: async ({ data }: MutateDocumentParams) => {
-			await FireStore.updateDocumentData(`${user?.email}/${path}`, data);
+			console.log(`user/${user?.uid}/${path}`, data);
+			await FireStore.updateDocumentData(`user/${user?.uid}/${path}`, data);
 		},
 		onSuccess,
 		onError,

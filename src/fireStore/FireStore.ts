@@ -37,7 +37,6 @@ class FireStore {
 		this.updateDocumentData = this.updateDocumentData.bind(this);
 	}
 
-	// 기존에 있던 데이터에 값을 추가하는 메서드. id가 존재하는 경우 무작위 id를 할당하고 그게 아니라면 기본 값을 할당한다.
 	async addDocumentData({
 		path = '',
 		lastId = '',
@@ -78,8 +77,8 @@ class FireStore {
 		return querySnapshot;
 	}
 
-	// Document를 업데이트 하는 메서드
 	async updateDocumentData(path: string, updateData: DocumentData) {
+		console.log(path, updateData);
 		const docRef = doc(this.db, path);
 
 		const currentData = await this.getDocumentInfos(`${path}`);
@@ -89,7 +88,6 @@ class FireStore {
 		setDoc(docRef, updatedData, { merge: true });
 	}
 
-	// 컬렉션 삭제를 제공하지 않음... 아...
 	async deleteDocument(path: string) {
 		const document = doc(this.db, `${path}`);
 

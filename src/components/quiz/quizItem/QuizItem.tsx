@@ -8,7 +8,7 @@ import FavoriteButton from '@components/@common/favoriteButton';
 
 interface QuizItemProps {
 	item: QuizListItem;
-	categoryId: number;
+	categoryId: string;
 }
 
 const QuizItem = ({ item, categoryId }: QuizItemProps) => {

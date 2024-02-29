@@ -25,7 +25,7 @@ const useAddDocument = ({
 		mutationKey: [`add${path}${lastId}`],
 		mutationFn: ({ data }: MutateDocumentParams) =>
 			FireStore.addDocumentData({
-				path: `${user?.email}/${path}`,
+				path: `user/${user?.uid}/${path}`,
 				lastId,
 				data,
 			}),

@@ -12,7 +12,7 @@ const CategoryDetail = () => {
 	const params = useParams();
 
 	const { category, goToCategoryPage } = useGetCurrentCategoryFromQuery(
-		Number(params.id ?? 0)
+		params.id ?? ''
 	);
 
 	if (!category) {
