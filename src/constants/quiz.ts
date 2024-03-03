@@ -3,7 +3,7 @@ import type { Quiz, QuizInfo, QuizSelectFilter } from '@models/quiz';
 export const INITIAL_QUIZ: Quiz = {
 	quiz: '',
 	explain: '',
-	category: -1,
+	category: '',
 };
 
 export const INITIAL_QUIZ_RECORD: QuizInfo = {

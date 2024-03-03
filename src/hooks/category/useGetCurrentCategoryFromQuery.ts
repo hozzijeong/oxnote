@@ -4,7 +4,7 @@ import { URL_PATH } from '@constants/path';
 import { useNavigate } from 'react-router-dom';
 import useGetCategory from './useGetCategory';
 
-const useGetCurrentCategoryFromQuery = (categoryId: number) => {
+const useGetCurrentCategoryFromQuery = (categoryId: string) => {
 	const navigate = useNavigate();
 
 	const goToCategoryPage = () => navigate(URL_PATH.CATEGORY, { replace: true });

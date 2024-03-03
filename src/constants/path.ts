@@ -17,9 +17,7 @@ export const NAVBAR_PAGE = [
 	URL_PATH.MY_PAGE,
 ];
 
-// TODO 처음 설정되는 COLLECT_ID 값을 잘 처리하기.
 export const FIRE_STORE = {
-	QUIZ: 'Quiz/data',
-	CATEGORY: 'Category',
-	COLLECT_ID: import.meta.env.VITE_COLLECTION_ID,
+	QUIZ: 'quizzes',
+	CATEGORY: 'categories',
 } as const;

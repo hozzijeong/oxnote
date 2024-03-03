@@ -12,7 +12,7 @@ const CategoryDetail = () => {
 	const params = useParams();
 
 	const { category, goToCategoryPage } = useGetCurrentCategoryFromQuery(
-		Number(params.id ?? 0)
+		params.id ?? ''
 	);
 
 	if (!category) {
@@ -63,7 +63,7 @@ const CategoryDetail = () => {
 			<main>
 				{quizList.length === 0 ? (
 					<div className={styles['empty-container']}>
-						<p>아직 등록된 문젝가 없습니다</p>
+						<p>아직 등록된 문제가 없습니다</p>
 						<Link className={styles['form-link']} to={URL_PATH.QUIZ_FORM}>
 							등록하러 가기
 						</Link>

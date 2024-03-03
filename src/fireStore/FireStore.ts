@@ -37,7 +37,6 @@ class FireStore {
 		this.updateDocumentData = this.updateDocumentData.bind(this);
 	}
 
-	// 기존에 있던 데이터에 값을 추가하는 메서드. id가 존재하는 경우 무작위 id를 할당하고 그게 아니라면 기본 값을 할당한다.
 	async addDocumentData({
 		path = '',
 		lastId = '',
@@ -59,11 +58,10 @@ class FireStore {
 	async getDocumentInfos(path: string) {
 		const categorySnapShot = await getDoc(doc(this.db, `${path}`));
 
-		if (categorySnapShot.exists()) {
-			return categorySnapShot.data();
-		}
+		if (!categorySnapShot.exists())
+			throw new Error('해당 경로에 맞는 데이터가 없습니다.');
 
-		throw new Error('해당 경로에 맞는 데이터가 없습니다.');
+		return categorySnapShot.data();
 	}
 
 	async getQuerySnapShot(
@@ -79,7 +77,6 @@ class FireStore {
 		return querySnapshot;
 	}
 
-	// Document를 업데이트 하는 메서드
 	async updateDocumentData(path: string, updateData: DocumentData) {
 		const docRef = doc(this.db, path);
 

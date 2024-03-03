@@ -1,9 +1,10 @@
-import { FIRE_STORE, URL_PATH } from '@constants/path';
+import { URL_PATH } from '@constants/path';
 import { auth } from '@fireStore/Firebase';
 import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 import styles from './auth.module.scss';
 import FireStore from '@fireStore/FireStore';
+import { where } from 'firebase/firestore';
 
 const Auth = () => {
 	const navigate = useNavigate();
@@ -16,19 +17,18 @@ const Auth = () => {
 			const result = await signInWithPopup(auth, provider);
 			const { uid, displayName, email } = result.user;
 
-			await FireStore.addDocumentData({
-				path: 'user',
-				data: { uid: uid, name: displayName, email },
-				lastId: 'User',
-			});
+			const data = await FireStore.getQuerySnapShot('user', [
+				where('uid', '==', uid),
+			]);
 
-			// TODO: 아예 덮어 씌워져 버린다... 초기에 값이 없으면 만들고 있으면 안만들어야 하는데 흐음...
-			await FireStore.addDocumentData({
-				path: `${result.user.email}`,
-				data: {},
-				lastId: FIRE_STORE.CATEGORY,
-				merge: true,
-			});
+			// 데이터가 비워져 있으면 확인
+			if (data.empty) {
+				await FireStore.addDocumentData({
+					path: 'user',
+					data: { uid: uid, name: displayName, email, category: [] },
+					lastId: uid,
+				});
+			}
 
 			navigate(URL_PATH.QUIZ_FILTER);
 		} catch (e) {
