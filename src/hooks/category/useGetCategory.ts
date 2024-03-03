@@ -1,35 +1,35 @@
-import { invariantOf } from '@utils/invariantOf';
-import useGetDocument from '../fireStore/useGetDocument';
 import type { Category } from '@models/quiz';
 import { FIRE_STORE } from '@constants/path';
+import useGetSnapshot from '@hooks/fireStore/useGetSnapshot';
 
-const useGetCategory = () =>
-	useGetDocument<Category[]>({
-		path: FIRE_STORE.CATEGORY,
+const useGetCategory = () => {
+	return useGetSnapshot<Category[]>({
+		path: `${FIRE_STORE.CATEGORY}`,
 		selectCallback: (data) => {
-			const convertedArray = Object.entries(invariantOf(data)) as [
-				number,
-				string
-			][];
+			if (data.empty) return [];
 
-			const convertedData = convertedArray
-				.map(([id, name]) => ({
-					id: Number(id),
-					name,
-				}))
-				.sort((a, b) => {
-					if (a.name < b.name) {
-						return -1;
-					}
+			const result: Category[] = [];
 
-					if (a.name > b.name) {
-						return 1;
-					}
-					return 0;
+			data.forEach((d) => {
+				const value = d.data();
+				result.push({
+					id: d.id,
+					name: value.name,
 				});
+			});
 
-			return convertedData;
+			return result.sort((a, b) => {
+				if (a.name < b.name) {
+					return -1;
+				}
+
+				if (a.name > b.name) {
+					return 1;
+				}
+				return 0;
+			});
 		},
 	});
+};
 
 export default useGetCategory;

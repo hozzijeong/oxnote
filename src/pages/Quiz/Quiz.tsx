@@ -7,6 +7,8 @@ import useLocationQueryParams from '@hooks/useLocationQueryParams';
 import { QUIZ_PARAMS } from '@constants/quiz';
 import useGetQuizList from '@hooks/fireStore/useGetQuizList';
 import { QuizInfo } from '@models/quiz';
+import { Navigate, generatePath } from 'react-router-dom';
+import { URL_PATH } from '@constants/path';
 
 const { quiz } = QUIZ_PARAMS;
 
@@ -17,6 +19,8 @@ const Quiz = () => {
 
 	const { data: quizIds } = useGetQuizList<QuizInfo['id'][]>({
 		selectHandler: (data) => {
+			if (data.empty) return [];
+
 			const result: QuizInfo['id'][] = [];
 
 			data.forEach((value) => {
@@ -31,6 +35,19 @@ const Quiz = () => {
 		currentId,
 		quizIds,
 	});
+
+	if (quizIds.length === 0) {
+		const categoryId = getQueryParam('category');
+
+		return (
+			<Navigate
+				to={generatePath(URL_PATH.CATEGORY_DETAIL, { id: categoryId })}
+			/>
+		);
+	}
+
+	const currentIndex = quizIds.findIndex((id) => id === currentId);
+	const nextId = quizIds[currentIndex + 1] ?? null;
 
 	return (
 		<main className={styles.main}>
@@ -50,7 +67,7 @@ const Quiz = () => {
 				}
 			/>
 			<QuizNavbar currentId={currentId} quizIds={quizIds} />
-			<QuizDetail quizId={currentId} />
+			<QuizDetail quizId={currentId} nextId={nextId} />
 		</main>
 	);
 };

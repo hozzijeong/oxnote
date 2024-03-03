@@ -18,14 +18,14 @@ export interface QuizInfo extends Quiz {
 }
 
 export type QuizSelectFilter = Pick<QuizInfo, 'correctRate'> & {
-	category: number[];
+	category: string[];
 	isFirst?: UserAnswer;
 	favorite?: UserAnswer;
 	recentCorrect?: UserAnswer;
 };
 
 export type Category = {
-	id: number;
+	id: string;
 	name: string;
 };
 

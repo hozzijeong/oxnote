@@ -6,12 +6,17 @@ import { FIRE_STORE } from '@constants/path';
 import useToast from '@hooks/useToast';
 import FavoriteButton from '@components/@common/favoriteButton';
 import useUpdateQuiz from '@hooks/quiz/useUpdateQuiz';
+import { ToastItem } from '@context/ToastProvider';
+import useRedirectQuiz from '@hooks/quiz/useRedirectQuiz';
+
 interface QuizDetailProps {
 	quizId: QuizInfo['id'];
+	nextId: QuizInfo['id'] | null;
 }
 
-const QuizDetail = ({ quizId }: QuizDetailProps) => {
+const QuizDetail = ({ quizId, nextId }: QuizDetailProps) => {
 	const { addToast } = useToast();
+	const redirectHandler = useRedirectQuiz();
 	const { isOn: explainOn, toggleHandler: explainHandler } = useToggle();
 
 	const { data: quiz } = useGetDocument<QuizInfo>({
@@ -29,23 +34,36 @@ const QuizDetail = ({ quizId }: QuizDetailProps) => {
 
 		const answer = Boolean(Number(value));
 
-		let recentCorrect = false;
+		let recentCorrect = true;
 		let wrongCount = quiz.wrongCount;
 		let tryCount = quiz.tryCount + 1;
 
-		if (answer === Boolean(quiz.answer)) {
-			addToast({
-				type: 'success',
-				message: '맞았습니다',
-			});
-			recentCorrect = true;
-		} else {
-			addToast({
+		let toastParams: Omit<ToastItem, 'id'> = {
+			type: 'success',
+			message: '맞았습니다',
+		};
+
+		if (answer !== Boolean(quiz.answer)) {
+			toastParams = {
 				type: 'error',
 				message: '틀렸습니다',
-			});
+			};
 			wrongCount += 1;
+			recentCorrect = false;
 		}
+
+		if (nextId) {
+			toastParams = {
+				...toastParams,
+				time: 1500,
+				buttonContent: '➡️',
+				onClickButton: () => {
+					redirectHandler(nextId);
+				},
+			};
+		}
+
+		addToast(toastParams);
 
 		updateQuiz({
 			data: {
@@ -62,15 +80,15 @@ const QuizDetail = ({ quizId }: QuizDetailProps) => {
 		updateQuiz({
 			data: {
 				...quiz,
-				favorite: !quiz.favorite,
+				favorite: Number(!quiz.favorite),
 			},
 		});
 	};
 
 	return (
-		<section>
+		<section className={styles['main']}>
 			<div className={styles['quiz-container']}>
-				<p>{quiz.quiz}</p>
+				<p className={styles['paragraph']}>{quiz.quiz}</p>
 				<FavoriteButton
 					isFavorite={Boolean(quiz.favorite)}
 					onClick={favoriteClickHandler}
@@ -81,7 +99,7 @@ const QuizDetail = ({ quizId }: QuizDetailProps) => {
 				<button type='button' onClick={explainHandler}>{`해설 ${
 					explainOn ? '닫기' : '보기'
 				}`}</button>
-				{explainOn && <p>{quiz.explain}</p>}
+				{explainOn && <p className={styles['paragraph']}>{quiz.explain}</p>}
 			</div>
 
 			<div

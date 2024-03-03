@@ -5,7 +5,7 @@ const useCurrentUser = () => {
 	const userContext = useContext(UserContext);
 
 	if (userContext === null) {
-		throw new Error('USerProvider 내부에서 사용해주세요');
+		throw new Error('UserProvider 내부에서 사용해주세요');
 	}
 
 	/**

@@ -5,21 +5,26 @@ import useConfirm from '@hooks/useConfirm';
 import { deleteUser } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 import styles from './auth.module.scss';
+import FireStore from '@fireStore/FireStore';
+import useCurrentUser from '@hooks/auth/useCurrentUser';
 
 const MyPage = () => {
 	const navigate = useNavigate();
 	const confirm = useConfirm();
+
+	const { user } = useCurrentUser();
 
 	const signOutHandler = () => {
 		auth.signOut();
 	};
 
 	const deleteUserHandler = async () => {
-		if (!auth.currentUser) return;
-		const result = await confirm({ message: '정말 탈퇴하시겠어요?' });
+		if (!user) return;
 
+		const result = await confirm({ message: '정말 탈퇴하시겠어요?' });
 		if (result) {
-			await deleteUser(auth.currentUser);
+			await deleteUser(user);
+			await FireStore.deleteDocument(`user/${user.uid}`);
 			navigate(URL_PATH.LOGIN, { replace: true });
 		}
 	};

@@ -15,7 +15,7 @@ const useDeleteDocument = ({
 	return useMutation({
 		mutationKey: [`delete${path}`],
 		mutationFn: async () =>
-			await FireStore.deleteDocument(`${user?.email}/${path}`),
+			await FireStore.deleteDocument(`user/${user?.uid}/${path}`),
 		onMutate,
 		onSettled,
 		onSuccess,

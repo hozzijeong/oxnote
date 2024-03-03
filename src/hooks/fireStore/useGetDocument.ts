@@ -13,7 +13,7 @@ const useGetDocument = <T>({ path, selectCallback }: DocumentProps<T>) => {
 
 	return useSuspenseQuery<DocumentData, Error, T>({
 		queryKey: [`get${path}`],
-		queryFn: () => FireStore.getDocumentInfos(`${user?.email}/${path}`),
+		queryFn: () => FireStore.getDocumentInfos(`user/${user?.uid}/${path}`),
 		select: selectCallback,
 	});
 };

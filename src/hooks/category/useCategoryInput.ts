@@ -1,20 +1,22 @@
 import { Category } from '@models/quiz';
 import { useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
-import useUpdateDocument from '../fireStore/useUpdateDocument';
 import useConfirm from '@hooks/useConfirm';
 import useToast from '@hooks/useToast';
 import { FIRE_STORE } from '@constants/path';
+import useAddDocument from '@hooks/fireStore/useAddDocument';
 
 const useCategoryInput = (categories: Category[]) => {
 	const queryClient = useQueryClient();
+
 	const [categoryInput, setCategoryInput] = useState('');
 
 	const { addToast } = useToast();
 	const confirm = useConfirm();
 
-	const { mutate: addCategory } = useUpdateDocument({
-		path: FIRE_STORE.CATEGORY,
+	const { mutate: addCategory } = useAddDocument({
+		path: `${FIRE_STORE.CATEGORY}`,
+		lastId: `${Date.now()}`,
 		onSuccess() {
 			queryClient.invalidateQueries({
 				queryKey: [`get${FIRE_STORE.CATEGORY}`],
@@ -48,11 +50,9 @@ const useCategoryInput = (categories: Category[]) => {
 		});
 
 		if (result) {
-			const date = Date.now();
-
 			addCategory({
 				data: {
-					[date]: categoryInput,
+					name: categoryInput,
 				},
 			});
 
